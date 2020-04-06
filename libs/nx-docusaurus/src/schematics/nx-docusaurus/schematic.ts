@@ -21,7 +21,7 @@ import { NxDocusaurusSchematicSchema } from './schema';
 /**
  * Depending on your needs, you can change this to either `Library` or `Application`
  */
-const projectType = ProjectType.Library;
+const projectType = ProjectType.Application;
 
 interface NormalizedSchema extends NxDocusaurusSchematicSchema {
   projectName: string;
@@ -77,8 +77,18 @@ export default function(options: NxDocusaurusSchematicSchema): Rule {
           projectType
         })
         .targets.add({
-          name: 'build',
-          builder: '@jsi/nx-docusaurus:build'
+          name: 'build-docusaurus',
+          builder: '@nrwl/workspace:run-commands',
+          options: {
+            commands: [
+              {
+                command: `node node_modules/@docusaurus/core/bin/docusaurus.js build ${normalizedOptions.projectRoot} --out-dir dist/docusaurus/${normalizedOptions.projectName}`
+              },
+              {
+                command: `node node_modules/@docusaurus/core/bin/docusaurus.js start ${normalizedOptions.projectRoot}`
+              }
+            ]
+          }
         });
     }),
     addProjectToNxJsonInTree(normalizedOptions.projectName, {
