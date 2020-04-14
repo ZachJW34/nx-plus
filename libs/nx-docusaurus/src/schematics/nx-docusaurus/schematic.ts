@@ -5,17 +5,20 @@ import {
   mergeWith,
   move,
   Rule,
+  Tree,
   url
-} from '@angular-devkit/schematics';
+  } from '@angular-devkit/schematics';
 import {
   addProjectToNxJsonInTree,
+  insert,
   names,
   offsetFromRoot,
   projectRootDir,
   ProjectType,
   toFileName,
   updateWorkspace
-} from '@nrwl/workspace';
+  } from '@nrwl/workspace';
+import { InsertChange } from '@nrwl/workspace/src/utils/ast-utils';
 import { NxDocusaurusSchematicSchema } from './schema';
 
 /**
@@ -65,35 +68,50 @@ function addFiles(options: NormalizedSchema): Rule {
   );
 }
 
+function updateGitIgnore(projectRoot: string, tree: Tree): Tree {
+  const gitIgnorePath = '.gitignore';
+  const gitIgnoreSource = tree.read(gitIgnorePath).toString('utf-8');
+  insert(tree, gitIgnorePath, [
+    new InsertChange(
+      gitIgnorePath,
+      gitIgnoreSource.length,
+      `
+# Generated Docusaurus files
+/${projectRoot}/.docusaurus
+/${projectRoot}/.cache-loader
+`
+    )
+  ]);
+  return tree;
+}
+
 export default function(options: NxDocusaurusSchematicSchema): Rule {
   const normalizedOptions = normalizeOptions(options);
   return chain([
     updateWorkspace(workspace => {
-      workspace.projects
-        .add({
-          name: normalizedOptions.projectName,
-          root: normalizedOptions.projectRoot,
-          sourceRoot: `${normalizedOptions.projectRoot}/src`,
-          projectType
-        })
-        .targets.add({
-          name: 'build-docusaurus',
-          builder: '@nrwl/workspace:run-commands',
-          options: {
-            commands: [
-              {
-                command: `node node_modules/@docusaurus/core/bin/docusaurus.js build ${normalizedOptions.projectRoot} --out-dir dist/docusaurus/${normalizedOptions.projectName}`
-              },
-              {
-                command: `node node_modules/@docusaurus/core/bin/docusaurus.js start ${normalizedOptions.projectRoot}`
-              }
-            ]
-          }
-        });
+      const targets = workspace.projects.add({
+        name: normalizedOptions.projectName,
+        root: normalizedOptions.projectRoot,
+        sourceRoot: `${normalizedOptions.projectRoot}/src`,
+        projectType
+      }).targets;
+      targets.add({
+        name: 'docusaurus',
+        builder: 'nx-docusaurus:build',
+        // TODO: update `build` builder options
+        options: {}
+      });
+      targets.add({
+        name: 'build-docusaurus',
+        builder: 'nx-docusaurus:start',
+        // TODO: update `start` builder options
+        options: {}
+      });
     }),
     addProjectToNxJsonInTree(normalizedOptions.projectName, {
       tags: normalizedOptions.parsedTags
     }),
-    addFiles(normalizedOptions)
+    addFiles(normalizedOptions),
+    tree => updateGitIgnore(normalizedOptions.projectRoot, tree)
   ]);
 }
