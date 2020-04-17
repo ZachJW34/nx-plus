@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://json-schema.org/draft-07/schema",
+  "title": "BuildDocusaurus builder",
+  "description": "Build website",
+  "type": "object",
+  "properties": {
+    "bundleAnalyzer": {
+      "type": "boolean",
+      "description": "Visualize size of webpack output files with an interactive zoomable treemap.",
+      "default": false
+    },
+    "outputPath": {
+      "type": "string",
+      "description": "The full path for the new output directory, relative to the current workspace."
+    },
+    "minify": {
+      "type": "boolean",
+      "description": "Build website minimizing JS bundles.",
+      "default": true
+    }
+  },
+  "required": []
+}

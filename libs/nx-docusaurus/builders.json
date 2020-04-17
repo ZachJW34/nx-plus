@@ -1,10 +1,15 @@
 {
   "$schema": "../../node_modules/@angular-devkit/architect/src/builders-schema.json",
   "builders": {
-    "build": {
-      "implementation": "./src/builders/nx-docusaurus/builder",
-      "schema": "./src/builders/nx-docusaurus/schema.json",
-      "description": "nx-docusaurus builder"
+    "build-docusaurus": {
+      "implementation": "./src/builders/build-docusaurus/builder",
+      "schema": "./src/builders/build-docusaurus/schema.json",
+      "description": "build-docusaurus builder"
+    },
+    "docusaurus": {
+      "implementation": "./src/builders/docusaurus/builder",
+      "schema": "./src/builders/docusaurus/schema.json",
+      "description": "docusaurus builder"
     }
   }
 }
