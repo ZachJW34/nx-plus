@@ -7,7 +7,7 @@ import {
   Rule,
   Tree,
   url
-  } from '@angular-devkit/schematics';
+} from '@angular-devkit/schematics';
 import {
   addProjectToNxJsonInTree,
   insert,
@@ -17,7 +17,7 @@ import {
   ProjectType,
   toFileName,
   updateWorkspace
-  } from '@nrwl/workspace';
+} from '@nrwl/workspace';
 import { InsertChange } from '@nrwl/workspace/src/utils/ast-utils';
 import { NxDocusaurusSchematicSchema } from './schema';
 
@@ -97,15 +97,17 @@ export default function(options: NxDocusaurusSchematicSchema): Rule {
       }).targets;
       targets.add({
         name: 'docusaurus',
-        builder: 'nx-docusaurus:build',
-        // TODO: update `build` builder options
-        options: {}
+        builder: 'nx-docusaurus:docusaurus',
+        options: {
+          port: 3000
+        }
       });
       targets.add({
         name: 'build-docusaurus',
-        builder: 'nx-docusaurus:start',
-        // TODO: update `start` builder options
-        options: {}
+        builder: 'nx-docusaurus:build-docusaurus',
+        options: {
+          outputPath: `dist/docusaurus/${normalizedOptions.projectName}`
+        }
       });
     }),
     addProjectToNxJsonInTree(normalizedOptions.projectName, {

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://json-schema.org/draft-07/schema",
+  "title": "Docusaurus builder",
+  "description": "Start development server",
+  "type": "object",
+  "properties": {
+    "port": {
+      "type": "number",
+      "description": "Use specified port.",
+      "default": 3000
+    },
+    "host": {
+      "type": "string",
+      "description": "Use specified host.",
+      "default": "localhost"
+    },
+    "hotOnly": {
+      "type": "boolean",
+      "description": "Do not fallback to page refresh if hot reload fails.",
+      "default": false
+    },
+    "open": {
+      "type": "boolean",
+      "description": "Open page in the browser.",
+      "default": false
+    }
+  },
+  "required": []
+}
