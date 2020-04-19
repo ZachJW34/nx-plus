@@ -9,6 +9,7 @@ import {
   url
 } from '@angular-devkit/schematics';
 import {
+  addDepsToPackageJson,
   addProjectToNxJsonInTree,
   insert,
   names,
@@ -68,21 +69,23 @@ function addFiles(options: NormalizedSchema): Rule {
   );
 }
 
-function updateGitIgnore(projectRoot: string, tree: Tree): Tree {
-  const gitIgnorePath = '.gitignore';
-  const gitIgnoreSource = tree.read(gitIgnorePath).toString('utf-8');
-  insert(tree, gitIgnorePath, [
-    new InsertChange(
-      gitIgnorePath,
-      gitIgnoreSource.length,
-      `
+function updateGitIgnore(projectRoot: string): Rule {
+  return (tree: Tree) => {
+    const gitIgnorePath = '.gitignore';
+    const gitIgnoreSource = tree.read(gitIgnorePath).toString('utf-8');
+    insert(tree, gitIgnorePath, [
+      new InsertChange(
+        gitIgnorePath,
+        gitIgnoreSource.length,
+        `
 # Generated Docusaurus files
 /${projectRoot}/.docusaurus
 /${projectRoot}/.cache-loader
 `
-    )
-  ]);
-  return tree;
+      )
+    ]);
+    return tree;
+  };
 }
 
 export default function(options: AppSchematicSchema): Rule {
@@ -114,6 +117,17 @@ export default function(options: AppSchematicSchema): Rule {
       tags: normalizedOptions.parsedTags
     }),
     addFiles(normalizedOptions),
-    tree => updateGitIgnore(normalizedOptions.projectRoot, tree)
+    updateGitIgnore(normalizedOptions.projectRoot),
+    addDepsToPackageJson(
+      {
+        '@docusaurus/core': '^2.0.0-alpha.50',
+        '@docusaurus/preset-classic': '^2.0.0-alpha.50',
+        classnames: '^2.2.6',
+        react: '^16.8.4',
+        'react-dom': '^16.8.4'
+      },
+      {},
+      true
+    )
   ]);
 }
