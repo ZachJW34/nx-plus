@@ -32,9 +32,6 @@
       "implicitDependencies": [
         "nx-docusaurus"
       ]
-    },
-    "website": {
-      "tags": []
     }
   }
 }
