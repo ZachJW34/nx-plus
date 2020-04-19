@@ -72,33 +72,6 @@
           }
         }
       }
-    },
-    "website": {
-      "projectType": "application",
-      "root": "apps/website",
-      "sourceRoot": "apps/website/src",
-      "architect": {
-        "build-docusaurus": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              {
-                "command": "node node_modules/@docusaurus/core/bin/docusaurus.js build apps/website --out-dir dist/docusaurus/website"
-              }
-            ]
-          }
-        },
-        "docusaurus": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              {
-                "command": "node node_modules/@docusaurus/core/bin/docusaurus.js start apps/website"
-              }
-            ]
-          }
-        }
-      }
     }
   },
   "cli": {
