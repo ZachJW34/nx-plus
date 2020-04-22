@@ -1,5 +1,5 @@
 {
-  "name": "@jsi/nx-docusaurus",
+  "name": "@nx-plus/docusaurus",
   "version": "0.0.1",
   "main": "src/index.js",
   "schematics": "./collection.json",

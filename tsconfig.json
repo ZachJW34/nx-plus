@@ -16,7 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@jsi/nx-docusaurus": ["libs/nx-docusaurus/src/index.ts"]
+      "@nx-plus/docusaurus": ["libs/docusaurus/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

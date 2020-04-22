@@ -3,14 +3,14 @@ import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { createEmptyWorkspace } from '@nrwl/workspace/testing';
 import { join } from 'path';
 
-import { NxDocusaurusSchematicSchema } from './schema';
+import { AppSchematicSchema } from './schema';
 
-describe('nx-docusaurus schematic', () => {
+describe('docusaurus schematic', () => {
   let appTree: Tree;
-  const options: NxDocusaurusSchematicSchema = { name: 'test' };
+  const options: AppSchematicSchema = { name: 'test' };
 
   const testRunner = new SchematicTestRunner(
-    '@jsi/nx-docusaurus',
+    '@nx-plus/docusaurus',
     join(__dirname, '../../../collection.json')
   );
 
@@ -20,7 +20,7 @@ describe('nx-docusaurus schematic', () => {
 
   it('should run successfully', async () => {
     await expect(
-      testRunner.runSchematicAsync('nxDocusaurus', options, appTree).toPromise()
+      testRunner.runSchematicAsync('app', options, appTree).toPromise()
     ).resolves.not.toThrowError();
   });
 });
