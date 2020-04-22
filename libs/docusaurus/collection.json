@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "name": "docusaurus",
+  "version": "0.0.1",
+  "schematics": {
+    "app": {
+      "factory": "./src/schematics/app/schematic",
+      "schema": "./src/schematics/app/schema.json",
+      "description": "docusaurus schematic"
+    }
+  }
+}

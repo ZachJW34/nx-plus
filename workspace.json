@@ -1,9 +1,9 @@
 {
   "version": 1,
   "projects": {
-    "nx-docusaurus": {
-      "root": "libs/nx-docusaurus",
-      "sourceRoot": "libs/nx-docusaurus/src",
+    "docusaurus": {
+      "root": "libs/docusaurus",
+      "sourceRoot": "libs/docusaurus/src",
       "projectType": "library",
       "schematics": {},
       "architect": {
@@ -11,43 +11,43 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "config": "libs/nx-docusaurus/.eslintrc",
+            "config": "libs/docusaurus/.eslintrc",
             "tsConfig": [
-              "libs/nx-docusaurus/tsconfig.lib.json",
-              "libs/nx-docusaurus/tsconfig.spec.json"
+              "libs/docusaurus/tsconfig.lib.json",
+              "libs/docusaurus/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/nx-docusaurus/**"]
+            "exclude": ["**/node_modules/**", "!libs/docusaurus/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/nx-docusaurus/jest.config.js",
-            "tsConfig": "libs/nx-docusaurus/tsconfig.spec.json",
+            "jestConfig": "libs/docusaurus/jest.config.js",
+            "tsConfig": "libs/docusaurus/tsconfig.spec.json",
             "passWithNoTests": true
           }
         },
         "build": {
           "builder": "@nrwl/node:package",
           "options": {
-            "outputPath": "dist/libs/nx-docusaurus",
-            "tsConfig": "libs/nx-docusaurus/tsconfig.lib.json",
-            "packageJson": "libs/nx-docusaurus/package.json",
-            "main": "libs/nx-docusaurus/src/index.ts",
+            "outputPath": "dist/libs/docusaurus",
+            "tsConfig": "libs/docusaurus/tsconfig.lib.json",
+            "packageJson": "libs/docusaurus/package.json",
+            "main": "libs/docusaurus/src/index.ts",
             "assets": [
-              "libs/nx-docusaurus/*.md",
+              "libs/docusaurus/*.md",
               {
-                "input": "./libs/nx-docusaurus/src",
+                "input": "./libs/docusaurus/src",
                 "glob": "**/*.!(ts)",
                 "output": "./src"
               },
               {
-                "input": "./libs/nx-docusaurus",
+                "input": "./libs/docusaurus",
                 "glob": "collection.json",
                 "output": "."
               },
               {
-                "input": "./libs/nx-docusaurus",
+                "input": "./libs/docusaurus",
                 "glob": "builders.json",
                 "output": "."
               }
@@ -56,19 +56,19 @@
         }
       }
     },
-    "nx-docusaurus-e2e": {
+    "docusaurus-e2e": {
       "projectType": "application",
-      "root": "apps/nx-docusaurus-e2e",
-      "sourceRoot": "apps/nx-docusaurus-e2e/src",
+      "root": "apps/docusaurus-e2e",
+      "sourceRoot": "apps/docusaurus-e2e/src",
       "architect": {
         "e2e": {
           "builder": "@nrwl/nx-plugin:e2e",
           "options": {
-            "target": "nx-docusaurus:build",
-            "npmPackageName": "@jsi/nx-docusaurus",
-            "pluginOutputPath": "dist/libs/nx-docusaurus",
-            "jestConfig": "apps/nx-docusaurus-e2e/jest.config.js",
-            "tsSpecConfig": "apps/nx-docusaurus-e2e/tsconfig.spec.json"
+            "target": "docusaurus:build",
+            "npmPackageName": "@nx-plus/docusaurus",
+            "pluginOutputPath": "dist/libs/docusaurus",
+            "jestConfig": "apps/docusaurus-e2e/jest.config.js",
+            "tsSpecConfig": "apps/docusaurus-e2e/tsconfig.spec.json"
           }
         }
       }

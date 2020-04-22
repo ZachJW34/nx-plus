@@ -5,12 +5,12 @@ import {
   runNxCommandAsync,
   uniq
 } from '@nrwl/nx-plugin/testing';
-describe('nx-docusaurus e2e', () => {
-  it('should create nx-docusaurus', async done => {
-    const plugin = uniq('nx-docusaurus');
-    ensureNxProject('@jsi/nx-docusaurus', 'dist/libs/nx-docusaurus');
+describe('docusaurus e2e', () => {
+  it('should create docusaurus', async done => {
+    const plugin = uniq('docusaurus');
+    ensureNxProject('@nx-plus/docusaurus', 'dist/libs/docusaurus');
     await runNxCommandAsync(
-      `generate @jsi/nx-docusaurus:nxDocusaurus ${plugin}`
+      `generate @nx-plus/docusaurus:app ${plugin}`
     );
 
     const result = await runNxCommandAsync(`build ${plugin}`);
@@ -21,10 +21,10 @@ describe('nx-docusaurus e2e', () => {
 
   describe('--directory', () => {
     it('should create src in the specified directory', async done => {
-      const plugin = uniq('nx-docusaurus');
-      ensureNxProject('@jsi/nx-docusaurus', 'dist/libs/nx-docusaurus');
+      const plugin = uniq('docusaurus');
+      ensureNxProject('@nx-plus/docusaurus', 'dist/libs/docusaurus');
       await runNxCommandAsync(
-        `generate @jsi/nx-docusaurus:nxDocusaurus ${plugin} --directory subdir`
+        `generate @nx-plus/docusaurus:app ${plugin} --directory subdir`
       );
       expect(() =>
         checkFilesExist(`libs/subdir/${plugin}/src/index.ts`)
@@ -35,10 +35,10 @@ describe('nx-docusaurus e2e', () => {
 
   describe('--tags', () => {
     it('should add tags to nx.json', async done => {
-      const plugin = uniq('nx-docusaurus');
-      ensureNxProject('@jsi/nx-docusaurus', 'dist/libs/nx-docusaurus');
+      const plugin = uniq('docusaurus');
+      ensureNxProject('@nx-plus/docusaurus', 'dist/libs/docusaurus');
       await runNxCommandAsync(
-        `generate @jsi/nx-docusaurus:nxDocusaurus ${plugin} --tags e2etag,e2ePackage`
+        `generate @nx-plus/docusaurus:app ${plugin} --tags e2etag,e2ePackage`
       );
       const nxJson = readJson('nx.json');
       expect(nxJson.projects[plugin].tags).toEqual(['e2etag', 'e2ePackage']);

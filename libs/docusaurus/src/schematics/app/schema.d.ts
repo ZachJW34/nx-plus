@@ -1,4 +1,4 @@
-export interface NxDocusaurusSchematicSchema {
+export interface AppSchematicSchema {
   name: string;
   tags?: string;
   directory?: string;

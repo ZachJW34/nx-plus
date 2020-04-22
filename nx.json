@@ -1,5 +1,5 @@
 {
-  "npmScope": "jsi",
+  "npmScope": "nx-plus",
   "implicitDependencies": {
     "workspace.json": "*",
     "package.json": {
@@ -24,13 +24,13 @@
     }
   },
   "projects": {
-    "nx-docusaurus": {
+    "docusaurus": {
       "tags": []
     },
-    "nx-docusaurus-e2e": {
+    "docusaurus-e2e": {
       "tags": [],
       "implicitDependencies": [
-        "nx-docusaurus"
+        "docusaurus"
       ]
     }
   }

@@ -19,14 +19,14 @@ import {
   updateWorkspace
 } from '@nrwl/workspace';
 import { InsertChange } from '@nrwl/workspace/src/utils/ast-utils';
-import { NxDocusaurusSchematicSchema } from './schema';
+import { AppSchematicSchema } from './schema';
 
 /**
  * Depending on your needs, you can change this to either `Library` or `Application`
  */
 const projectType = ProjectType.Application;
 
-interface NormalizedSchema extends NxDocusaurusSchematicSchema {
+interface NormalizedSchema extends AppSchematicSchema {
   projectName: string;
   projectRoot: string;
   projectDirectory: string;
@@ -34,7 +34,7 @@ interface NormalizedSchema extends NxDocusaurusSchematicSchema {
 }
 
 function normalizeOptions(
-  options: NxDocusaurusSchematicSchema
+  options: AppSchematicSchema
 ): NormalizedSchema {
   const name = toFileName(options.name);
   const projectDirectory = options.directory
@@ -85,7 +85,7 @@ function updateGitIgnore(projectRoot: string, tree: Tree): Tree {
   return tree;
 }
 
-export default function(options: NxDocusaurusSchematicSchema): Rule {
+export default function(options: AppSchematicSchema): Rule {
   const normalizedOptions = normalizeOptions(options);
   return chain([
     updateWorkspace(workspace => {
@@ -97,14 +97,14 @@ export default function(options: NxDocusaurusSchematicSchema): Rule {
       }).targets;
       targets.add({
         name: 'docusaurus',
-        builder: 'nx-docusaurus:docusaurus',
+        builder: '@nx-plus/docusaurus:docusaurus',
         options: {
           port: 3000
         }
       });
       targets.add({
         name: 'build-docusaurus',
-        builder: 'nx-docusaurus:build-docusaurus',
+        builder: '@nx-plus/docusaurus:build-docusaurus',
         options: {
           outputPath: `dist/docusaurus/${normalizedOptions.projectName}`
         }
