@@ -3,5 +3,28 @@
   "version": "0.0.1",
   "main": "src/index.js",
   "schematics": "./collection.json",
-  "builders": "./builders.json"
+  "builders": "./builders.json",
+  "description": "Docusaurus plugin for Nx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZachJW34/nx-plus.git"
+  },
+  "keywords": [
+    "nx",
+    "docusaurus",
+    "documentation",
+    "website"
+  ],
+  "author": "Zachary Williams <zachjw34@gmail.com> (https://github.com/ZachJW34/)",
+  "contributors": [
+    "Bucky Maler <maler.bucky@gmail.com> (http://buckymaler.com/)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ZachJW34/nx-plus/issues"
+  },
+  "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/docusaurus#readme",
+  "peerDependencies": {
+    "@nrwl/workspace": "*"
+  }
 }
