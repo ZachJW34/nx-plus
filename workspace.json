@@ -36,6 +36,7 @@
             "main": "libs/docusaurus/src/index.ts",
             "assets": [
               "libs/docusaurus/*.md",
+              "libs/docusaurus/nx-plus-docusaurus.png",
               {
                 "input": "./libs/docusaurus/src",
                 "glob": "**/*.!(ts)",
