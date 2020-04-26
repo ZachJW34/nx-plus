@@ -3,7 +3,7 @@
 > First class support for [Docusaurus](https://v2.docusaurus.io/) in your Nx workspace.
 
 <div align="center">
-  <img src="nx-plus-docusaurus.png">
+  <img src="https://raw.githubusercontent.com/ZachJW34/nx-plus/master/libs/docusaurus/nx-plus-docusaurus.png">
 </div>
 
 ## Getting Started
