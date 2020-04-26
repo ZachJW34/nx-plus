@@ -26,30 +26,33 @@
     "help": "nx help"
   },
   "private": true,
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "@angular-devkit/architect": "~0.901.0",
+    "@angular-devkit/core": "~9.1.0",
+    "@angular-devkit/schematics": "~9.1.0",
     "@docusaurus/core": "^2.0.0-alpha.50",
     "@docusaurus/preset-classic": "^2.0.0-alpha.50",
-    "classnames": "^2.2.6",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4"
-  },
-  "devDependencies": {
+    "@nrwl/eslint-plugin-nx": "9.2.2",
+    "@nrwl/jest": "9.2.2",
     "@nrwl/nx-plugin": "^9.2.2",
     "@nrwl/workspace": "9.2.2",
+    "@types/jest": "25.1.4",
     "@types/node": "~8.9.4",
+    "@typescript-eslint/eslint-plugin": "2.19.2",
+    "@typescript-eslint/parser": "2.19.2",
+    "classnames": "^2.2.6",
     "dotenv": "6.2.0",
     "eslint": "6.8.0",
+    "eslint-config-prettier": "6.0.0",
+    "jest": "25.2.3",
     "prettier": "1.19.1",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "rxjs": "6.5.4",
+    "ts-jest": "25.2.1",
     "ts-node": "~7.0.0",
     "tslint": "~6.0.0",
-    "typescript": "~3.8.3",
-    "@nrwl/eslint-plugin-nx": "9.2.2",
-    "@typescript-eslint/parser": "2.19.2",
-    "@typescript-eslint/eslint-plugin": "2.19.2",
-    "eslint-config-prettier": "6.0.0",
-    "@nrwl/jest": "9.2.2",
-    "jest": "25.2.3",
-    "@types/jest": "25.1.4",
-    "ts-jest": "25.2.1"
+    "typescript": "~3.8.3"
   }
 }
