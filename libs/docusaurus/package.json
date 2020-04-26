@@ -25,6 +25,12 @@
   },
   "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/docusaurus#readme",
   "peerDependencies": {
-    "@nrwl/workspace": "*"
+    "@nrwl/workspace": "^9.0.0"
+  },
+  "dependencies": {
+    "@angular-devkit/architect": "~0.901.0",
+    "@angular-devkit/core": "~9.1.0",
+    "@angular-devkit/schematics": "~9.1.0",
+    "rxjs": "6.5.4"
   }
 }
