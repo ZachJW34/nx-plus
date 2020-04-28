@@ -49,6 +49,7 @@ nx run my-docs-app:build-docusaurus
 | ----------------- | ------- | ------------------------------------------ |
 | `--tags`          | -       | Tags to use for linting (comma-delimited). |
 | `--directory`     | 'apps'  | A directory where the project is placed.   |
+| `--skipFormat`    | false   | Skip formatting files.                     |
 
 ### Docusaurus server builder
 
