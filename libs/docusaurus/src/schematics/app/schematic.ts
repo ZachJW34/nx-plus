@@ -11,6 +11,7 @@ import {
 import {
   addDepsToPackageJson,
   addProjectToNxJsonInTree,
+  formatFiles,
   insert,
   names,
   offsetFromRoot,
@@ -88,6 +89,31 @@ function updateGitIgnore(projectRoot: string): Rule {
   };
 }
 
+function updatePrettierIgnore(): Rule {
+  return (tree: Tree) => {
+    const prettierIgnorePath = '.prettierignore';
+
+    if (!tree.exists(prettierIgnorePath)) return;
+
+    const prettierIgnoreSource = tree
+      .read(prettierIgnorePath)
+      .toString('utf-8')
+      .trimRight();
+    const ignorePattern = '.docusaurus/';
+
+    if (prettierIgnoreSource.includes(ignorePattern)) return;
+
+    insert(tree, prettierIgnorePath, [
+      new InsertChange(
+        prettierIgnorePath,
+        prettierIgnoreSource.length,
+        `\n${ignorePattern}`
+      )
+    ]);
+    return tree;
+  };
+}
+
 export default function(options: AppSchematicSchema): Rule {
   const normalizedOptions = normalizeOptions(options);
   return chain([
@@ -118,6 +144,7 @@ export default function(options: AppSchematicSchema): Rule {
     }),
     addFiles(normalizedOptions),
     updateGitIgnore(normalizedOptions.projectRoot),
+    updatePrettierIgnore(),
     addDepsToPackageJson(
       {
         '@docusaurus/core': '^2.0.0-alpha.50',
@@ -128,6 +155,7 @@ export default function(options: AppSchematicSchema): Rule {
       },
       {},
       true
-    )
+    ),
+    formatFiles(options)
   ]);
 }

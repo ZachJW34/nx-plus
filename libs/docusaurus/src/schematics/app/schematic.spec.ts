@@ -6,7 +6,7 @@ import { AppSchematicSchema } from './schema';
 
 describe('docusaurus schematic', () => {
   let appTree: Tree;
-  const options: AppSchematicSchema = { name: 'test' };
+  const options: AppSchematicSchema = { name: 'test', skipFormat: false };
 
   const testRunner = new SchematicTestRunner(
     '@nx-plus/docusaurus',
@@ -16,6 +16,7 @@ describe('docusaurus schematic', () => {
   beforeEach(() => {
     appTree = createEmptyWorkspace(Tree.empty());
     appTree.create('.gitignore', '');
+    appTree.create('.prettierignore', '');
   });
 
   describe('--directory', () => {
