@@ -70,19 +70,30 @@ function addFiles(options: NormalizedSchema): Rule {
   );
 }
 
-function updateGitIgnore(projectRoot: string): Rule {
+function updateGitIgnore(): Rule {
   return (tree: Tree) => {
     const gitIgnorePath = '.gitignore';
-    const gitIgnoreSource = tree.read(gitIgnorePath).toString('utf-8');
+
+    if (!tree.exists(gitIgnorePath)) return;
+
+    const gitIgnoreSource = tree
+      .read(gitIgnorePath)
+      .toString('utf-8')
+      .trimRight();
+    const ignorePatterns = ['.docusaurus/', '.cache-loader/'].filter(
+      ip => !gitIgnoreSource.includes(ip)
+    );
+
+    if (!ignorePatterns.length) return;
+
     insert(tree, gitIgnorePath, [
       new InsertChange(
         gitIgnorePath,
         gitIgnoreSource.length,
         `
+
 # Generated Docusaurus files
-/${projectRoot}/.docusaurus
-/${projectRoot}/.cache-loader
-`
+${ignorePatterns.join('\n')}`
       )
     ]);
     return tree;
@@ -143,7 +154,7 @@ export default function(options: AppSchematicSchema): Rule {
       tags: normalizedOptions.parsedTags
     }),
     addFiles(normalizedOptions),
-    updateGitIgnore(normalizedOptions.projectRoot),
+    updateGitIgnore(),
     updatePrettierIgnore(),
     addDepsToPackageJson(
       {
