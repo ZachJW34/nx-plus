@@ -29,9 +29,14 @@
     },
     "docusaurus-e2e": {
       "tags": [],
-      "implicitDependencies": [
-        "docusaurus"
-      ]
+      "implicitDependencies": ["docusaurus"]
+    },
+    "vue-plugin": {
+      "tags": []
+    },
+    "vue-plugin-e2e": {
+      "tags": [],
+      "implicitDependencies": ["vue-plugin"]
     }
   }
 }

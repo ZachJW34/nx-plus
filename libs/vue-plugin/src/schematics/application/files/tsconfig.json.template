@@ -1,0 +1,10 @@
+{
+  "extends": "<%= offsetFromRoot %>tsconfig.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["webpack-env", "node"]
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.vue"]
+}
