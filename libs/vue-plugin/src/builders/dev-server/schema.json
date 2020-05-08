@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://json-schema.org/draft-07/schema",
+  "title": "DevServer builder",
+  "description": "Start development server",
+  "type": "object",
+  "properties": {
+    "open": {
+      "type": "boolean",
+      "description": "Open browser on server start.",
+      "default": false
+    },
+    "copy": {
+      "type": "boolean",
+      "description": "Copy url to clipboard on server start.",
+      "default": false
+    },
+    "stdin": {
+      "type": "boolean",
+      "description": "Close when stdin ends.",
+      "default": false
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["development", "production"],
+      "description": "Specify env mode (default: development)."
+    },
+    "host": {
+      "type": "string",
+      "description": "Specify host (default: 0.0.0.0).",
+      "default": "0.0.0.0"
+    },
+    "port": {
+      "type": "number",
+      "description": "Specify port (default: 4200).",
+      "default": 4200
+    },
+    "https": {
+      "type": "boolean",
+      "description": "Use https (default: false).",
+      "default": false
+    },
+    "public": {
+      "type": "string",
+      "description": "Specify the public network URL for the HMR client."
+    },
+    "skipPlugins": {
+      "type": "string",
+      "description": "Comma-separated list of plugin names to skip for this run."
+    },
+    "buildTarget": {
+      "type": "string",
+      "description": "Target to serve.",
+      "pattern": "^[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
+    }
+  },
+  "required": []
+}
