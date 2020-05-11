@@ -2,16 +2,17 @@ version: 2.1
 orbs:
   node: circleci/node@2.1.0
 jobs:
-  test:
+  all:
     executor:
       name: node/default
       tag: 'lts'
     steps:
       - checkout
       - node/install-packages
+      - run: npm run affected:lint -- --all
       - run: npm run affected:test -- --all
       - run: npm run affected:e2e -- --all
 workflows:
     default:
       jobs:
-        - test
+        - all
