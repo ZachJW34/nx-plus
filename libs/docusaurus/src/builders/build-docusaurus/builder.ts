@@ -4,7 +4,7 @@ import {
   createBuilder
 } from '@angular-devkit/architect';
 import { build } from '@docusaurus/core/lib';
-import { join, normalize } from '@angular-devkit/core';
+import { join } from 'path';
 import { from, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { BuildDocusaurusBuilderSchema } from './schema';
@@ -24,7 +24,7 @@ export function runBuilder(
       from(
         build(projectRoot, {
           bundleAnalyzer: options.bundleAnalyzer,
-          outDir: join(normalize(context.workspaceRoot), options.outputPath),
+          outDir: join(context.workspaceRoot, options.outputPath),
           minify: options.minify
         })
       )
