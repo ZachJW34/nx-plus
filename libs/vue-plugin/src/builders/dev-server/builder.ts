@@ -94,7 +94,7 @@ export function runBuilder(
           .catch(err => obs.error(err));
       });
     }),
-    map(() => ({ success: true }))
+    map(({ url }) => ({ success: true, baseUrl: url }))
   );
 }
 
