@@ -3,9 +3,8 @@ orbs:
   node: circleci/node@2.1.0
 jobs:
   all:
-    executor:
-      name: node/default
-      tag: 'lts'
+    docker:
+      - image: cypress/base:12
     steps:
       - checkout
       - node/install-packages

@@ -151,6 +151,33 @@ function addJest(options: NormalizedSchema): Rule {
   ]);
 }
 
+function addCypress(options: NormalizedSchema): Rule {
+  return chain([
+    addPackageWithInit('@nrwl/cypress'),
+    externalSchematic('@nrwl/cypress', 'cypress-project', {
+      project: options.projectName,
+      name: options.name + '-e2e',
+      directory: options.directory,
+      linter: Linter.EsLint,
+      js: false
+    }),
+    tree => {
+      const appSpecPath =
+        options.projectRoot + '-e2e/src/integration/app.spec.ts';
+      tree.overwrite(
+        appSpecPath,
+        tree
+          .read(appSpecPath)
+          .toString('utf-8')
+          .replace(
+            `Welcome to ${options.projectName}!`,
+            'Welcome to Your Vue.js + TypeScript App'
+          )
+      );
+    }
+  ]);
+}
+
 export default function(options: ApplicationSchematicSchema): Rule {
   const normalizedOptions = normalizeOptions(options);
   return chain([
@@ -215,6 +242,9 @@ export default function(options: ApplicationSchematicSchema): Rule {
       return json;
     }),
     options.unitTestRunner === 'jest' ? addJest(normalizedOptions) : noop(),
+    options.e2eTestRunner === 'cypress'
+      ? addCypress(normalizedOptions)
+      : noop(),
     addDepsToPackageJson(
       {
         vue: '^2.6.11'

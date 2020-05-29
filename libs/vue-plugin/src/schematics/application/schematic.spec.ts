@@ -10,6 +10,7 @@ describe('application schematic', () => {
   const options: ApplicationSchematicSchema = {
     name: 'my-app',
     unitTestRunner: 'jest',
+    e2eTestRunner: 'cypress',
     skipFormat: false
   };
 
@@ -53,6 +54,8 @@ describe('application schematic', () => {
     });
     expect(lint.builder).toBe('@nrwl/linter:lint');
     expect(test.builder).toBe('@nrwl/jest:jest');
+
+    expect(workspaceJson.projects['my-app-e2e']).toBeDefined();
   });
 
   it('should generate files', async () => {
@@ -91,6 +94,10 @@ describe('application schematic', () => {
         }
       }
     ]);
+
+    expect(
+      tree.readContent('apps/my-app-e2e/src/integration/app.spec.ts')
+    ).toContain("'Welcome to Your Vue.js + TypeScript App'");
   });
 
   describe('--unitTestRunner none', () => {
@@ -120,6 +127,25 @@ describe('application schematic', () => {
 
       const eslintConfig = readJsonInTree(tree, 'apps/my-app/.eslintrc');
       expect(eslintConfig.overrides).toBeUndefined();
+    });
+  });
+
+  describe('--e2eTestRunner none', () => {
+    it('should not generate e2e configuration', async () => {
+      const tree = await testRunner
+        .runSchematicAsync(
+          'app',
+          { ...options, e2eTestRunner: 'none' },
+          appTree
+        )
+        .toPromise();
+      const workspaceJson = readJsonInTree(tree, 'workspace.json');
+
+      expect(workspaceJson.projects['my-app-e2e']).toBeUndefined();
+
+      const e2eDir = tree.getDir('apps/my-app-e2e');
+      expect(e2eDir.subfiles.length).toBe(0);
+      expect(e2eDir.subdirs.length).toBe(0);
     });
   });
 
@@ -196,6 +222,10 @@ describe('application schematic', () => {
           }
         }
       ]);
+
+      expect(
+        tree.readContent('apps/subdir/my-app-e2e/src/integration/app.spec.ts')
+      ).toContain("'Welcome to Your Vue.js + TypeScript App'");
     });
   });
 });
