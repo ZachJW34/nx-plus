@@ -1,3 +1,4 @@
+import { tags } from '@angular-devkit/core';
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { readJsonInTree } from '@nrwl/workspace';
@@ -11,6 +12,7 @@ describe('application schematic', () => {
     name: 'my-app',
     unitTestRunner: 'jest',
     e2eTestRunner: 'cypress',
+    routing: false,
     skipFormat: false
   };
 
@@ -146,6 +148,32 @@ describe('application schematic', () => {
       const e2eDir = tree.getDir('apps/my-app-e2e');
       expect(e2eDir.subfiles.length).toBe(0);
       expect(e2eDir.subdirs.length).toBe(0);
+    });
+  });
+
+  describe('--routing', () => {
+    it('should generate routing configuration', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', { ...options, routing: true }, appTree)
+        .toPromise();
+
+      const packageJson = readJsonInTree(tree, 'package.json');
+      expect(packageJson.dependencies['vue-router']).toBeDefined();
+
+      expect(tree.exists('apps/my-app/src/app/router/index.ts')).toBeTruthy();
+
+      const main = tree.readContent('apps/my-app/src/main.ts');
+      expect(main).toContain("import router from './app/router';");
+      expect(main).toContain(tags.stripIndent`
+        new Vue({
+          router,
+          render: h => h(App)
+        }).$mount('#app');
+      `);
+
+      expect(tree.readContent('apps/my-app/src/app/app.vue')).toContain(
+        '<router-view />'
+      );
     });
   });
 
