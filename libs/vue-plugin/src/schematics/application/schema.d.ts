@@ -4,5 +4,6 @@ export interface ApplicationSchematicSchema {
   directory?: string;
   unitTestRunner: 'jest' | 'none';
   e2eTestRunner: 'cypress' | 'none';
+  routing: boolean;
   skipFormat: boolean;
 }

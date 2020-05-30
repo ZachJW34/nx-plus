@@ -78,6 +78,9 @@ function addFiles(options: NormalizedSchema): Rule {
       options.unitTestRunner === 'none'
         ? filter(file => file !== '/src/app/app.spec.ts')
         : noop(),
+      options.routing
+        ? noop()
+        : filter(file => file !== '/src/app/router/index.ts'),
       move(options.projectRoot)
     ])
   );
@@ -247,7 +250,8 @@ export default function(options: ApplicationSchematicSchema): Rule {
       : noop(),
     addDepsToPackageJson(
       {
-        vue: '^2.6.11'
+        vue: '^2.6.11',
+        ...(options.routing ? { 'vue-router': '^3.2.0' } : {})
       },
       {
         '@vue/cli-plugin-typescript': '~4.3.0',

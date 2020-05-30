@@ -75,7 +75,8 @@
           >
         </li>
       </ul>
-    </div>
+    </div><% if (routing) { %>
+    <router-view /><% } %>
   </div>
 </template>
 

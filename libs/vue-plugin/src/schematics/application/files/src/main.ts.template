@@ -1,8 +1,10 @@
 import Vue from 'vue';
-import App from './app/app.vue';
+import App from './app/app.vue';<% if (routing) { %>
+import router from './app/router';<% } %>
 
 Vue.config.productionTip = false;
 
-new Vue({
+new Vue({<% if (routing) { %>
+  router,<% } %>
   render: h => h(App)
 }).$mount('#app');
