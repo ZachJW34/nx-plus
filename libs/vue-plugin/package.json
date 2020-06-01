@@ -19,6 +19,7 @@
     "sass": "^1.26.3",
     "sass-loader": "^8.0.2",
     "stylus": "^0.54.7",
-    "stylus-loader": "^3.0.2"
+    "stylus-loader": "^3.0.2",
+    "typescript": "~3.8.3"
   }
 }
