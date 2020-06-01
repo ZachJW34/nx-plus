@@ -65,6 +65,7 @@
     "tslint": "~6.0.0",
     "typescript": "~3.8.3",
     "vue": "^2.6.11",
+    "vuex": "^3.4.0",
     "vue-router": "^3.2.0",
     "vue-template-compiler": "^2.6.11"
   }

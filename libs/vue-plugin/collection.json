@@ -8,6 +8,11 @@
       "schema": "./src/schematics/application/schema.json",
       "description": "application schematic",
       "aliases": ["app"]
+    },
+    "vuex": {
+      "factory": "./src/schematics/vuex/schematic",
+      "schema": "./src/schematics/vuex/schema.json",
+      "description": "vuex schematic"
     }
   }
 }
