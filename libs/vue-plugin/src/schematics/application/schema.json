@@ -23,6 +23,30 @@
       "description": "A directory where the project is placed",
       "alias": "d"
     },
+    "style": {
+      "description": "The file extension to be used for style files.",
+      "type": "string",
+      "default": "css",
+      "x-prompt": {
+        "message": "Which style format would you like to use?",
+        "type": "list",
+        "items": [
+          { "value": "css", "label": "CSS" },
+          {
+            "value": "scss",
+            "label": "SCSS       [ https://sass-lang.com/documentation/syntax#scss   ]"
+          },
+          {
+            "value": "stylus",
+            "label": "Stylus     [ https://stylus-lang.com                           ]"
+          },
+          {
+            "value": "less",
+            "label": "LESS       [ http://lesscss.org                               ]"
+          }
+        ]
+      }
+    },
     "unitTestRunner": {
       "type": "string",
       "enum": ["jest", "none"],

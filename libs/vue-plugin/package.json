@@ -13,6 +13,12 @@
     "@angular-devkit/core": "~9.1.0",
     "@angular-devkit/schematics": "~9.1.0",
     "@vue/cli-shared-utils": "~4.3.0",
-    "rxjs": "6.5.4"
+    "less": "^3.0.4",
+    "less-loader": "^5.0.0",
+    "rxjs": "6.5.4",
+    "sass": "^1.26.3",
+    "sass-loader": "^8.0.2",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2"
   }
 }
