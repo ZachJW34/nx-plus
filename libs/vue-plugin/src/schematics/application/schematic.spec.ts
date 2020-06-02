@@ -13,6 +13,7 @@ describe('application schematic', () => {
     unitTestRunner: 'jest',
     e2eTestRunner: 'cypress',
     routing: false,
+    style: 'css',
     skipFormat: false
   };
 
@@ -100,6 +101,89 @@ describe('application schematic', () => {
     expect(
       tree.readContent('apps/my-app-e2e/src/integration/app.spec.ts')
     ).toContain("'Welcome to Your Vue.js + TypeScript App'");
+
+    expect(tree.readContent('apps/my-app/src/app/app.vue'))
+      .toContain(tags.stripIndent`
+        <style>
+        #app {
+          font-family: Avenir, Helvetica, Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-align: center;
+          color: #2c3e50;
+          margin-top: 60px;
+        }
+        h3 {
+          margin: 40px 0 0;
+        }
+        ul {
+          list-style-type: none;
+          padding: 0;
+        }
+        li {
+          display: inline-block;
+          margin: 0 10px;
+        }
+        a {
+          color: #42b983;
+        }
+        </style>
+      `);
+  });
+
+  describe('--style', () => {
+    it('should generate a scss style block', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', { ...options, style: 'scss' }, appTree)
+        .toPromise();
+
+      expect(tree.readContent('apps/my-app/src/app/app.vue')).toContain(
+        '<style lang="scss">'
+      );
+    });
+
+    it('should generate a less style block', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', { ...options, style: 'less' }, appTree)
+        .toPromise();
+
+      expect(tree.readContent('apps/my-app/src/app/app.vue')).toContain(
+        '<style lang="less">'
+      );
+    });
+
+    it('should generate a stylus style block', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', { ...options, style: 'stylus' }, appTree)
+        .toPromise();
+
+      expect(tree.readContent('apps/my-app/src/app/app.vue'))
+        .toContain(tags.stripIndent`
+          <style lang="stylus">
+          #app
+            font-family Avenir, Helvetica, Arial, sans-serif
+            -webkit-font-smoothing antialiased
+            -moz-osx-font-smoothing grayscale
+            text-align center
+            color #2c3e50
+            margin-top 60px
+
+          h3
+            margin 40px 0 0
+
+          ul
+            list-style-type none
+            padding 0
+
+          li
+            display inline-block
+            margin 0 10px
+
+          a
+            color #42b983
+          </style>
+      `);
+    });
   });
 
   describe('--unitTestRunner none', () => {
