@@ -4,6 +4,28 @@
   "main": "src/index.js",
   "schematics": "./collection.json",
   "builders": "./builders.json",
+  "description": "Vue plugin for Nx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZachJW34/nx-plus.git"
+  },
+  "keywords": [
+    "nx",
+    "vue",
+    "vuex",
+    "jest",
+    "cypress",
+    "monorepo"
+  ],
+  "author": "Bucky Maler <maler.bucky@gmail.com> (http://buckymaler.com/)",
+  "contributors": [
+    "Zachary Williams <zachjw34@gmail.com> (https://github.com/ZachJW34/)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ZachJW34/nx-plus/issues"
+  },
+  "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/vue-plugin#readme",
   "peerDependencies": {
     "@nrwl/workspace": "^9.0.0"
   },
