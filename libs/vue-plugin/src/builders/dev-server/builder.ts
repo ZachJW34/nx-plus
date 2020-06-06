@@ -11,6 +11,7 @@ import { DevServerBuilderSchema } from './schema';
 import { BrowserBuilderSchema } from '../browser/schema';
 import { getProjectRoot } from '../../utils';
 import {
+  addFileReplacements,
   modifyCachePaths,
   modifyEntryPoint,
   modifyIndexHtmlPath,
@@ -54,6 +55,7 @@ export function runBuilder(
         modifyEntryPoint(config, browserOptions, context);
         modifyTsConfigPaths(config, browserOptions, context);
         modifyCachePaths(config, context);
+        addFileReplacements(config, browserOptions, context);
       }
     };
 

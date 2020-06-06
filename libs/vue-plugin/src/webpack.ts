@@ -128,3 +128,16 @@ export function modifyCopyAssets(
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     .use(require('copy-webpack-plugin'), [transformedAssetPatterns]);
 }
+
+export function addFileReplacements(
+  config,
+  options: BrowserBuilderSchema,
+  context: BuilderContext
+) {
+  for (const pattern of options.fileReplacements) {
+    config.resolve.alias.set(
+      getSystemPath(join(normalize(context.workspaceRoot), pattern.replace)),
+      getSystemPath(join(normalize(context.workspaceRoot), pattern.with))
+    );
+  }
+}
