@@ -68,6 +68,24 @@
       "items": {
         "$ref": "#/definitions/assetPattern"
       }
+    },
+    "fileReplacements": {
+      "description": "Replace files with other files in the build.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "replace": {
+            "type": "string"
+          },
+          "with": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["replace", "with"]
+      },
+      "default": []
     }
   },
   "required": [],

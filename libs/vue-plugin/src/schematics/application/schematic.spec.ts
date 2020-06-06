@@ -46,6 +46,12 @@ describe('application schematic', () => {
       assets: ['apps/my-app/src/favicon.ico', 'apps/my-app/src/assets']
     });
     expect(build.configurations.production).toEqual({
+      fileReplacements: [
+        {
+          replace: 'apps/my-app/src/environments/environment.ts',
+          with: 'apps/my-app/src/environments/environment.prod.ts'
+        }
+      ],
       mode: 'production'
     });
     expect(serve.builder).toBe('@nx-plus/vue-plugin:dev-server');
@@ -77,6 +83,8 @@ describe('application schematic', () => {
       'apps/my-app/src/index.html',
       'apps/my-app/src/assets/logo.png',
       'apps/my-app/src/assets/.gitkeep',
+      'apps/my-app/src/environments/environment.ts',
+      'apps/my-app/src/environments/environment.prod.ts',
       'apps/my-app/src/app/app.vue',
       'apps/my-app/src/app/app.spec.ts'
     ].forEach(path => expect(tree.exists(path)).toBeTruthy());
@@ -287,6 +295,12 @@ describe('application schematic', () => {
           'apps/subdir/my-app/src/assets'
         ]
       });
+      expect(build.configurations.production.fileReplacements).toEqual([
+        {
+          replace: 'apps/subdir/my-app/src/environments/environment.ts',
+          with: 'apps/subdir/my-app/src/environments/environment.prod.ts'
+        }
+      ]);
       expect(serve.options).toEqual({
         buildTarget: 'subdir-my-app:build'
       });
@@ -311,6 +325,8 @@ describe('application schematic', () => {
         'apps/subdir/my-app/src/index.html',
         'apps/subdir/my-app/src/assets/logo.png',
         'apps/subdir/my-app/src/assets/.gitkeep',
+        'apps/subdir/my-app/src/environments/environment.ts',
+        'apps/subdir/my-app/src/environments/environment.prod.ts',
         'apps/subdir/my-app/src/app/app.vue',
         'apps/subdir/my-app/src/app/app.spec.ts'
       ].forEach(path => expect(tree.exists(path)).toBeTruthy());

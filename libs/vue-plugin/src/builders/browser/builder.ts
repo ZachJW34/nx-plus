@@ -16,6 +16,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { BrowserBuilderSchema } from './schema';
 import { getProjectRoot, getProjectSourceRoot } from '../../utils';
 import {
+  addFileReplacements,
   modifyCachePaths,
   modifyCopyAssets,
   modifyEntryPoint,
@@ -66,6 +67,7 @@ export function runBuilder(
         modifyTsConfigPaths(config, options, context);
         modifyCachePaths(config, context);
         modifyCopyAssets(config, options, context, normalizedAssetPatterns);
+        addFileReplacements(config, options, context);
       },
       // This option is used instead of `dest` because Vue CLI will
       // overwrite our modified `CopyWebpackPlugin` config when `dest`

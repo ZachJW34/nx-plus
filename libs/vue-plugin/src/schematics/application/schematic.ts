@@ -206,6 +206,12 @@ export default function(options: ApplicationSchematicSchema): Rule {
         },
         configurations: {
           production: {
+            fileReplacements: [
+              {
+                replace: `${normalizedOptions.projectRoot}/src/environments/environment.ts`,
+                with: `${normalizedOptions.projectRoot}/src/environments/environment.prod.ts`
+              }
+            ],
             mode: 'production'
           }
         }

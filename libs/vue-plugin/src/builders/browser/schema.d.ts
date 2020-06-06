@@ -14,6 +14,7 @@ export interface BrowserBuilderSchema extends JsonObject {
   main: string;
   tsConfig: string;
   assets: Array<string | AssetPattern>;
+  fileReplacements: FileReplacementPattern[]
 }
 
 interface AssetPattern {
@@ -21,4 +22,9 @@ interface AssetPattern {
   input: string;
   ignore?: string[];
   output: string;
+}
+
+interface FileReplacementPattern {
+  replace: string;
+  with: string;
 }
