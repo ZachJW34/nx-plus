@@ -86,6 +86,12 @@
         "required": ["replace", "with"]
       },
       "default": []
+    },
+    "outputHashing": {
+      "type": "string",
+      "description": "Define the output filename cache-busting hashing mode.",
+      "default": "none",
+      "enum": ["none", "all", "media", "bundles"]
     }
   },
   "required": [],

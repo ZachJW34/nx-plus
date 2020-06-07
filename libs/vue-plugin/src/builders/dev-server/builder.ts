@@ -14,6 +14,7 @@ import {
   addFileReplacements,
   modifyCachePaths,
   modifyEntryPoint,
+  modifyFilenameHashing,
   modifyIndexHtmlPath,
   modifyTsConfigPaths
 } from '../../webpack';
@@ -56,6 +57,7 @@ export function runBuilder(
         modifyTsConfigPaths(config, browserOptions, context);
         modifyCachePaths(config, context);
         addFileReplacements(config, browserOptions, context);
+        modifyFilenameHashing(config, browserOptions);
       }
     };
 

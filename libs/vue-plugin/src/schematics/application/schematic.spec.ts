@@ -52,7 +52,8 @@ describe('application schematic', () => {
           with: 'apps/my-app/src/environments/environment.prod.ts'
         }
       ],
-      mode: 'production'
+      mode: 'production',
+      outputHashing: 'all'
     });
     expect(serve.builder).toBe('@nx-plus/vue-plugin:dev-server');
     expect(serve.options).toEqual({

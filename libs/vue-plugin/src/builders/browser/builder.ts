@@ -20,6 +20,7 @@ import {
   modifyCachePaths,
   modifyCopyAssets,
   modifyEntryPoint,
+  modifyFilenameHashing,
   modifyIndexHtmlPath,
   modifyTsConfigPaths
 } from '../../webpack';
@@ -68,6 +69,7 @@ export function runBuilder(
         modifyCachePaths(config, context);
         modifyCopyAssets(config, options, context, normalizedAssetPatterns);
         addFileReplacements(config, options, context);
+        modifyFilenameHashing(config, options);
       },
       // This option is used instead of `dest` because Vue CLI will
       // overwrite our modified `CopyWebpackPlugin` config when `dest`
