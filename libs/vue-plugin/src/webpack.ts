@@ -141,3 +141,56 @@ export function addFileReplacements(
     );
   }
 }
+
+export function modifyFilenameHashing(
+  config,
+  options: BrowserBuilderSchema
+): void {
+  const hashFormats = {
+    none: { chunk: '', file: '' },
+    media: { chunk: '', file: `.[hash:8]` },
+    bundles: { chunk: `.[contenthash:8]`, file: '' },
+    all: { chunk: `.[contenthash:8]`, file: `.[hash:8]` }
+  };
+  const hashFormat = hashFormats[options.outputHashing];
+
+  config.output.filename(`js/[name]${hashFormat.chunk}.js`);
+  config.output.chunkFilename(`js/[name]${hashFormat.chunk}.js`);
+
+  config.module
+    .rule('images')
+    .use('url-loader')
+    .tap(loaderOptions => {
+      loaderOptions.fallback.options.name = `img/[name]${hashFormat.file}.[ext]`;
+      return loaderOptions;
+    });
+  config.module
+    .rule('svg')
+    .use('file-loader')
+    .tap(loaderOptions => {
+      loaderOptions.name = `img/[name]${hashFormat.file}.[ext]`;
+      return loaderOptions;
+    });
+  config.module
+    .rule('media')
+    .use('url-loader')
+    .tap(loaderOptions => {
+      loaderOptions.fallback.options.name = `media/[name]${hashFormat.file}.[ext]`;
+      return loaderOptions;
+    });
+  config.module
+    .rule('fonts')
+    .use('url-loader')
+    .tap(loaderOptions => {
+      loaderOptions.fallback.options.name = `fonts/[name]${hashFormat.file}.[ext]`;
+      return loaderOptions;
+    });
+
+  config.when(options.mode === 'production', config =>
+    config.plugin('extract-css').tap(args => {
+      args[0].filename = `css/[name]${hashFormat.chunk}.css`;
+      args[0].chunkFilename = `css/[name]${hashFormat.chunk}.css`;
+      return args;
+    })
+  );
+}

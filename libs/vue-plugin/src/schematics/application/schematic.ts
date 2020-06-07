@@ -212,7 +212,8 @@ export default function(options: ApplicationSchematicSchema): Rule {
                 with: `${normalizedOptions.projectRoot}/src/environments/environment.prod.ts`
               }
             ],
-            mode: 'production'
+            mode: 'production',
+            outputHashing: 'all'
           }
         }
       });
