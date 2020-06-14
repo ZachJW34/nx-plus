@@ -58,6 +58,19 @@ export function runBuilder(
         modifyCachePaths(config, context);
         addFileReplacements(config, browserOptions, context);
         modifyFilenameHashing(config, browserOptions);
+
+        if (!options.watch) {
+          // There is no option to disable file watching in `webpack-dev-server`,
+          // but webpack's file watcher can be overriden.
+          config.plugin('vue-cli').use({
+            apply: compiler => {
+              compiler.hooks.afterEnvironment.tap('vue-cli', () => {
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                compiler.watchFileSystem = { watch: () => {} };
+              });
+            }
+          });
+        }
       }
     };
 
