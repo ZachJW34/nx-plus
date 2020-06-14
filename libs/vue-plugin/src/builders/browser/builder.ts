@@ -11,7 +11,7 @@ import {
   virtualFs
 } from '@angular-devkit/core';
 import { NodeJsSyncHost } from '@angular-devkit/core/node';
-import { from, Observable, of } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { BrowserBuilderSchema } from './schema';
 import { getProjectRoot, getProjectSourceRoot } from '../../utils';
@@ -34,16 +34,6 @@ export function runBuilder(
   options: BrowserBuilderSchema,
   context: BuilderContext
 ): Observable<BuilderOutput> {
-  const requiredOptions = ['outputPath', 'index', 'main', 'tsConfig'];
-  const missingOption = requiredOptions.find(
-    requiredOption => !options[requiredOption]
-  );
-
-  if (missingOption) {
-    context.logger.error(`Invalid options, "${missingOption}" is required.`);
-    return of({ success: false });
-  }
-
   async function setup(): Promise<{
     projectRoot: string;
     inlineOptions;
@@ -92,24 +82,28 @@ export function runBuilder(
         pkg: resolvePkg(context.workspaceRoot),
         inlineOptions
       });
+      const buildOptions = {
+        mode: options.mode,
+        dest: undefined,
+        modern: options.modern,
+        'no-unsafe-inline': options.skipUnsafeInline,
+        'no-clean': options.skipClean,
+        report: options.report,
+        'report-json': options.reportJson,
+        'skip-plugins': options.skipPlugins,
+        watch: options.watch
+      };
 
-      return from(
-        service.run(
-          'build',
-          {
-            mode: options.mode,
-            dest: undefined,
-            modern: options.modern,
-            'no-unsafe-inline': options.skipUnsafeInline,
-            'no-clean': options.skipClean,
-            report: options.report,
-            'report-json': options.reportJson,
-            'skip-plugins': options.skipPlugins,
-            watch: options.watch
-          },
-          ['build']
-        )
-      );
+      if (options.watch) {
+        return new Observable(obs => {
+          service
+            .run('build', buildOptions, ['build'])
+            .then(success => obs.next(success))
+            .catch(err => obs.error(err));
+        });
+      }
+
+      return from(service.run('build', buildOptions, ['build']));
     }),
     map(() => ({ success: true }))
   );

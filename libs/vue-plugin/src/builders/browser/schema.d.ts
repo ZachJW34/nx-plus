@@ -8,7 +8,7 @@ export interface BrowserBuilderSchema extends JsonObject {
   skipClean: boolean;
   report: boolean;
   reportJson: boolean;
-  skipPlugins: string;
+  skipPlugins?: string;
   watch: boolean;
   index: string;
   main: string;
