@@ -150,7 +150,15 @@ function addJest(options: NormalizedSchema): Rule {
       `;
       tree.overwrite(`${options.projectRoot}/jest.config.js`, content);
       return tree;
-    }
+    },
+    addDepsToPackageJson(
+      {},
+      {
+        '@vue/cli-plugin-unit-jest': '~4.3.0',
+        '@vue/test-utils': '1.0.0-beta.31'
+      },
+      true
+    )
   ]);
 }
 
@@ -262,10 +270,8 @@ export default function(options: ApplicationSchematicSchema): Rule {
       },
       {
         '@vue/cli-plugin-typescript': '~4.3.0',
-        '@vue/cli-plugin-unit-jest': '~4.3.0',
         '@vue/cli-service': '~4.3.0',
         '@vue/eslint-config-typescript': '^5.0.2',
-        '@vue/test-utils': '1.0.0-beta.31',
         'eslint-plugin-vue': '^6.2.2',
         'vue-template-compiler': '^2.6.11'
       },
