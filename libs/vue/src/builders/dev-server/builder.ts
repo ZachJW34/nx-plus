@@ -10,6 +10,7 @@ import {
   JsonObject,
   normalize
 } from '@angular-devkit/core';
+import { cliCommand } from '@nrwl/workspace/src/core/file-utils';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { DevServerBuilderSchema } from './schema';
@@ -17,7 +18,8 @@ import { BrowserBuilderSchema } from '../browser/schema';
 import {
   getNormalizedAssetPatterns,
   getProjectRoot,
-  getProjectSourceRoot
+  getProjectSourceRoot,
+  modifyChalkOutput
 } from '../../utils';
 import {
   addFileReplacements,
@@ -114,6 +116,21 @@ export function runBuilder(
       inlineOptions
     };
   }
+
+  // The vue-cli build command is not suitable for an nx project.
+  // We spy on chalk to intercept the console output and replace
+  // it with a nx command.
+  // TODO: Find a better way to rewrite vue-cli console output
+  const buildRegex = /([p]?npm run|yarn) build/;
+  modifyChalkOutput('cyan', arg => {
+    if (buildRegex.test(arg)) {
+      return arg.replace(
+        buildRegex,
+        `${cliCommand()} build ${context.target.project} --prod`
+      );
+    }
+    return arg;
+  });
 
   return from(setup()).pipe(
     switchMap(({ projectRoot, browserOptions, inlineOptions }) => {

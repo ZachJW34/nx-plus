@@ -10,7 +10,8 @@ import { BrowserBuilderSchema } from './schema';
 import {
   getNormalizedAssetPatterns,
   getProjectRoot,
-  getProjectSourceRoot
+  getProjectSourceRoot,
+  modifyChalkOutput
 } from '../../utils';
 import {
   addFileReplacements,
@@ -74,6 +75,20 @@ export function runBuilder(
       inlineOptions
     };
   }
+
+  // The compiled files output by vue-cli are not relative to the
+  // root of the workspace. We can spy on chalk to intercept the
+  // console output and tranform any non-relative file paths.
+  // TODO: Find a better way to rewrite vue-cli console output
+  const chalkTransform = (arg: string) => {
+    const normalizedArg = normalize(arg);
+    return normalizedArg.includes(options.outputPath)
+      ? options.outputPath + normalizedArg.split(options.outputPath)[1]
+      : arg;
+  };
+  ['green', 'cyan', 'blue'].forEach(color =>
+    modifyChalkOutput(color, chalkTransform)
+  );
 
   return from(setup()).pipe(
     switchMap(({ projectRoot, inlineOptions }) => {
