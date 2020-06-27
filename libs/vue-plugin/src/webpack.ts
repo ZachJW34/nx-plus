@@ -186,7 +186,7 @@ export function modifyFilenameHashing(
       return loaderOptions;
     });
 
-  config.when(options.mode === 'production', config =>
+  config.when(options.extractCss, config =>
     config.plugin('extract-css').tap(args => {
       args[0].filename = `css/[name]${hashFormat.chunk}.css`;
       args[0].chunkFilename = `css/[name]${hashFormat.chunk}.css`;

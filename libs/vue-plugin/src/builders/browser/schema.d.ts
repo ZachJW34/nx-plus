@@ -16,6 +16,7 @@ export interface BrowserBuilderSchema extends JsonObject {
   assets: Array<string | AssetPattern>;
   fileReplacements: FileReplacementPattern[];
   outputHashing: 'none' | 'all' | 'media' | 'bundles';
+  extractCss: boolean;
 }
 
 interface AssetPattern {

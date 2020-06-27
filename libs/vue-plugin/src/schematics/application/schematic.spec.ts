@@ -53,7 +53,8 @@ describe('application schematic', () => {
         }
       ],
       mode: 'production',
-      outputHashing: 'all'
+      outputHashing: 'all',
+      extractCss: true
     });
     expect(serve.builder).toBe('@nx-plus/vue-plugin:dev-server');
     expect(serve.options).toEqual({
