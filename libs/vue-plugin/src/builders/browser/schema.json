@@ -91,6 +91,11 @@
       "description": "Define the output filename cache-busting hashing mode.",
       "default": "none",
       "enum": ["none", "all", "media", "bundles"]
+    },
+    "extractCss": {
+      "type": "boolean",
+      "description": "Extract css from global styles into css files instead of js ones.",
+      "default": false
     }
   },
   "required": ["outputPath", "index", "main", "tsConfig"],

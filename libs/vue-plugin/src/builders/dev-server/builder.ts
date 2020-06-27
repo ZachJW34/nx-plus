@@ -71,6 +71,9 @@ export function runBuilder(
             }
           });
         }
+      },
+      css: {
+        extract: browserOptions.extractCss
       }
     };
 

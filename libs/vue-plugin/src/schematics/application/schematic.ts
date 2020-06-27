@@ -221,7 +221,8 @@ export default function(options: ApplicationSchematicSchema): Rule {
               }
             ],
             mode: 'production',
-            outputHashing: 'all'
+            outputHashing: 'all',
+            extractCss: true
           }
         }
       });

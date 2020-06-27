@@ -67,7 +67,10 @@ export function runBuilder(
       // https://github.com/vuejs/vue-cli/blob/c64afc3c2a8854aae30fbfb85e92c0bb8b07bad7/packages/%40vue/cli-service/lib/commands/build/resolveAppConfig.js#L6
       outputDir: getSystemPath(
         join(normalize(context.workspaceRoot), options.outputPath)
-      )
+      ),
+      css: {
+        extract: options.extractCss
+      }
     };
 
     return {
