@@ -31,8 +31,7 @@ describe('vue-plugin e2e', () => {
         `dist/apps/${appName}/index.html`,
         `dist/apps/${appName}/favicon.ico`,
         `dist/apps/${appName}/js/app.js`,
-        `dist/apps/${appName}/img`,
-        `dist/apps/${appName}/assets/logo.png`
+        `dist/apps/${appName}/img/logo.png`
       )
     ).not.toThrow();
 
@@ -54,8 +53,7 @@ describe('vue-plugin e2e', () => {
           `dist/apps/subdir/${appName}/index.html`,
           `dist/apps/subdir/${appName}/favicon.ico`,
           `dist/apps/subdir/${appName}/js/app.js`,
-          `dist/apps/subdir/${appName}/img`,
-          `dist/apps/subdir/${appName}/assets/logo.png`
+          `dist/apps/subdir/${appName}/img/logo.png`
         )
       ).not.toThrow();
 
