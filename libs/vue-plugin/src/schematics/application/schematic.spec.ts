@@ -82,10 +82,10 @@ describe('application schematic', () => {
       'apps/my-app/src/shims-vue.d.ts',
       'apps/my-app/src/main.ts',
       'apps/my-app/src/index.html',
-      'apps/my-app/src/assets/logo.png',
       'apps/my-app/src/assets/.gitkeep',
       'apps/my-app/src/environments/environment.ts',
       'apps/my-app/src/environments/environment.prod.ts',
+      'apps/my-app/src/app/logo.png',
       'apps/my-app/src/app/app.vue',
       'apps/my-app/src/app/app.spec.ts'
     ].forEach(path => expect(tree.exists(path)).toBeTruthy());
@@ -324,10 +324,10 @@ describe('application schematic', () => {
         'apps/subdir/my-app/src/shims-vue.d.ts',
         'apps/subdir/my-app/src/main.ts',
         'apps/subdir/my-app/src/index.html',
-        'apps/subdir/my-app/src/assets/logo.png',
         'apps/subdir/my-app/src/assets/.gitkeep',
         'apps/subdir/my-app/src/environments/environment.ts',
         'apps/subdir/my-app/src/environments/environment.prod.ts',
+        'apps/subdir/my-app/src/app/logo.png',
         'apps/subdir/my-app/src/app/app.vue',
         'apps/subdir/my-app/src/app/app.spec.ts'
       ].forEach(path => expect(tree.exists(path)).toBeTruthy());
