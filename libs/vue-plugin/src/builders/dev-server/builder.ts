@@ -26,7 +26,8 @@ import {
   modifyEntryPoint,
   modifyFilenameHashing,
   modifyIndexHtmlPath,
-  modifyTsConfigPaths
+  modifyTsConfigPaths,
+  modifyTypescriptAliases
 } from '../../webpack';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -84,6 +85,7 @@ export function runBuilder(
         );
         addFileReplacements(config, browserOptions, context);
         modifyFilenameHashing(config, browserOptions);
+        modifyTypescriptAliases(config, browserOptions, context);
 
         if (!options.watch) {
           // There is no option to disable file watching in `webpack-dev-server`,

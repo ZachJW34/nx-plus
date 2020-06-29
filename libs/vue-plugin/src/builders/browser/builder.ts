@@ -19,7 +19,8 @@ import {
   modifyEntryPoint,
   modifyFilenameHashing,
   modifyIndexHtmlPath,
-  modifyTsConfigPaths
+  modifyTsConfigPaths,
+  modifyTypescriptAliases
 } from '../../webpack';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -54,6 +55,7 @@ export function runBuilder(
         modifyCopyAssets(config, options, context, normalizedAssetPatterns);
         addFileReplacements(config, options, context);
         modifyFilenameHashing(config, options);
+        modifyTypescriptAliases(config, options, context);
       },
       // This option is used instead of `dest` because Vue CLI will
       // overwrite our modified `CopyWebpackPlugin` config when `dest`

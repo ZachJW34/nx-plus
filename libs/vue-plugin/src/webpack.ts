@@ -194,3 +194,33 @@ export function modifyFilenameHashing(
     })
   );
 }
+
+export function modifyTypescriptAliases(
+  config,
+  options: BrowserBuilderSchema,
+  context: BuilderContext
+) {
+  const tsConfigPath = getSystemPath(
+    join(normalize(context.workspaceRoot), options.tsConfig)
+  );
+  const extensions = [
+    '.tsx',
+    '.ts',
+    '.mjs',
+    '.js',
+    '.jsx',
+    '.vue',
+    '.json',
+    '.wasm'
+  ];
+  config.resolve.alias.delete('@');
+  config.resolve
+    .plugin('tsconfig-paths')
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    .use(require('tsconfig-paths-webpack-plugin'), [
+      {
+        configFile: tsConfigPath,
+        extensions
+      }
+    ]);
+}

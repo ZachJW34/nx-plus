@@ -141,6 +141,16 @@ describe('application schematic', () => {
       `);
   });
 
+  it('should add postinstall script', async () => {
+    const tree = await testRunner
+      .runSchematicAsync('app', options, appTree)
+      .toPromise();
+
+    expect(readJsonInTree(tree, 'package.json').scripts.postinstall).toBe(
+      'node node_modules/@nx-plus/vue-plugin/src/scripts/postinstall.js'
+    );
+  });
+
   describe('--style', () => {
     it('should generate a scss style block', async () => {
       const tree = await testRunner

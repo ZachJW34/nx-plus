@@ -189,6 +189,22 @@ function addCypress(options: NormalizedSchema): Rule {
   ]);
 }
 
+function addPostInstall() {
+  return updateJsonInTree('package.json', (json, context) => {
+    const vuePostInstall =
+      'node node_modules/@nx-plus/vue-plugin/src/scripts/postinstall.js';
+    const { postinstall } = json.scripts || {};
+    if (postinstall) {
+      if (postinstall !== vuePostInstall) {
+        context.logger.warn('Skipped addition of postinstall script.');
+      }
+      return json;
+    }
+    json.scripts = { ...json.scripts, postinstall: vuePostInstall };
+    return json;
+  });
+}
+
 export default function(options: ApplicationSchematicSchema): Rule {
   const normalizedOptions = normalizeOptions(options);
   return chain([
@@ -264,6 +280,7 @@ export default function(options: ApplicationSchematicSchema): Rule {
     options.e2eTestRunner === 'cypress'
       ? addCypress(normalizedOptions)
       : noop(),
+    addPostInstall(),
     addDepsToPackageJson(
       {
         vue: '^2.6.11',
