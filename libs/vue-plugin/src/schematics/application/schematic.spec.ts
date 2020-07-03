@@ -52,16 +52,16 @@ describe('application schematic', () => {
           with: 'apps/my-app/src/environments/environment.prod.ts'
         }
       ],
-      mode: 'production',
+      optimization: true,
       outputHashing: 'all',
       extractCss: true
     });
     expect(serve.builder).toBe('@nx-plus/vue-plugin:dev-server');
     expect(serve.options).toEqual({
-      buildTarget: 'my-app:build'
+      browserTarget: 'my-app:build'
     });
     expect(serve.configurations.production).toEqual({
-      buildTarget: 'my-app:build:production'
+      browserTarget: 'my-app:build:production'
     });
     expect(lint.builder).toBe('@nrwl/linter:lint');
     expect(test.builder).toBe('@nrwl/jest:jest');
@@ -304,10 +304,10 @@ describe('application schematic', () => {
         }
       ]);
       expect(serve.options).toEqual({
-        buildTarget: 'subdir-my-app:build'
+        browserTarget: 'subdir-my-app:build'
       });
       expect(serve.configurations.production).toEqual({
-        buildTarget: 'subdir-my-app:build:production'
+        browserTarget: 'subdir-my-app:build:production'
       });
     });
 

@@ -1,11 +1,9 @@
 import { JsonObject } from '@angular-devkit/core';
 
 export interface BrowserBuilderSchema extends JsonObject {
-  mode: 'development' | 'production';
+  optimization: boolean;
   outputPath: string;
-  modern: boolean;
-  skipUnsafeInline: boolean;
-  skipClean: boolean;
+  deleteOutputPath: boolean;
   report: boolean;
   reportJson: boolean;
   skipPlugins?: string;

@@ -19,10 +19,9 @@
       "description": "Close when stdin ends.",
       "default": false
     },
-    "mode": {
-      "type": "string",
-      "enum": ["development", "production"],
-      "description": "Specify env mode (default: development)."
+    "optimization": {
+      "type": "boolean",
+      "description": "Enables optimization of the build output."
     },
     "host": {
       "type": "string",
@@ -34,12 +33,12 @@
       "description": "Specify port (default: 4200).",
       "default": 4200
     },
-    "https": {
+    "ssl": {
       "type": "boolean",
-      "description": "Use https (default: false).",
+      "description": "Serve using HTTPS.",
       "default": false
     },
-    "public": {
+    "publicHost": {
       "type": "string",
       "description": "Specify the public network URL for the HMR client."
     },
@@ -47,7 +46,7 @@
       "type": "string",
       "description": "Comma-separated list of plugin names to skip for this run."
     },
-    "buildTarget": {
+    "browserTarget": {
       "type": "string",
       "description": "Target to serve.",
       "pattern": "^[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
@@ -58,6 +57,6 @@
       "default": true
     }
   },
-  "required": ["buildTarget"],
+  "required": ["browserTarget"],
   "additionalProperties": false
 }

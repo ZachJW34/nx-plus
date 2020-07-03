@@ -4,30 +4,19 @@
   "description": "Build app",
   "type": "object",
   "properties": {
-    "mode": {
-      "type": "string",
-      "enum": ["development", "production"],
-      "description": "Specify env mode (default: development).",
-      "default": "development"
+    "optimization": {
+      "type": "boolean",
+      "description": "Enables optimization of the build output.",
+      "default": false
     },
     "outputPath": {
       "type": "string",
       "description": "Specify output directory."
     },
-    "modern": {
+    "deleteOutputPath": {
       "type": "boolean",
-      "description": "Build app targeting modern browsers with auto fallback.",
-      "default": false
-    },
-    "skipUnsafeInline": {
-      "type": "boolean",
-      "description": "Build app without introducing inline scripts.",
-      "default": false
-    },
-    "skipClean": {
-      "type": "boolean",
-      "description": "Do not remove the dist directory before building the project.",
-      "default": false
+      "description": "Delete the output path before building.",
+      "default": true
     },
     "report": {
       "type": "boolean",

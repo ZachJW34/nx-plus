@@ -220,7 +220,7 @@ export default function(options: ApplicationSchematicSchema): Rule {
                 with: `${normalizedOptions.projectRoot}/src/environments/environment.prod.ts`
               }
             ],
-            mode: 'production',
+            optimization: true,
             outputHashing: 'all',
             extractCss: true
           }
@@ -230,11 +230,11 @@ export default function(options: ApplicationSchematicSchema): Rule {
         name: 'serve',
         builder: '@nx-plus/vue-plugin:dev-server',
         options: {
-          buildTarget: `${normalizedOptions.projectName}:build`
+          browserTarget: `${normalizedOptions.projectName}:build`
         },
         configurations: {
           production: {
-            buildTarget: `${normalizedOptions.projectName}:build:production`
+            browserTarget: `${normalizedOptions.projectName}:build:production`
           }
         }
       });
