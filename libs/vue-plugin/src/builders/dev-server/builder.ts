@@ -4,15 +4,25 @@ import {
   createBuilder,
   targetFromTargetString
 } from '@angular-devkit/architect';
-import { JsonObject } from '@angular-devkit/core';
+import {
+  getSystemPath,
+  join,
+  JsonObject,
+  normalize
+} from '@angular-devkit/core';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { DevServerBuilderSchema } from './schema';
 import { BrowserBuilderSchema } from '../browser/schema';
-import { getProjectRoot } from '../../utils';
+import {
+  getNormalizedAssetPatterns,
+  getProjectRoot,
+  getProjectSourceRoot
+} from '../../utils';
 import {
   addFileReplacements,
   modifyCachePaths,
+  modifyCopyAssets,
   modifyEntryPoint,
   modifyFilenameHashing,
   modifyIndexHtmlPath,
@@ -50,12 +60,28 @@ export function runBuilder(
       JsonObject & BrowserBuilderSchema
     >({ ...rawBrowserOptions, ...overrides }, browserName);
 
+    const projectRoot = await getProjectRoot(context);
+    const projectSourceRoot = await getProjectSourceRoot(context);
+
+    const normalizedAssetPatterns = getNormalizedAssetPatterns(
+      browserOptions,
+      context,
+      projectRoot,
+      projectSourceRoot
+    );
+
     const inlineOptions = {
       chainWebpack: config => {
         modifyIndexHtmlPath(config, browserOptions, context);
         modifyEntryPoint(config, browserOptions, context);
         modifyTsConfigPaths(config, browserOptions, context);
         modifyCachePaths(config, context);
+        modifyCopyAssets(
+          config,
+          browserOptions,
+          context,
+          normalizedAssetPatterns
+        );
         addFileReplacements(config, browserOptions, context);
         modifyFilenameHashing(config, browserOptions);
 
@@ -72,12 +98,13 @@ export function runBuilder(
           });
         }
       },
+      outputDir: getSystemPath(
+        join(normalize(context.workspaceRoot), browserOptions.outputPath)
+      ),
       css: {
         extract: browserOptions.extractCss
       }
     };
-
-    const projectRoot = await getProjectRoot(context);
 
     return {
       projectRoot,

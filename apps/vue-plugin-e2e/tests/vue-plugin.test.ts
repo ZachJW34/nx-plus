@@ -36,7 +36,7 @@ describe('vue-plugin e2e', () => {
     ).not.toThrow();
 
     done();
-  }, 200000);
+  }, 300000);
 
   describe('--directory subdir', () => {
     it('should create and build app', async done => {
@@ -58,6 +58,6 @@ describe('vue-plugin e2e', () => {
       ).not.toThrow();
 
       done();
-    }, 200000);
+    }, 300000);
   });
 });
