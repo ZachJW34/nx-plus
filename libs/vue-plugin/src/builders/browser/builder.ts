@@ -3,18 +3,15 @@ import {
   BuilderOutput,
   createBuilder
 } from '@angular-devkit/architect';
-import { normalizeAssetPatterns } from '@angular-devkit/build-angular/src/utils';
-import {
-  getSystemPath,
-  join,
-  normalize,
-  virtualFs
-} from '@angular-devkit/core';
-import { NodeJsSyncHost } from '@angular-devkit/core/node';
+import { getSystemPath, join, normalize } from '@angular-devkit/core';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { BrowserBuilderSchema } from './schema';
-import { getProjectRoot, getProjectSourceRoot } from '../../utils';
+import {
+  getNormalizedAssetPatterns,
+  getProjectRoot,
+  getProjectSourceRoot
+} from '../../utils';
 import {
   addFileReplacements,
   modifyCachePaths,
@@ -40,15 +37,12 @@ export function runBuilder(
   }> {
     const projectRoot = await getProjectRoot(context);
     const projectSourceRoot = await getProjectSourceRoot(context);
-    // https://github.com/angular/angular-cli/blob/v9.1.0/packages/angular_devkit/build_angular/src/browser/index.ts#L574
-    const normalizedAssetPatterns = normalizeAssetPatterns(
-      options.assets,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      new virtualFs.SyncDelegateHost(new NodeJsSyncHost()),
-      normalize(context.workspaceRoot),
-      normalize(projectRoot),
-      projectSourceRoot === undefined ? undefined : normalize(projectSourceRoot)
+
+    const normalizedAssetPatterns = getNormalizedAssetPatterns(
+      options,
+      context,
+      projectRoot,
+      projectSourceRoot
     );
 
     const inlineOptions = {
