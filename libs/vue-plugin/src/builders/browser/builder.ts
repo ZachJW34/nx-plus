@@ -82,11 +82,11 @@ export function runBuilder(
         inlineOptions
       });
       const buildOptions = {
-        mode: options.mode,
+        mode: options.optimization ? 'production' : 'development',
         dest: undefined,
-        modern: options.modern,
-        'no-unsafe-inline': options.skipUnsafeInline,
-        'no-clean': options.skipClean,
+        modern: false,
+        'unsafe-inline': true,
+        clean: options.deleteOutputPath,
         report: options.report,
         'report-json': options.reportJson,
         'skip-plugins': options.skipPlugins,

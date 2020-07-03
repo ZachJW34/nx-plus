@@ -35,7 +35,7 @@ const Service = require('@vue/cli-service/lib/Service');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { resolvePkg } = require('@vue/cli-shared-utils/lib/pkg');
 
-const devServerBuilderOverriddenKeys = ['mode', 'skipPlugins'];
+const devServerBuilderOverriddenKeys = ['optimization', 'skipPlugins'];
 
 export function runBuilder(
   options: DevServerBuilderSchema,
@@ -47,7 +47,7 @@ export function runBuilder(
     browserOptions: BrowserBuilderSchema;
     inlineOptions;
   }> {
-    const browserTarget = targetFromTargetString(options.buildTarget);
+    const browserTarget = targetFromTargetString(options.browserTarget);
     const rawBrowserOptions = await context.getTargetOptions(browserTarget);
     const overrides = Object.keys(options)
       .filter(
@@ -130,11 +130,11 @@ export function runBuilder(
               open: options.open,
               copy: options.copy,
               stdin: options.stdin,
-              mode: browserOptions.mode,
+              mode: browserOptions.optimization ? 'production' : 'development',
               host: options.host,
               port: options.port,
-              https: options.https,
-              public: options.public,
+              https: options.ssl,
+              public: options.publicHost,
               'skip-plugins': browserOptions.skipPlugins
             },
             ['serve']
