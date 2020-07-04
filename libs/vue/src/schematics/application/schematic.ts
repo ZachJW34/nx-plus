@@ -192,7 +192,7 @@ function addCypress(options: NormalizedSchema): Rule {
 function addPostInstall() {
   return updateJsonInTree('package.json', (json, context) => {
     const vuePostInstall =
-      'node node_modules/@nx-plus/vue-plugin/src/scripts/postinstall.js';
+      'node node_modules/@nx-plus/vue/src/scripts/postinstall.js';
     const { postinstall } = json.scripts || {};
     if (postinstall) {
       if (postinstall !== vuePostInstall) {
@@ -217,7 +217,7 @@ export default function(options: ApplicationSchematicSchema): Rule {
       });
       targets.add({
         name: 'build',
-        builder: '@nx-plus/vue-plugin:browser',
+        builder: '@nx-plus/vue:browser',
         options: {
           outputPath: `dist/${normalizedOptions.projectRoot}`,
           index: `${normalizedOptions.projectRoot}/src/index.html`,
@@ -244,7 +244,7 @@ export default function(options: ApplicationSchematicSchema): Rule {
       });
       targets.add({
         name: 'serve',
-        builder: '@nx-plus/vue-plugin:dev-server',
+        builder: '@nx-plus/vue:dev-server',
         options: {
           browserTarget: `${normalizedOptions.projectName}:build`
         },

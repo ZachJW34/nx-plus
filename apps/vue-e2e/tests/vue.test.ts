@@ -5,11 +5,11 @@ import {
   runNxCommandAsync,
   uniq
 } from '@nrwl/nx-plugin/testing';
-describe('vue-plugin e2e', () => {
+describe('vue e2e', () => {
   it('should create, lint, test, e2e and build app', async done => {
     const appName = uniq('app');
-    ensureNxProject('@nx-plus/vue-plugin', 'dist/libs/vue-plugin');
-    await runNxCommandAsync(`generate @nx-plus/vue-plugin:app ${appName}`);
+    ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+    await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
 
     const lintResult = await runNxCommandAsync(`lint ${appName}`);
     expect(lintResult.stdout).toContain('All files pass linting.');
@@ -41,9 +41,9 @@ describe('vue-plugin e2e', () => {
   describe('--directory subdir', () => {
     it('should create and build app', async done => {
       const appName = uniq('app');
-      ensureNxProject('@nx-plus/vue-plugin', 'dist/libs/vue-plugin');
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
-        `generate @nx-plus/vue-plugin:app ${appName} --directory subdir`
+        `generate @nx-plus/vue:app ${appName} --directory subdir`
       );
 
       const result = await runNxCommandAsync(`build subdir-${appName}`);

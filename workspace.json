@@ -74,8 +74,8 @@
       }
     },
     "vue-plugin": {
-      "root": "libs/vue-plugin",
-      "sourceRoot": "libs/vue-plugin/src",
+      "root": "libs/vue",
+      "sourceRoot": "libs/vue/src",
       "projectType": "library",
       "schematics": {},
       "architect": {
@@ -83,43 +83,43 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "config": "libs/vue-plugin/.eslintrc",
+            "config": "libs/vue/.eslintrc",
             "tsConfig": [
-              "libs/vue-plugin/tsconfig.lib.json",
-              "libs/vue-plugin/tsconfig.spec.json"
+              "libs/vue/tsconfig.lib.json",
+              "libs/vue/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/vue-plugin/**"]
+            "exclude": ["**/node_modules/**", "!libs/vue/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/vue-plugin/jest.config.js",
-            "tsConfig": "libs/vue-plugin/tsconfig.spec.json",
+            "jestConfig": "libs/vue/jest.config.js",
+            "tsConfig": "libs/vue/tsconfig.spec.json",
             "passWithNoTests": true
           }
         },
         "build": {
           "builder": "@nrwl/node:package",
           "options": {
-            "outputPath": "dist/libs/vue-plugin",
-            "tsConfig": "libs/vue-plugin/tsconfig.lib.json",
-            "packageJson": "libs/vue-plugin/package.json",
-            "main": "libs/vue-plugin/src/index.ts",
+            "outputPath": "dist/libs/vue",
+            "tsConfig": "libs/vue/tsconfig.lib.json",
+            "packageJson": "libs/vue/package.json",
+            "main": "libs/vue/src/index.ts",
             "assets": [
-              "libs/vue-plugin/*.md",
+              "libs/vue/*.md",
               {
-                "input": "./libs/vue-plugin/src",
+                "input": "./libs/vue/src",
                 "glob": "**/*.!(ts)",
                 "output": "./src"
               },
               {
-                "input": "./libs/vue-plugin",
+                "input": "./libs/vue",
                 "glob": "collection.json",
                 "output": "."
               },
               {
-                "input": "./libs/vue-plugin",
+                "input": "./libs/vue",
                 "glob": "builders.json",
                 "output": "."
               }
@@ -130,17 +130,17 @@
     },
     "vue-plugin-e2e": {
       "projectType": "application",
-      "root": "apps/vue-plugin-e2e",
-      "sourceRoot": "apps/vue-plugin-e2e/src",
+      "root": "apps/vue-e2e",
+      "sourceRoot": "apps/vue-e2e/src",
       "architect": {
         "e2e": {
           "builder": "@nrwl/nx-plugin:e2e",
           "options": {
             "target": "vue-plugin:build",
-            "npmPackageName": "@nx-plus/vue-plugin",
-            "pluginOutputPath": "dist/libs/vue-plugin",
-            "jestConfig": "apps/vue-plugin-e2e/jest.config.js",
-            "tsSpecConfig": "apps/vue-plugin-e2e/tsconfig.spec.json"
+            "npmPackageName": "@nx-plus/vue",
+            "pluginOutputPath": "dist/libs/vue",
+            "jestConfig": "apps/vue-e2e/jest.config.js",
+            "tsSpecConfig": "apps/vue-e2e/tsconfig.spec.json"
           }
         }
       }
