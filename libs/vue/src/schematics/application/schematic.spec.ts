@@ -18,7 +18,7 @@ describe('application schematic', () => {
   };
 
   const testRunner = new SchematicTestRunner(
-    '@nx-plus/vue-plugin',
+    '@nx-plus/vue',
     join(__dirname, '../../../collection.json')
   );
 
@@ -37,7 +37,7 @@ describe('application schematic', () => {
 
     expect(workspaceJson.projects['my-app'].root).toBe('apps/my-app');
     expect(workspaceJson.projects['my-app'].sourceRoot).toBe('apps/my-app/src');
-    expect(build.builder).toBe('@nx-plus/vue-plugin:browser');
+    expect(build.builder).toBe('@nx-plus/vue:browser');
     expect(build.options).toEqual({
       outputPath: 'dist/apps/my-app',
       index: 'apps/my-app/src/index.html',
@@ -56,7 +56,7 @@ describe('application schematic', () => {
       outputHashing: 'all',
       extractCss: true
     });
-    expect(serve.builder).toBe('@nx-plus/vue-plugin:dev-server');
+    expect(serve.builder).toBe('@nx-plus/vue:dev-server');
     expect(serve.options).toEqual({
       browserTarget: 'my-app:build'
     });
@@ -147,7 +147,7 @@ describe('application schematic', () => {
       .toPromise();
 
     expect(readJsonInTree(tree, 'package.json').scripts.postinstall).toBe(
-      'node node_modules/@nx-plus/vue-plugin/src/scripts/postinstall.js'
+      'node node_modules/@nx-plus/vue/src/scripts/postinstall.js'
     );
   });
 

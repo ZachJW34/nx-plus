@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
-  "name": "vue-plugin",
+  "name": "vue",
   "version": "0.0.1",
   "schematics": {
     "application": {
