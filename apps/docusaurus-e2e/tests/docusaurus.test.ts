@@ -16,5 +16,5 @@ describe('docusaurus e2e', () => {
     );
 
     done();
-  }, 100000);
+  }, 200000);
 });
