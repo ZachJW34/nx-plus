@@ -14,12 +14,7 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ]
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
   },
@@ -37,6 +32,20 @@
     "vue-plugin-e2e": {
       "tags": [],
       "implicitDependencies": ["vue-plugin"]
+    },
+    "my-vue-app": {
+      "tags": []
+    },
+    "my-vue-app-e2e": {
+      "tags": [],
+      "implicitDependencies": ["my-vue-app"]
+    },
+    "admin": {
+      "tags": []
+    },
+    "admin-e2e": {
+      "tags": [],
+      "implicitDependencies": ["admin"]
     }
   }
 }

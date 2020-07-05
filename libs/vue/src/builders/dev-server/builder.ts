@@ -30,6 +30,8 @@ import {
   modifyTypescriptAliases
 } from '../../webpack';
 
+import * as path from 'path';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Service = require('@vue/cli-service/lib/Service');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -72,6 +74,29 @@ export function runBuilder(
     );
 
     const inlineOptions = {
+      pluginOptions: {
+        'style-resources-loader': {
+          preProcessor: 'scss',
+          patterns: [
+            `${path.join(projectSourceRoot, 'app/styles/_variables.scss')}`,
+            `${path.join(projectSourceRoot, 'app/styles/_mixins.scss')}`
+          ]
+        }
+      },
+      devServer: {
+        proxy: {
+          // change xxx-api/login => /mock-api/v1/login
+          // detail: https://cli.vuejs.org/config/#devserver-proxy
+          ['/']: {
+            target: `http://localhost:${9528}/mock-api/v1`,
+            changeOrigin: true, // needed for virtual hosted sites
+            ws: true, // proxy websockets
+            pathRewrite: {
+              ['^' + '/']: ''
+            }
+          }
+        }
+      },
       chainWebpack: config => {
         modifyIndexHtmlPath(config, browserOptions, context);
         modifyEntryPoint(config, browserOptions, context);
@@ -105,7 +130,8 @@ export function runBuilder(
       ),
       css: {
         extract: browserOptions.extractCss
-      }
+      },
+      lintOnSave: false
     };
 
     return {

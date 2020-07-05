@@ -22,6 +22,7 @@ import {
   modifyTsConfigPaths,
   modifyTypescriptAliases
 } from '../../webpack';
+import * as path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Service = require('@vue/cli-service/lib/Service');
@@ -47,6 +48,15 @@ export function runBuilder(
     );
 
     const inlineOptions = {
+      pluginOptions: {
+        'style-resources-loader': {
+          preProcessor: 'scss',
+          patterns: [
+            `${path.join(projectSourceRoot, 'app/styles/_variables.scss')}`,
+            `${path.join(projectSourceRoot, 'app/styles/_mixins.scss')}`
+          ]
+        }
+      },
       chainWebpack: config => {
         modifyIndexHtmlPath(config, options, context);
         modifyEntryPoint(config, options, context);
@@ -66,7 +76,8 @@ export function runBuilder(
       ),
       css: {
         extract: options.extractCss
-      }
+      },
+      lintOnSave: false
     };
 
     return {
