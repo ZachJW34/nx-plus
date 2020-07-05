@@ -192,11 +192,13 @@ function addCypress(options: NormalizedSchema): Rule {
 function addPostInstall() {
   return updateJsonInTree('package.json', (json, context) => {
     const vuePostInstall =
-      'node node_modules/@nx-plus/vue/src/scripts/postinstall.js';
+      'node node_modules/@nx-plus/vue/patch-nx-dep-graph.js';
     const { postinstall } = json.scripts || {};
     if (postinstall) {
       if (postinstall !== vuePostInstall) {
-        context.logger.warn('Skipped addition of postinstall script.');
+        context.logger.warn(
+          "We couldn't add our postinstall script. Without it Nx's dependency graph won't support Vue files. For more information see https://github.com/ZachJW34/nx-plus/tree/master/libs/vue#nx-dependency-graph-support"
+        );
       }
       return json;
     }
