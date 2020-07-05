@@ -122,6 +122,11 @@
                 "input": "./libs/vue",
                 "glob": "builders.json",
                 "output": "."
+              },
+              {
+                "input": "./libs/vue",
+                "glob": "patch-nx-dep-graph.js",
+                "output": "."
               }
             ]
           }

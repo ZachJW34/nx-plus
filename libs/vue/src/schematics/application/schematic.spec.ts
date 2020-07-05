@@ -147,7 +147,7 @@ describe('application schematic', () => {
       .toPromise();
 
     expect(readJsonInTree(tree, 'package.json').scripts.postinstall).toBe(
-      'node node_modules/@nx-plus/vue/src/scripts/postinstall.js'
+      'node node_modules/@nx-plus/vue/patch-nx-dep-graph.js'
     );
   });
 
