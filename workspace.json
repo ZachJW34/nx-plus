@@ -11,12 +11,11 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "config": "libs/docusaurus/.eslintrc",
             "tsConfig": [
               "libs/docusaurus/tsconfig.lib.json",
               "libs/docusaurus/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/docusaurus/**"]
+            "exclude": ["**/node_modules/**", "!libs/docusaurus/**/*"]
           }
         },
         "test": {
@@ -83,12 +82,11 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "config": "libs/vue/.eslintrc",
             "tsConfig": [
               "libs/vue/tsconfig.lib.json",
               "libs/vue/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/vue/**"]
+            "exclude": ["**/node_modules/**", "!libs/vue/**/*"]
           }
         },
         "test": {
