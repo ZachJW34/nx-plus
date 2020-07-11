@@ -271,7 +271,7 @@ describe('application schematic', () => {
       expect(main).toContain(tags.stripIndent`
         new Vue({
           router,
-          render: h => h(App)
+          render: (h) => h(App),
         }).$mount('#app');
       `);
 

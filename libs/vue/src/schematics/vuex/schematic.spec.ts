@@ -38,7 +38,7 @@ describe('vuex schematic', () => {
     expect(main).toContain(tags.stripIndent`
       new Vue({
         store,
-        render: h => h(App)
+        render: (h) => h(App),
       }).$mount('#app');
     `);
   });

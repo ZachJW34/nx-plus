@@ -154,8 +154,11 @@ function addJest(options: NormalizedSchema): Rule {
     addDepsToPackageJson(
       {},
       {
-        '@vue/cli-plugin-unit-jest': '~4.3.0',
-        '@vue/test-utils': '1.0.0-beta.31'
+        '@vue/test-utils': '1.0.0-beta.31',
+        'babel-core': '^7.0.0-bridge.0',
+        'jest-serializer-vue': '^2.0.2',
+        'jest-transform-stub': '^2.0.0',
+        'vue-jest': '^3.0.5'
       },
       true
     )
