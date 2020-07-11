@@ -4,29 +4,16 @@ import {
   createBuilder,
   targetFromTargetString
 } from '@angular-devkit/architect';
-import {
-  getSystemPath,
-  join,
-  JsonObject,
-  normalize
-} from '@angular-devkit/core';
+import { JsonObject } from '@angular-devkit/core';
 import { cliCommand } from '@nrwl/workspace/src/core/file-utils';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { DevServerBuilderSchema } from './schema';
 import { BrowserBuilderSchema } from '../browser/schema';
+import { getProjectRoot, modifyChalkOutput } from '../../utils';
 import {
-  getNormalizedAssetPatterns,
-  getProjectRoot,
-  getProjectSourceRoot,
-  modifyChalkOutput
-} from '../../utils';
-import {
-  addFileReplacements,
   modifyCachePaths,
-  modifyCopyAssets,
   modifyEntryPoint,
-  modifyFilenameHashing,
   modifyIndexHtmlPath,
   modifyTsConfigPaths,
   modifyTypescriptAliases
@@ -37,7 +24,7 @@ const Service = require('@vue/cli-service/lib/Service');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { resolvePkg } = require('@vue/cli-shared-utils/lib/pkg');
 
-const devServerBuilderOverriddenKeys = ['optimization', 'skipPlugins'];
+const devServerBuilderOverriddenKeys = ['mode', 'skipPlugins'];
 
 export function runBuilder(
   options: DevServerBuilderSchema,
@@ -64,14 +51,6 @@ export function runBuilder(
     >({ ...rawBrowserOptions, ...overrides }, browserName);
 
     const projectRoot = await getProjectRoot(context);
-    const projectSourceRoot = await getProjectSourceRoot(context);
-
-    const normalizedAssetPatterns = getNormalizedAssetPatterns(
-      browserOptions,
-      context,
-      projectRoot,
-      projectSourceRoot
-    );
 
     const inlineOptions = {
       chainWebpack: config => {
@@ -79,14 +58,6 @@ export function runBuilder(
         modifyEntryPoint(config, browserOptions, context);
         modifyTsConfigPaths(config, browserOptions, context);
         modifyCachePaths(config, context);
-        modifyCopyAssets(
-          config,
-          browserOptions,
-          context,
-          normalizedAssetPatterns
-        );
-        addFileReplacements(config, browserOptions, context);
-        modifyFilenameHashing(config, browserOptions);
         modifyTypescriptAliases(config, browserOptions, context);
 
         if (!options.watch) {
@@ -101,12 +72,6 @@ export function runBuilder(
             }
           });
         }
-      },
-      outputDir: getSystemPath(
-        join(normalize(context.workspaceRoot), browserOptions.outputPath)
-      ),
-      css: {
-        extract: browserOptions.extractCss
       }
     };
 
@@ -147,11 +112,11 @@ export function runBuilder(
               open: options.open,
               copy: options.copy,
               stdin: options.stdin,
-              mode: browserOptions.optimization ? 'production' : 'development',
+              mode: browserOptions.mode,
               host: options.host,
               port: options.port,
-              https: options.ssl,
-              public: options.publicHost,
+              https: options.https,
+              public: options.public,
               'skip-plugins': browserOptions.skipPlugins
             },
             ['serve']

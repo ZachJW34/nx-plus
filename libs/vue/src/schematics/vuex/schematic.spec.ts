@@ -31,10 +31,10 @@ describe('vuex schematic', () => {
     const packageJson = readJsonInTree(tree, 'package.json');
     expect(packageJson.dependencies['vuex']).toBeDefined();
 
-    expect(tree.exists('apps/my-app/src/app/store/index.ts')).toBeTruthy();
+    expect(tree.exists('apps/my-app/src/store/index.ts')).toBeTruthy();
 
     const main = tree.readContent('apps/my-app/src/main.ts');
-    expect(main).toContain("import store from './app/store';");
+    expect(main).toContain("import store from './store';");
     expect(main).toContain(tags.stripIndent`
       new Vue({
         store,

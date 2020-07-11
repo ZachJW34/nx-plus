@@ -4,11 +4,11 @@ export interface DevServerBuilderSchema extends JsonObject {
   open: boolean;
   copy: boolean;
   stdin: boolean;
-  optimization?: boolean;
+  mode?: string;
   host: string;
   port: number;
-  ssl: boolean;
-  publicHost?: string;
+  https: boolean;
+  public?: string;
   skipPlugins?: string;
   browserTarget: string;
   watch: boolean;

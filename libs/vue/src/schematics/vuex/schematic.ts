@@ -30,7 +30,7 @@ function addStoreConfig(options: VuexSchematicSchema): Rule {
         modules: {}
       });
     `;
-    tree.create(join(normalize(sourceRoot), 'app/store/index.ts'), content);
+    tree.create(join(normalize(sourceRoot), 'store/index.ts'), content);
     return tree;
   };
 }
@@ -80,7 +80,7 @@ function addStoreToMain(options: VuexSchematicSchema): Rule {
     const newVueOptionsObject = newVueExpression.arguments[0];
 
     insert(tree, mainPath, [
-      insertImport(mainSourceFile, mainPath, 'store', './app/store', true),
+      insertImport(mainSourceFile, mainPath, 'store', './store', true),
       new InsertChange(
         mainPath,
         newVueOptionsObject.getStart() + 1,

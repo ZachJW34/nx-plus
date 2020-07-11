@@ -1,6 +1,6 @@
 import { BuilderContext } from '@angular-devkit/architect';
 import { getSystemPath, join, normalize } from '@angular-devkit/core';
-import { AssetPattern, BrowserBuilderSchema } from './builders/browser/schema';
+import { BrowserBuilderSchema } from './builders/browser/schema';
 
 export function modifyIndexHtmlPath(
   config,
@@ -91,108 +91,6 @@ export function modifyCachePaths(config, context: BuilderContext): void {
       options.cacheDirectory = tsLoaderCachePath;
       return options;
     });
-}
-
-export function modifyCopyAssets(
-  config,
-  options: BrowserBuilderSchema,
-  context: BuilderContext,
-  assetPatterns: AssetPattern[]
-): void {
-  const defaultIgnore = ['.DS_Store', '.gitkeep'];
-  const transformedAssetPatterns = assetPatterns.map(assetPattern => ({
-    from: getSystemPath(
-      join(
-        normalize(context.workspaceRoot),
-        assetPattern.input,
-        assetPattern.glob
-      )
-    ),
-    to: getSystemPath(
-      join(
-        normalize(context.workspaceRoot),
-        options.outputPath,
-        assetPattern.output
-      )
-    ),
-    context: getSystemPath(
-      join(normalize(context.workspaceRoot), assetPattern.input)
-    ),
-    ignore: assetPattern.ignore
-      ? defaultIgnore.concat(assetPattern.ignore)
-      : defaultIgnore
-  }));
-
-  config
-    .plugin('copy')
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    .use(require('copy-webpack-plugin'), [transformedAssetPatterns]);
-}
-
-export function addFileReplacements(
-  config,
-  options: BrowserBuilderSchema,
-  context: BuilderContext
-) {
-  for (const pattern of options.fileReplacements) {
-    config.resolve.alias.set(
-      getSystemPath(join(normalize(context.workspaceRoot), pattern.replace)),
-      getSystemPath(join(normalize(context.workspaceRoot), pattern.with))
-    );
-  }
-}
-
-export function modifyFilenameHashing(
-  config,
-  options: BrowserBuilderSchema
-): void {
-  const hashFormats = {
-    none: { chunk: '', file: '' },
-    media: { chunk: '', file: `.[hash:8]` },
-    bundles: { chunk: `.[contenthash:8]`, file: '' },
-    all: { chunk: `.[contenthash:8]`, file: `.[hash:8]` }
-  };
-  const hashFormat = hashFormats[options.outputHashing];
-
-  config.output.filename(`js/[name]${hashFormat.chunk}.js`);
-  config.output.chunkFilename(`js/[name]${hashFormat.chunk}.js`);
-
-  config.module
-    .rule('images')
-    .use('url-loader')
-    .tap(loaderOptions => {
-      loaderOptions.fallback.options.name = `img/[name]${hashFormat.file}.[ext]`;
-      return loaderOptions;
-    });
-  config.module
-    .rule('svg')
-    .use('file-loader')
-    .tap(loaderOptions => {
-      loaderOptions.name = `img/[name]${hashFormat.file}.[ext]`;
-      return loaderOptions;
-    });
-  config.module
-    .rule('media')
-    .use('url-loader')
-    .tap(loaderOptions => {
-      loaderOptions.fallback.options.name = `media/[name]${hashFormat.file}.[ext]`;
-      return loaderOptions;
-    });
-  config.module
-    .rule('fonts')
-    .use('url-loader')
-    .tap(loaderOptions => {
-      loaderOptions.fallback.options.name = `fonts/[name]${hashFormat.file}.[ext]`;
-      return loaderOptions;
-    });
-
-  config.when(options.extractCss, config =>
-    config.plugin('extract-css').tap(args => {
-      args[0].filename = `css/[name]${hashFormat.chunk}.css`;
-      args[0].chunkFilename = `css/[name]${hashFormat.chunk}.css`;
-      return args;
-    })
-  );
 }
 
 export function modifyTypescriptAliases(

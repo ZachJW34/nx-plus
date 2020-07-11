@@ -76,11 +76,18 @@ function addFiles(options: NormalizedSchema): Rule {
         htmlWebpackPluginTitle: '<%= htmlWebpackPlugin.options.title %>'
       }),
       options.unitTestRunner === 'none'
-        ? filter(file => file !== '/src/app/app.spec.ts')
+        ? filter(file => file !== '/tests/unit/example.spec.ts')
         : noop(),
       options.routing
         ? noop()
-        : filter(file => file !== '/src/app/router/index.ts'),
+        : filter(
+            file =>
+              ![
+                '/src/router/index.ts',
+                '/src/views/About.vue',
+                '/src/views/Home.vue'
+              ].includes(file)
+          ),
       move(options.projectRoot)
     ])
   );
@@ -113,6 +120,40 @@ function getEslintConfig(options: NormalizedSchema) {
   }
 
   return eslintConfig;
+}
+
+function addEsLint(options: NormalizedSchema): Rule {
+  return chain([
+    updateWorkspace(workspace => {
+      const { targets } = workspace.projects.get(options.projectName);
+      targets.add({
+        name: 'lint',
+        ...generateProjectLint(
+          options.projectRoot,
+          `${options.projectRoot}/tsconfig.app.json`,
+          Linter.EsLint
+        )
+      });
+    }),
+    addLintFiles(options.projectRoot, Linter.EsLint, {
+      localConfig: getEslintConfig(options)
+    }),
+    // Extending the root ESLint config should be the first value in the
+    // app's local ESLint config extends array.
+    updateJsonInTree(`${options.projectRoot}/.eslintrc`, json => {
+      json.extends.unshift(json.extends.pop());
+      return json;
+    }),
+    (tree: Tree) => {
+      const configPath = `${options.projectRoot}/.eslintrc`;
+      const content = tree
+        .read(configPath)
+        .toString('utf-8')
+        .trim();
+      tree.rename(configPath, `${configPath}.js`);
+      tree.overwrite(`${configPath}.js`, `module.exports = ${content};`);
+    }
+  ]);
 }
 
 function addJest(options: NormalizedSchema): Rule {
@@ -224,26 +265,14 @@ export default function(options: ApplicationSchematicSchema): Rule {
         name: 'build',
         builder: '@nx-plus/vue:browser',
         options: {
-          outputPath: `dist/${normalizedOptions.projectRoot}`,
-          index: `${normalizedOptions.projectRoot}/src/index.html`,
+          dest: `dist/${normalizedOptions.projectRoot}`,
+          index: `${normalizedOptions.projectRoot}/public/index.html`,
           main: `${normalizedOptions.projectRoot}/src/main.ts`,
-          tsConfig: `${normalizedOptions.projectRoot}/tsconfig.app.json`,
-          assets: [
-            `${normalizedOptions.projectRoot}/src/favicon.ico`,
-            `${normalizedOptions.projectRoot}/src/assets`
-          ]
+          tsConfig: `${normalizedOptions.projectRoot}/tsconfig.app.json`
         },
         configurations: {
           production: {
-            fileReplacements: [
-              {
-                replace: `${normalizedOptions.projectRoot}/src/environments/environment.ts`,
-                with: `${normalizedOptions.projectRoot}/src/environments/environment.prod.ts`
-              }
-            ],
-            optimization: true,
-            outputHashing: 'all',
-            extractCss: true
+            mode: 'production'
           }
         }
       });
@@ -259,28 +288,12 @@ export default function(options: ApplicationSchematicSchema): Rule {
           }
         }
       });
-      targets.add({
-        name: 'lint',
-        ...generateProjectLint(
-          normalizedOptions.projectRoot,
-          `${normalizedOptions.projectRoot}/tsconfig.app.json`,
-          Linter.EsLint
-        )
-      });
     }),
     addProjectToNxJsonInTree(normalizedOptions.projectName, {
       tags: normalizedOptions.parsedTags
     }),
     addFiles(normalizedOptions),
-    addLintFiles(normalizedOptions.projectRoot, Linter.EsLint, {
-      localConfig: getEslintConfig(normalizedOptions)
-    }),
-    // Extending the root ESLint config should be the first value in the
-    // app's local ESLint config extends array.
-    updateJsonInTree(`${normalizedOptions.projectRoot}/.eslintrc`, json => {
-      json.extends.unshift(json.extends.pop());
-      return json;
-    }),
+    addEsLint(normalizedOptions),
     options.unitTestRunner === 'jest' ? addJest(normalizedOptions) : noop(),
     options.e2eTestRunner === 'cypress'
       ? addCypress(normalizedOptions)

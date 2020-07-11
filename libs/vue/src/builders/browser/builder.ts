@@ -7,18 +7,10 @@ import { getSystemPath, join, normalize } from '@angular-devkit/core';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { BrowserBuilderSchema } from './schema';
+import { getProjectRoot, modifyChalkOutput } from '../../utils';
 import {
-  getNormalizedAssetPatterns,
-  getProjectRoot,
-  getProjectSourceRoot,
-  modifyChalkOutput
-} from '../../utils';
-import {
-  addFileReplacements,
   modifyCachePaths,
-  modifyCopyAssets,
   modifyEntryPoint,
-  modifyFilenameHashing,
   modifyIndexHtmlPath,
   modifyTsConfigPaths,
   modifyTypescriptAliases
@@ -38,14 +30,6 @@ export function runBuilder(
     inlineOptions;
   }> {
     const projectRoot = await getProjectRoot(context);
-    const projectSourceRoot = await getProjectSourceRoot(context);
-
-    const normalizedAssetPatterns = getNormalizedAssetPatterns(
-      options,
-      context,
-      projectRoot,
-      projectSourceRoot
-    );
 
     const inlineOptions = {
       chainWebpack: config => {
@@ -53,20 +37,7 @@ export function runBuilder(
         modifyEntryPoint(config, options, context);
         modifyTsConfigPaths(config, options, context);
         modifyCachePaths(config, context);
-        modifyCopyAssets(config, options, context, normalizedAssetPatterns);
-        addFileReplacements(config, options, context);
-        modifyFilenameHashing(config, options);
         modifyTypescriptAliases(config, options, context);
-      },
-      // This option is used instead of `dest` because Vue CLI will
-      // overwrite our modified `CopyWebpackPlugin` config when `dest`
-      // is defined.
-      // https://github.com/vuejs/vue-cli/blob/c64afc3c2a8854aae30fbfb85e92c0bb8b07bad7/packages/%40vue/cli-service/lib/commands/build/resolveAppConfig.js#L6
-      outputDir: getSystemPath(
-        join(normalize(context.workspaceRoot), options.outputPath)
-      ),
-      css: {
-        extract: options.extractCss
       }
     };
 
@@ -82,8 +53,8 @@ export function runBuilder(
   // TODO: Find a better way to rewrite vue-cli console output
   const chalkTransform = (arg: string) => {
     const normalizedArg = normalize(arg);
-    return normalizedArg.includes(options.outputPath)
-      ? options.outputPath + normalizedArg.split(options.outputPath)[1]
+    return normalizedArg.includes(options.dest)
+      ? options.dest + normalizedArg.split(options.dest)[1]
       : arg;
   };
   ['green', 'cyan', 'blue'].forEach(color =>
@@ -97,11 +68,13 @@ export function runBuilder(
         inlineOptions
       });
       const buildOptions = {
-        mode: options.optimization ? 'production' : 'development',
-        dest: undefined,
+        mode: options.mode,
+        dest: getSystemPath(
+          join(normalize(context.workspaceRoot), options.dest)
+        ),
         modern: false,
         'unsafe-inline': true,
-        clean: options.deleteOutputPath,
+        clean: options.clean,
         report: options.report,
         'report-json': options.reportJson,
         'skip-plugins': options.skipPlugins,
