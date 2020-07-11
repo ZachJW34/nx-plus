@@ -29,7 +29,6 @@
   "dependencies": {},
   "devDependencies": {
     "@angular-devkit/architect": "~0.901.0",
-    "@angular-devkit/build-angular": "~0.901.0",
     "@angular-devkit/core": "~9.1.0",
     "@angular-devkit/schematics": "~9.1.0",
     "@docusaurus/core": "^2.0.0-alpha.50",
@@ -44,7 +43,6 @@
     "@typescript-eslint/eslint-plugin": "2.19.2",
     "@typescript-eslint/parser": "2.19.2",
     "@vue/cli-plugin-typescript": "~4.3.0",
-    "@vue/cli-plugin-unit-jest": "~4.3.0",
     "@vue/cli-service": "~4.3.0",
     "@vue/cli-shared-utils": "~4.3.0",
     "@vue/eslint-config-typescript": "^5.0.2",
@@ -54,6 +52,7 @@
     "dotenv": "6.2.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.0.0",
+    "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-vue": "^6.2.2",
     "jest": "25.2.3",
     "prettier": "2.0.4",
@@ -68,7 +67,6 @@
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue-template-compiler": "^2.6.11",
-    "vuex": "^3.4.0",
-    "eslint-plugin-cypress": "^2.10.3"
+    "vuex": "^3.4.0"
   }
 }

@@ -39,22 +39,13 @@ describe('application schematic', () => {
     expect(workspaceJson.projects['my-app'].sourceRoot).toBe('apps/my-app/src');
     expect(build.builder).toBe('@nx-plus/vue:browser');
     expect(build.options).toEqual({
-      outputPath: 'dist/apps/my-app',
-      index: 'apps/my-app/src/index.html',
+      dest: 'dist/apps/my-app',
+      index: 'apps/my-app/public/index.html',
       main: 'apps/my-app/src/main.ts',
-      tsConfig: 'apps/my-app/tsconfig.app.json',
-      assets: ['apps/my-app/src/favicon.ico', 'apps/my-app/src/assets']
+      tsConfig: 'apps/my-app/tsconfig.app.json'
     });
     expect(build.configurations.production).toEqual({
-      fileReplacements: [
-        {
-          replace: 'apps/my-app/src/environments/environment.ts',
-          with: 'apps/my-app/src/environments/environment.prod.ts'
-        }
-      ],
-      optimization: true,
-      outputHashing: 'all',
-      extractCss: true
+      mode: 'production'
     });
     expect(serve.builder).toBe('@nx-plus/vue:dev-server');
     expect(serve.options).toEqual({
@@ -79,16 +70,14 @@ describe('application schematic', () => {
       'apps/my-app/tsconfig.json',
       'apps/my-app/tsconfig.app.json',
       'apps/my-app/jest.config.js',
-      'apps/my-app/.eslintrc',
+      'apps/my-app/.eslintrc.js',
+      'apps/my-app/tests/unit/example.spec.ts',
       'apps/my-app/src/shims-vue.d.ts',
       'apps/my-app/src/main.ts',
-      'apps/my-app/src/index.html',
-      'apps/my-app/src/assets/.gitkeep',
-      'apps/my-app/src/environments/environment.ts',
-      'apps/my-app/src/environments/environment.prod.ts',
-      'apps/my-app/src/app/logo.png',
-      'apps/my-app/src/app/app.vue',
-      'apps/my-app/src/app/app.spec.ts'
+      'apps/my-app/src/App.vue',
+      'apps/my-app/src/components/HelloWorld.vue',
+      'apps/my-app/src/assets/logo.png',
+      'apps/my-app/public/index.html'
     ].forEach(path => expect(tree.exists(path)).toBeTruthy());
 
     const tsconfigAppJson = readJsonInTree(
@@ -97,22 +86,28 @@ describe('application schematic', () => {
     );
     expect(tsconfigAppJson.exclude).toEqual(['**/*.spec.ts', '**/*.spec.tsx']);
 
-    const eslintConfig = readJsonInTree(tree, 'apps/my-app/.eslintrc');
-    expect(eslintConfig.extends[0]).toBe('../../.eslintrc');
-    expect(eslintConfig.overrides).toEqual([
-      {
-        files: ['**/*.spec.{j,t}s?(x)'],
-        env: {
-          jest: true
-        }
-      }
-    ]);
+    const eslintConfig = tree.readContent('apps/my-app/.eslintrc.js');
+    expect(eslintConfig).toContain(`extends: [
+    '../../.eslintrc',
+    'plugin:vue/essential',
+    '@vue/typescript/recommended',
+    'prettier',
+    'prettier/@typescript-eslint',
+  ]`);
+    expect(eslintConfig).toContain(`overrides: [
+    {
+      files: ['**/*.spec.{j,t}s?(x)'],
+      env: {
+        jest: true,
+      },
+    },
+  ]`);
 
     expect(
       tree.readContent('apps/my-app-e2e/src/integration/app.spec.ts')
     ).toContain("'Welcome to Your Vue.js + TypeScript App'");
 
-    expect(tree.readContent('apps/my-app/src/app/app.vue'))
+    expect(tree.readContent('apps/my-app/src/App.vue'))
       .toContain(tags.stripIndent`
         <style>
         #app {
@@ -123,6 +118,12 @@ describe('application schematic', () => {
           color: #2c3e50;
           margin-top: 60px;
         }
+        </style>
+      `);
+
+    expect(tree.readContent('apps/my-app/src/components/HelloWorld.vue'))
+      .toContain(tags.stripIndent`
+        <style scoped>
         h3 {
           margin: 40px 0 0;
         }
@@ -157,9 +158,12 @@ describe('application schematic', () => {
         .runSchematicAsync('app', { ...options, style: 'scss' }, appTree)
         .toPromise();
 
-      expect(tree.readContent('apps/my-app/src/app/app.vue')).toContain(
+      expect(tree.readContent('apps/my-app/src/App.vue')).toContain(
         '<style lang="scss">'
       );
+      expect(
+        tree.readContent('apps/my-app/src/components/HelloWorld.vue')
+      ).toContain('<style scoped lang="scss">');
     });
 
     it('should generate a less style block', async () => {
@@ -167,9 +171,12 @@ describe('application schematic', () => {
         .runSchematicAsync('app', { ...options, style: 'less' }, appTree)
         .toPromise();
 
-      expect(tree.readContent('apps/my-app/src/app/app.vue')).toContain(
+      expect(tree.readContent('apps/my-app/src/App.vue')).toContain(
         '<style lang="less">'
       );
+      expect(
+        tree.readContent('apps/my-app/src/components/HelloWorld.vue')
+      ).toContain('<style scoped lang="less">');
     });
 
     it('should generate a stylus style block', async () => {
@@ -177,7 +184,7 @@ describe('application schematic', () => {
         .runSchematicAsync('app', { ...options, style: 'stylus' }, appTree)
         .toPromise();
 
-      expect(tree.readContent('apps/my-app/src/app/app.vue'))
+      expect(tree.readContent('apps/my-app/src/App.vue'))
         .toContain(tags.stripIndent`
           <style lang="stylus">
           #app
@@ -187,7 +194,12 @@ describe('application schematic', () => {
             text-align center
             color #2c3e50
             margin-top 60px
+          </style>
+      `);
 
+      expect(tree.readContent('apps/my-app/src/components/HelloWorld.vue'))
+        .toContain(tags.stripIndent`
+          <style scoped lang="stylus">
           h3
             margin 40px 0 0
 
@@ -202,7 +214,7 @@ describe('application schematic', () => {
           a
             color #42b983
           </style>
-      `);
+        `);
     });
   });
 
@@ -222,7 +234,7 @@ describe('application schematic', () => {
       [
         'apps/my-app/tsconfig.spec.json',
         'apps/my-app/jest.config.js',
-        'apps/my-app/src/app/app.spec.ts'
+        'apps/my-app/tests/unit/example.spec.ts'
       ].forEach(path => expect(tree.exists(path)).toBeFalsy());
 
       const tsconfigAppJson = readJsonInTree(
@@ -231,8 +243,9 @@ describe('application schematic', () => {
       );
       expect(tsconfigAppJson.exclude).toBeUndefined();
 
-      const eslintConfig = readJsonInTree(tree, 'apps/my-app/.eslintrc');
-      expect(eslintConfig.overrides).toBeUndefined();
+      expect(tree.readContent('apps/my-app/.eslintrc.js')).not.toContain(
+        'overrides:'
+      );
     });
   });
 
@@ -264,10 +277,14 @@ describe('application schematic', () => {
       const packageJson = readJsonInTree(tree, 'package.json');
       expect(packageJson.dependencies['vue-router']).toBeDefined();
 
-      expect(tree.exists('apps/my-app/src/app/router/index.ts')).toBeTruthy();
+      [
+        'apps/my-app/src/views/Home.vue',
+        'apps/my-app/src/views/About.vue',
+        'apps/my-app/src/router/index.ts'
+      ].forEach(path => expect(tree.exists(path)).toBeTruthy());
 
       const main = tree.readContent('apps/my-app/src/main.ts');
-      expect(main).toContain("import router from './app/router';");
+      expect(main).toContain("import router from './router';");
       expect(main).toContain(tags.stripIndent`
         new Vue({
           router,
@@ -275,9 +292,38 @@ describe('application schematic', () => {
         }).$mount('#app');
       `);
 
-      expect(tree.readContent('apps/my-app/src/app/app.vue')).toContain(
-        '<router-view />'
-      );
+      expect(tree.readContent('apps/my-app/src/App.vue'))
+        .toContain(`<div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </div>
+    <router-view />`);
+
+      expect(tree.readContent('apps/my-app/src/App.vue'))
+        .toContain(tags.stripIndent`
+          <style>
+          #app {
+            font-family: Avenir, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: center;
+            color: #2c3e50;
+          }
+
+          #nav {
+            padding: 30px;
+          }
+
+          #nav a {
+            font-weight: bold;
+            color: #2c3e50;
+          }
+
+          #nav a.router-link-exact-active {
+            color: #42b983;
+          }
+          </style>
+        `);
     });
   });
 
@@ -298,21 +344,11 @@ describe('application schematic', () => {
         'apps/subdir/my-app/src'
       );
       expect(build.options).toEqual({
-        outputPath: 'dist/apps/subdir/my-app',
-        index: 'apps/subdir/my-app/src/index.html',
+        dest: 'dist/apps/subdir/my-app',
+        index: 'apps/subdir/my-app/public/index.html',
         main: 'apps/subdir/my-app/src/main.ts',
-        tsConfig: 'apps/subdir/my-app/tsconfig.app.json',
-        assets: [
-          'apps/subdir/my-app/src/favicon.ico',
-          'apps/subdir/my-app/src/assets'
-        ]
+        tsConfig: 'apps/subdir/my-app/tsconfig.app.json'
       });
-      expect(build.configurations.production.fileReplacements).toEqual([
-        {
-          replace: 'apps/subdir/my-app/src/environments/environment.ts',
-          with: 'apps/subdir/my-app/src/environments/environment.prod.ts'
-        }
-      ]);
       expect(serve.options).toEqual({
         browserTarget: 'subdir-my-app:build'
       });
@@ -331,16 +367,14 @@ describe('application schematic', () => {
         'apps/subdir/my-app/tsconfig.json',
         'apps/subdir/my-app/tsconfig.app.json',
         'apps/subdir/my-app/jest.config.js',
-        'apps/subdir/my-app/.eslintrc',
+        'apps/subdir/my-app/.eslintrc.js',
+        'apps/subdir/my-app/tests/unit/example.spec.ts',
         'apps/subdir/my-app/src/shims-vue.d.ts',
         'apps/subdir/my-app/src/main.ts',
-        'apps/subdir/my-app/src/index.html',
-        'apps/subdir/my-app/src/assets/.gitkeep',
-        'apps/subdir/my-app/src/environments/environment.ts',
-        'apps/subdir/my-app/src/environments/environment.prod.ts',
-        'apps/subdir/my-app/src/app/logo.png',
-        'apps/subdir/my-app/src/app/app.vue',
-        'apps/subdir/my-app/src/app/app.spec.ts'
+        'apps/subdir/my-app/src/App.vue',
+        'apps/subdir/my-app/src/components/HelloWorld.vue',
+        'apps/subdir/my-app/src/assets/logo.png',
+        'apps/subdir/my-app/public/index.html'
       ].forEach(path => expect(tree.exists(path)).toBeTruthy());
 
       const tsconfigAppJson = readJsonInTree(
@@ -352,16 +386,22 @@ describe('application schematic', () => {
         '**/*.spec.tsx'
       ]);
 
-      const eslintConfig = readJsonInTree(tree, 'apps/subdir/my-app/.eslintrc');
-      expect(eslintConfig.extends[0]).toBe('../../../.eslintrc');
-      expect(eslintConfig.overrides).toEqual([
-        {
-          files: ['**/*.spec.{j,t}s?(x)'],
-          env: {
-            jest: true
-          }
-        }
-      ]);
+      const eslintConfig = tree.readContent('apps/subdir/my-app/.eslintrc.js');
+      expect(eslintConfig).toContain(`extends: [
+    '../../../.eslintrc',
+    'plugin:vue/essential',
+    '@vue/typescript/recommended',
+    'prettier',
+    'prettier/@typescript-eslint',
+  ]`);
+      expect(eslintConfig).toContain(`overrides: [
+    {
+      files: ['**/*.spec.{j,t}s?(x)'],
+      env: {
+        jest: true,
+      },
+    },
+  ]`);
 
       expect(
         tree.readContent('apps/subdir/my-app-e2e/src/integration/app.spec.ts')

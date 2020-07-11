@@ -82,40 +82,36 @@ nx build my-app
 
 `nx serve my-app [...options]`
 
-| Options           | Default   | Description                                                |
-| ----------------- | --------- | ---------------------------------------------------------- |
-| `--open`          | `false`   | Open browser on server start.                              |
-| `--copy`          | `false`   | Copy url to clipboard on server start.                     |
-| `--stdin`         | `false`   | Close when stdin ends.                                     |
-| `--optimization`  | `false`   | Enables optimization of the build output.                  |
-| `--host`          | `0.0.0.0` | Specify host (default: 0.0.0.0).                           |
-| `--port`          | `4200`    | Specify port (default: 4200).                              |
-| `--ssl`           | `false`   | Serve using HTTPS.                                         |
-| `--publicHost`    | -         | Specify the public network URL for the HMR client.         |
-| `--skipPlugins`   | -         | Comma-separated list of plugin names to skip for this run. |
-| `--browserTarget` | -         | Target to serve.                                           |
-| `--watch`         | `true`    | Watch for changes.                                         |
+| Options           | Default       | Description                                                |
+| ----------------- | ------------- | ---------------------------------------------------------- |
+| `--open`          | `false`       | Open browser on server start.                              |
+| `--copy`          | `false`       | Copy url to clipboard on server start.                     |
+| `--stdin`         | `false`       | Close when stdin ends.                                     |
+| `--mode`          | `development` | Specify env mode (default: development).                   |
+| `--host`          | `0.0.0.0`     | Specify host (default: 0.0.0.0).                           |
+| `--port`          | `8080`        | Specify port (default: 8080).                              |
+| `--https`         | `false`       | Use https (default: false).                                |
+| `--public`        | -             | Specify the public network URL for the HMR client.         |
+| `--skipPlugins`   | -             | Comma-separated list of plugin names to skip for this run. |
+| `--browserTarget` | -             | Target to serve.                                           |
+| `--watch`         | `true`        | Watch for changes.                                         |
 
 ### Browser builder
 
 `nx build my-app [...options]`
 
-| Options              | Default | Description                                                                                                                                                                                                     |
-| -------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--optimization`     | `false` | Enables optimization of the build output.                                                                                                                                                                       |
-| `--outputPath`       | -       | Specify output directory.                                                                                                                                                                                       |
-| `--deleteOutputPath` | `true`  | Delete the output path before building.                                                                                                                                                                         |
-| `--report`           | `false` | Generate report.html to help analyze bundle content.                                                                                                                                                            |
-| `--reportJson`       | `false` | Generate report.json to help analyze bundle content.                                                                                                                                                            |
-| `--skipPlugins`      | -       | Comma-separated list of plugin names to skip for this run.                                                                                                                                                      |
-| `--watch`            | `false` | Watch for changes.                                                                                                                                                                                              |
-| `--index`            | -       | The path of a file to use for the application's HTML index. The filename of the specified path will be used for the generated file and will be created in the root of the application's configured output path. |
-| `--main`             | -       | The full path for the main entry point to the app, relative to the current workspace.                                                                                                                           |
-| `--tsConfig`         | -       | The full path for the TypeScript configuration file, relative to the current workspace.                                                                                                                         |
-| `--assets`           | `[]`    | List of static application assets.                                                                                                                                                                              |
-| `--fileReplacements` | `[]`    | Replace files with other files in the build.                                                                                                                                                                    |
-| `--outputHashing`    | `none`  | Define the output filename cache-busting hashing mode.                                                                                                                                                          |
-| `--extractCss`       | `false` | Extract css from global styles into css files instead of js ones.                                                                                                                                               |
+| Options         | Default       | Description                                                                                                                                                                                                     |
+| --------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mode`        | `development` | Specify env mode (default: development).                                                                                                                                                                        |
+| `--dest`        | -             | Specify output directory.                                                                                                                                                                                       |
+| `--clean`       | `true`        | Remove the dist directory before building the project.                                                                                                                                                          |
+| `--report`      | `false`       | Generate report.html to help analyze bundle content.                                                                                                                                                            |
+| `--reportJson`  | `false`       | Generate report.json to help analyze bundle content.                                                                                                                                                            |
+| `--skipPlugins` | -             | Comma-separated list of plugin names to skip for this run.                                                                                                                                                      |
+| `--watch`       | `false`       | Watch for changes.                                                                                                                                                                                              |
+| `--index`       | -             | The path of a file to use for the application's HTML index. The filename of the specified path will be used for the generated file and will be created in the root of the application's configured output path. |
+| `--main`        | -             | The full path for the main entry point to the app, relative to the current workspace.                                                                                                                           |
+| `--tsConfig`    | -             | The full path for the TypeScript configuration file, relative to the current workspace.                                                                                                                         |
 
 ### Lint builder
 
