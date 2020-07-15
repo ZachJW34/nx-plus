@@ -7,7 +7,7 @@ export function modifyIndexHtmlPath(
   options: BrowserBuilderSchema,
   context: BuilderContext
 ): void {
-  config.plugin('html').tap(args => {
+  config.plugin('html').tap((args) => {
     args[0].template = getSystemPath(
       join(normalize(context.workspaceRoot), options.index)
     );
@@ -38,18 +38,18 @@ export function modifyTsConfigPaths(
   config.module
     .rule('ts')
     .use('ts-loader')
-    .tap(loaderOptions => {
+    .tap((loaderOptions) => {
       loaderOptions.configFile = tsConfigPath;
       return loaderOptions;
     });
   config.module
     .rule('tsx')
     .use('ts-loader')
-    .tap(loaderOptions => {
+    .tap((loaderOptions) => {
       loaderOptions.configFile = tsConfigPath;
       return loaderOptions;
     });
-  config.plugin('fork-ts-checker').tap(args => {
+  config.plugin('fork-ts-checker').tap((args) => {
     args[0].tsconfig = tsConfigPath;
     return args;
   });
@@ -66,28 +66,28 @@ export function modifyCachePaths(config, context: BuilderContext): void {
   config.module
     .rule('vue')
     .use('cache-loader')
-    .tap(options => {
+    .tap((options) => {
       options.cacheDirectory = vueLoaderCachePath;
       return options;
     });
   config.module
     .rule('vue')
     .use('vue-loader')
-    .tap(options => {
+    .tap((options) => {
       options.cacheDirectory = vueLoaderCachePath;
       return options;
     });
   config.module
     .rule('ts')
     .use('cache-loader')
-    .tap(options => {
+    .tap((options) => {
       options.cacheDirectory = tsLoaderCachePath;
       return options;
     });
   config.module
     .rule('tsx')
     .use('cache-loader')
-    .tap(options => {
+    .tap((options) => {
       options.cacheDirectory = tsLoaderCachePath;
       return options;
     });
@@ -109,7 +109,7 @@ export function modifyTypescriptAliases(
     '.jsx',
     '.vue',
     '.json',
-    '.wasm'
+    '.wasm',
   ];
   config.resolve.alias.delete('@');
   config.resolve
@@ -118,7 +118,7 @@ export function modifyTypescriptAliases(
     .use(require('tsconfig-paths-webpack-plugin'), [
       {
         configFile: tsConfigPath,
-        extensions
-      }
+        extensions,
+      },
     ]);
 }

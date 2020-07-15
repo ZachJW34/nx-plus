@@ -5,11 +5,11 @@ import {
   findNodes,
   formatFiles,
   getProjectConfig,
-  insert
+  insert,
 } from '@nrwl/workspace';
 import {
   InsertChange,
-  insertImport
+  insertImport,
 } from '@nrwl/workspace/src/utils/ast-utils';
 import * as ts from 'typescript';
 import { VuexSchematicSchema } from './schema';
@@ -85,18 +85,18 @@ function addStoreToMain(options: VuexSchematicSchema): Rule {
         mainPath,
         newVueOptionsObject.getStart() + 1,
         '\n  store,'
-      )
+      ),
     ]);
 
     return tree;
   };
 }
 
-export default function(options: VuexSchematicSchema): Rule {
+export default function (options: VuexSchematicSchema): Rule {
   return chain([
     addStoreConfig(options),
     addStoreToMain(options),
     addDepsToPackageJson({ vuex: '^3.4.0' }, {}, true),
-    formatFiles(options)
+    formatFiles(options),
   ]);
 }

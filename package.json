@@ -25,6 +25,14 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js,tsx,jsx,scss,less,css,html,json,md,mdx}": "prettier --write"
+  },
   "private": true,
   "dependencies": {},
   "devDependencies": {
@@ -54,7 +62,9 @@
     "eslint-config-prettier": "6.0.0",
     "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-vue": "^6.2.2",
+    "husky": "^4.2.5",
     "jest": "25.2.3",
+    "lint-staged": "^10.2.11",
     "prettier": "2.0.4",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",

@@ -10,7 +10,7 @@ import {
   noop,
   Rule,
   Tree,
-  url
+  url,
 } from '@angular-devkit/schematics';
 import {
   addDepsToPackageJson,
@@ -26,7 +26,7 @@ import {
   ProjectType,
   toFileName,
   updateJsonInTree,
-  updateWorkspace
+  updateWorkspace,
 } from '@nrwl/workspace';
 import { ApplicationSchematicSchema } from './schema';
 
@@ -52,7 +52,7 @@ function normalizeOptions(
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const projectRoot = `${projectRootDir(projectType)}/${projectDirectory}`;
   const parsedTags = options.tags
-    ? options.tags.split(',').map(s => s.trim())
+    ? options.tags.split(',').map((s) => s.trim())
     : [];
 
   return {
@@ -60,7 +60,7 @@ function normalizeOptions(
     projectName,
     projectRoot,
     projectDirectory,
-    parsedTags
+    parsedTags,
   };
 }
 
@@ -73,22 +73,22 @@ function addFiles(options: NormalizedSchema): Rule {
         offsetFromRoot: offsetFromRoot(options.projectRoot),
         dot: '.',
         baseUrl: '<%= BASE_URL %>',
-        htmlWebpackPluginTitle: '<%= htmlWebpackPlugin.options.title %>'
+        htmlWebpackPluginTitle: '<%= htmlWebpackPlugin.options.title %>',
       }),
       options.unitTestRunner === 'none'
-        ? filter(file => file !== '/tests/unit/example.spec.ts')
+        ? filter((file) => file !== '/tests/unit/example.spec.ts')
         : noop(),
       options.routing
         ? noop()
         : filter(
-            file =>
+            (file) =>
               ![
                 '/src/router/index.ts',
                 '/src/views/About.vue',
-                '/src/views/Home.vue'
+                '/src/views/Home.vue',
               ].includes(file)
           ),
-      move(options.projectRoot)
+      move(options.projectRoot),
     ])
   );
 }
@@ -100,12 +100,12 @@ function getEslintConfig(options: NormalizedSchema) {
       'plugin:vue/essential',
       '@vue/typescript/recommended',
       'prettier',
-      'prettier/@typescript-eslint'
+      'prettier/@typescript-eslint',
     ],
     rules: {},
     env: {
-      node: true
-    }
+      node: true,
+    },
   };
 
   if (options.unitTestRunner === 'jest') {
@@ -113,9 +113,9 @@ function getEslintConfig(options: NormalizedSchema) {
       {
         files: ['**/*.spec.{j,t}s?(x)'],
         env: {
-          jest: true
-        }
-      }
+          jest: true,
+        },
+      },
     ];
   }
 
@@ -124,7 +124,7 @@ function getEslintConfig(options: NormalizedSchema) {
 
 function addEsLint(options: NormalizedSchema): Rule {
   return chain([
-    updateWorkspace(workspace => {
+    updateWorkspace((workspace) => {
       const { targets } = workspace.projects.get(options.projectName);
       targets.add({
         name: 'lint',
@@ -132,27 +132,24 @@ function addEsLint(options: NormalizedSchema): Rule {
           options.projectRoot,
           `${options.projectRoot}/tsconfig.app.json`,
           Linter.EsLint
-        )
+        ),
       });
     }),
     addLintFiles(options.projectRoot, Linter.EsLint, {
-      localConfig: getEslintConfig(options)
+      localConfig: getEslintConfig(options),
     }),
     // Extending the root ESLint config should be the first value in the
     // app's local ESLint config extends array.
-    updateJsonInTree(`${options.projectRoot}/.eslintrc`, json => {
+    updateJsonInTree(`${options.projectRoot}/.eslintrc`, (json) => {
       json.extends.unshift(json.extends.pop());
       return json;
     }),
     (tree: Tree) => {
       const configPath = `${options.projectRoot}/.eslintrc`;
-      const content = tree
-        .read(configPath)
-        .toString('utf-8')
-        .trim();
+      const content = tree.read(configPath).toString('utf-8').trim();
       tree.rename(configPath, `${configPath}.js`);
       tree.overwrite(`${configPath}.js`, `module.exports = ${content};`);
-    }
+    },
   ]);
 }
 
@@ -165,10 +162,10 @@ function addJest(options: NormalizedSchema): Rule {
       skipSerializers: true,
       supportTsx: true,
       testEnvironment: 'jsdom',
-      babelJest: false
+      babelJest: false,
     }),
-    updateJsonInTree(`${options.projectRoot}/tsconfig.spec.json`, json => {
-      json.include = json.include.filter(pattern => !/\.jsx?$/.test(pattern));
+    updateJsonInTree(`${options.projectRoot}/tsconfig.spec.json`, (json) => {
+      json.include = json.include.filter((pattern) => !/\.jsx?$/.test(pattern));
       return json;
     }),
     (tree: Tree) => {
@@ -199,10 +196,10 @@ function addJest(options: NormalizedSchema): Rule {
         'babel-core': '^7.0.0-bridge.0',
         'jest-serializer-vue': '^2.0.2',
         'jest-transform-stub': '^2.0.0',
-        'vue-jest': '^3.0.5'
+        'vue-jest': '^3.0.5',
       },
       true
-    )
+    ),
   ]);
 }
 
@@ -214,9 +211,9 @@ function addCypress(options: NormalizedSchema): Rule {
       name: options.name + '-e2e',
       directory: options.directory,
       linter: Linter.EsLint,
-      js: false
+      js: false,
     }),
-    tree => {
+    (tree) => {
       const appSpecPath =
         options.projectRoot + '-e2e/src/integration/app.spec.ts';
       tree.overwrite(
@@ -229,7 +226,7 @@ function addCypress(options: NormalizedSchema): Rule {
             'Welcome to Your Vue.js + TypeScript App'
           )
       );
-    }
+    },
   ]);
 }
 
@@ -251,15 +248,15 @@ function addPostInstall() {
   });
 }
 
-export default function(options: ApplicationSchematicSchema): Rule {
+export default function (options: ApplicationSchematicSchema): Rule {
   const normalizedOptions = normalizeOptions(options);
   return chain([
-    updateWorkspace(workspace => {
+    updateWorkspace((workspace) => {
       const { targets } = workspace.projects.add({
         name: normalizedOptions.projectName,
         root: normalizedOptions.projectRoot,
         sourceRoot: `${normalizedOptions.projectRoot}/src`,
-        projectType
+        projectType,
       });
       targets.add({
         name: 'build',
@@ -268,7 +265,7 @@ export default function(options: ApplicationSchematicSchema): Rule {
           dest: `dist/${normalizedOptions.projectRoot}`,
           index: `${normalizedOptions.projectRoot}/public/index.html`,
           main: `${normalizedOptions.projectRoot}/src/main.ts`,
-          tsConfig: `${normalizedOptions.projectRoot}/tsconfig.app.json`
+          tsConfig: `${normalizedOptions.projectRoot}/tsconfig.app.json`,
         },
         configurations: {
           production: {
@@ -277,26 +274,26 @@ export default function(options: ApplicationSchematicSchema): Rule {
             productionSourceMap: true,
             css: {
               extract: true,
-              sourceMap: false
-            }
-          }
-        }
+              sourceMap: false,
+            },
+          },
+        },
       });
       targets.add({
         name: 'serve',
         builder: '@nx-plus/vue:dev-server',
         options: {
-          browserTarget: `${normalizedOptions.projectName}:build`
+          browserTarget: `${normalizedOptions.projectName}:build`,
         },
         configurations: {
           production: {
-            browserTarget: `${normalizedOptions.projectName}:build:production`
-          }
-        }
+            browserTarget: `${normalizedOptions.projectName}:build:production`,
+          },
+        },
       });
     }),
     addProjectToNxJsonInTree(normalizedOptions.projectName, {
-      tags: normalizedOptions.parsedTags
+      tags: normalizedOptions.parsedTags,
     }),
     addFiles(normalizedOptions),
     addEsLint(normalizedOptions),
@@ -308,17 +305,17 @@ export default function(options: ApplicationSchematicSchema): Rule {
     addDepsToPackageJson(
       {
         vue: '^2.6.11',
-        ...(options.routing ? { 'vue-router': '^3.2.0' } : {})
+        ...(options.routing ? { 'vue-router': '^3.2.0' } : {}),
       },
       {
         '@vue/cli-plugin-typescript': '~4.3.0',
         '@vue/cli-service': '~4.3.0',
         '@vue/eslint-config-typescript': '^5.0.2',
         'eslint-plugin-vue': '^6.2.2',
-        'vue-template-compiler': '^2.6.11'
+        'vue-template-compiler': '^2.6.11',
       },
       true
     ),
-    formatFiles(options)
+    formatFiles(options),
   ]);
 }

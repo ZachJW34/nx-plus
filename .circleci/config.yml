@@ -9,6 +9,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
+      - run: yarn format:check --all
       - run: yarn affected:lint --all
       - run: yarn affected:test --all
       - run: yarn affected:e2e --all

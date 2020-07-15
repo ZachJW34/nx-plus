@@ -1,7 +1,7 @@
 import {
   BuilderContext,
   BuilderOutput,
-  createBuilder
+  createBuilder,
 } from '@angular-devkit/architect';
 import { getSystemPath, join, normalize, Path } from '@angular-devkit/core';
 import { from, Observable } from 'rxjs';
@@ -17,7 +17,7 @@ import {
   modifyEntryPoint,
   modifyIndexHtmlPath,
   modifyTsConfigPaths,
-  modifyTypescriptAliases
+  modifyTypescriptAliases,
 } from '../../webpack';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -36,7 +36,7 @@ export function runBuilder(
     const projectRoot = await getProjectRoot(context);
 
     const inlineOptions = {
-      chainWebpack: config => {
+      chainWebpack: (config) => {
         modifyIndexHtmlPath(config, options, context);
         modifyEntryPoint(config, options, context);
         modifyTsConfigPaths(config, options, context);
@@ -46,12 +46,12 @@ export function runBuilder(
       publicPath: options.publicPath,
       filenameHashing: options.filenameHashing,
       productionSourceMap: options.productionSourceMap,
-      css: options.css
+      css: options.css,
     };
 
     return {
       projectRoot,
-      inlineOptions
+      inlineOptions,
     };
   }
 
@@ -65,7 +65,7 @@ export function runBuilder(
       ? options.dest + normalizedArg.split(options.dest)[1]
       : arg;
   };
-  ['green', 'cyan', 'blue'].forEach(color =>
+  ['green', 'cyan', 'blue'].forEach((color) =>
     modifyChalkOutput(color, chalkTransform)
   );
 
@@ -75,7 +75,7 @@ export function runBuilder(
 
       const service = new Service(projectRoot, {
         pkg: resolvePkg(context.workspaceRoot),
-        inlineOptions
+        inlineOptions,
       });
       const buildOptions = {
         mode: options.mode,
@@ -88,15 +88,15 @@ export function runBuilder(
         report: options.report,
         'report-json': options.reportJson,
         'skip-plugins': options.skipPlugins,
-        watch: options.watch
+        watch: options.watch,
       };
 
       if (options.watch) {
-        return new Observable(obs => {
+        return new Observable((obs) => {
           service
             .run('build', buildOptions, ['build'])
-            .then(success => obs.next(success))
-            .catch(err => obs.error(err));
+            .then((success) => obs.next(success))
+            .catch((err) => obs.error(err));
         });
       }
 

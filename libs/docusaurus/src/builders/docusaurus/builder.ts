@@ -1,7 +1,7 @@
 import {
   BuilderContext,
   BuilderOutput,
-  createBuilder
+  createBuilder,
 } from '@angular-devkit/architect';
 import { start } from '@docusaurus/core/lib';
 import { from, Observable } from 'rxjs';
@@ -15,16 +15,16 @@ export function runBuilder(
 ): Observable<BuilderOutput> {
   return from(getProjectRoot(context)).pipe(
     switchMap(
-      projectRoot =>
-        new Observable<any>(obs => {
+      (projectRoot) =>
+        new Observable<any>((obs) => {
           start(projectRoot, {
             port: options.port.toString(),
             host: options.host,
             hotOnly: options.hotOnly,
-            open: options.open
+            open: options.open,
           })
-            .then(success => obs.next(success))
-            .catch(err => obs.error(err));
+            .then((success) => obs.next(success))
+            .catch((err) => obs.error(err));
         })
     ),
     map(() => ({ success: true }))

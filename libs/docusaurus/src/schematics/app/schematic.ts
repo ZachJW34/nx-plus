@@ -6,7 +6,7 @@ import {
   move,
   Rule,
   Tree,
-  url
+  url,
 } from '@angular-devkit/schematics';
 import {
   addDepsToPackageJson,
@@ -18,7 +18,7 @@ import {
   projectRootDir,
   ProjectType,
   toFileName,
-  updateWorkspace
+  updateWorkspace,
 } from '@nrwl/workspace';
 import { InsertChange } from '@nrwl/workspace/src/utils/ast-utils';
 import { AppSchematicSchema } from './schema';
@@ -35,9 +35,7 @@ interface NormalizedSchema extends AppSchematicSchema {
   parsedTags: string[];
 }
 
-function normalizeOptions(
-  options: AppSchematicSchema
-): NormalizedSchema {
+function normalizeOptions(options: AppSchematicSchema): NormalizedSchema {
   const name = toFileName(options.name);
   const projectDirectory = options.directory
     ? `${toFileName(options.directory)}/${name}`
@@ -45,7 +43,7 @@ function normalizeOptions(
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const projectRoot = `${projectRootDir(projectType)}/${projectDirectory}`;
   const parsedTags = options.tags
-    ? options.tags.split(',').map(s => s.trim())
+    ? options.tags.split(',').map((s) => s.trim())
     : [];
 
   return {
@@ -53,7 +51,7 @@ function normalizeOptions(
     projectName,
     projectRoot,
     projectDirectory,
-    parsedTags
+    parsedTags,
   };
 }
 
@@ -63,9 +61,9 @@ function addFiles(options: NormalizedSchema): Rule {
       applyTemplates({
         ...options,
         ...names(options.name),
-        offsetFromRoot: offsetFromRoot(options.projectRoot)
+        offsetFromRoot: offsetFromRoot(options.projectRoot),
       }),
-      move(options.projectRoot)
+      move(options.projectRoot),
     ])
   );
 }
@@ -81,7 +79,7 @@ function updateGitIgnore(): Rule {
       .toString('utf-8')
       .trimRight();
     const ignorePatterns = ['.docusaurus/', '.cache-loader/'].filter(
-      ip => !gitIgnoreSource.includes(ip)
+      (ip) => !gitIgnoreSource.includes(ip)
     );
 
     if (!ignorePatterns.length) return;
@@ -94,7 +92,7 @@ function updateGitIgnore(): Rule {
 
 # Generated Docusaurus files
 ${ignorePatterns.join('\n')}`
-      )
+      ),
     ]);
     return tree;
   };
@@ -119,39 +117,39 @@ function updatePrettierIgnore(): Rule {
         prettierIgnorePath,
         prettierIgnoreSource.length,
         `\n${ignorePattern}`
-      )
+      ),
     ]);
     return tree;
   };
 }
 
-export default function(options: AppSchematicSchema): Rule {
+export default function (options: AppSchematicSchema): Rule {
   const normalizedOptions = normalizeOptions(options);
   return chain([
-    updateWorkspace(workspace => {
+    updateWorkspace((workspace) => {
       const targets = workspace.projects.add({
         name: normalizedOptions.projectName,
         root: normalizedOptions.projectRoot,
         sourceRoot: `${normalizedOptions.projectRoot}/src`,
-        projectType
+        projectType,
       }).targets;
       targets.add({
         name: 'docusaurus',
         builder: '@nx-plus/docusaurus:docusaurus',
         options: {
-          port: 3000
-        }
+          port: 3000,
+        },
       });
       targets.add({
         name: 'build-docusaurus',
         builder: '@nx-plus/docusaurus:build-docusaurus',
         options: {
-          outputPath: `dist/docusaurus/${normalizedOptions.projectName}`
-        }
+          outputPath: `dist/docusaurus/${normalizedOptions.projectName}`,
+        },
       });
     }),
     addProjectToNxJsonInTree(normalizedOptions.projectName, {
-      tags: normalizedOptions.parsedTags
+      tags: normalizedOptions.parsedTags,
     }),
     addFiles(normalizedOptions),
     updateGitIgnore(),
@@ -162,11 +160,11 @@ export default function(options: AppSchematicSchema): Rule {
         '@docusaurus/preset-classic': '^2.0.0-alpha.50',
         classnames: '^2.2.6',
         react: '^16.8.4',
-        'react-dom': '^16.8.4'
+        'react-dom': '^16.8.4',
       },
       {},
       true
     ),
-    formatFiles(options)
+    formatFiles(options),
   ]);
 }
