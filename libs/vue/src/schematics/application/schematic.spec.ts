@@ -14,7 +14,7 @@ describe('application schematic', () => {
     e2eTestRunner: 'cypress',
     routing: false,
     style: 'css',
-    skipFormat: false
+    skipFormat: false,
   };
 
   const testRunner = new SchematicTestRunner(
@@ -42,7 +42,7 @@ describe('application schematic', () => {
       dest: 'dist/apps/my-app',
       index: 'apps/my-app/public/index.html',
       main: 'apps/my-app/src/main.ts',
-      tsConfig: 'apps/my-app/tsconfig.app.json'
+      tsConfig: 'apps/my-app/tsconfig.app.json',
     });
     expect(build.configurations.production).toEqual({
       mode: 'production',
@@ -50,15 +50,15 @@ describe('application schematic', () => {
       productionSourceMap: true,
       css: {
         extract: true,
-        sourceMap: false
-      }
+        sourceMap: false,
+      },
     });
     expect(serve.builder).toBe('@nx-plus/vue:dev-server');
     expect(serve.options).toEqual({
-      browserTarget: 'my-app:build'
+      browserTarget: 'my-app:build',
     });
     expect(serve.configurations.production).toEqual({
-      browserTarget: 'my-app:build:production'
+      browserTarget: 'my-app:build:production',
     });
     expect(lint.builder).toBe('@nrwl/linter:lint');
     expect(test.builder).toBe('@nrwl/jest:jest');
@@ -83,8 +83,8 @@ describe('application schematic', () => {
       'apps/my-app/src/App.vue',
       'apps/my-app/src/components/HelloWorld.vue',
       'apps/my-app/src/assets/logo.png',
-      'apps/my-app/public/index.html'
-    ].forEach(path => expect(tree.exists(path)).toBeTruthy());
+      'apps/my-app/public/index.html',
+    ].forEach((path) => expect(tree.exists(path)).toBeTruthy());
 
     const tsconfigAppJson = readJsonInTree(
       tree,
@@ -240,8 +240,8 @@ describe('application schematic', () => {
       [
         'apps/my-app/tsconfig.spec.json',
         'apps/my-app/jest.config.js',
-        'apps/my-app/tests/unit/example.spec.ts'
-      ].forEach(path => expect(tree.exists(path)).toBeFalsy());
+        'apps/my-app/tests/unit/example.spec.ts',
+      ].forEach((path) => expect(tree.exists(path)).toBeFalsy());
 
       const tsconfigAppJson = readJsonInTree(
         tree,
@@ -286,8 +286,8 @@ describe('application schematic', () => {
       [
         'apps/my-app/src/views/Home.vue',
         'apps/my-app/src/views/About.vue',
-        'apps/my-app/src/router/index.ts'
-      ].forEach(path => expect(tree.exists(path)).toBeTruthy());
+        'apps/my-app/src/router/index.ts',
+      ].forEach((path) => expect(tree.exists(path)).toBeTruthy());
 
       const main = tree.readContent('apps/my-app/src/main.ts');
       expect(main).toContain("import router from './router';");
@@ -353,13 +353,13 @@ describe('application schematic', () => {
         dest: 'dist/apps/subdir/my-app',
         index: 'apps/subdir/my-app/public/index.html',
         main: 'apps/subdir/my-app/src/main.ts',
-        tsConfig: 'apps/subdir/my-app/tsconfig.app.json'
+        tsConfig: 'apps/subdir/my-app/tsconfig.app.json',
       });
       expect(serve.options).toEqual({
-        browserTarget: 'subdir-my-app:build'
+        browserTarget: 'subdir-my-app:build',
       });
       expect(serve.configurations.production).toEqual({
-        browserTarget: 'subdir-my-app:build:production'
+        browserTarget: 'subdir-my-app:build:production',
       });
     });
 
@@ -380,8 +380,8 @@ describe('application schematic', () => {
         'apps/subdir/my-app/src/App.vue',
         'apps/subdir/my-app/src/components/HelloWorld.vue',
         'apps/subdir/my-app/src/assets/logo.png',
-        'apps/subdir/my-app/public/index.html'
-      ].forEach(path => expect(tree.exists(path)).toBeTruthy());
+        'apps/subdir/my-app/public/index.html',
+      ].forEach((path) => expect(tree.exists(path)).toBeTruthy());
 
       const tsconfigAppJson = readJsonInTree(
         tree,
@@ -389,7 +389,7 @@ describe('application schematic', () => {
       );
       expect(tsconfigAppJson.exclude).toEqual([
         '**/*.spec.ts',
-        '**/*.spec.tsx'
+        '**/*.spec.tsx',
       ]);
 
       const eslintConfig = tree.readContent('apps/subdir/my-app/.eslintrc.js');

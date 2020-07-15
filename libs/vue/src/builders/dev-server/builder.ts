@@ -2,7 +2,7 @@ import {
   BuilderContext,
   BuilderOutput,
   createBuilder,
-  targetFromTargetString
+  targetFromTargetString,
 } from '@angular-devkit/architect';
 import { JsonObject, Path } from '@angular-devkit/core';
 import { cliCommand } from '@nrwl/workspace/src/core/file-utils';
@@ -20,7 +20,7 @@ import {
   modifyEntryPoint,
   modifyIndexHtmlPath,
   modifyTsConfigPaths,
-  modifyTypescriptAliases
+  modifyTypescriptAliases,
 } from '../../webpack';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -32,7 +32,7 @@ const devServerBuilderOverriddenKeys = [
   'mode',
   'skipPlugins',
   'publicPath',
-  'css'
+  'css',
 ];
 
 export function runBuilder(
@@ -63,7 +63,7 @@ export function runBuilder(
     const rawBrowserOptions = await context.getTargetOptions(browserTarget);
     const overrides = Object.keys(options)
       .filter(
-        key =>
+        (key) =>
           options[key] !== undefined &&
           devServerBuilderOverriddenKeys.includes(key)
       )
@@ -76,7 +76,7 @@ export function runBuilder(
     const projectRoot = await getProjectRoot(context);
 
     const inlineOptions = {
-      chainWebpack: config => {
+      chainWebpack: (config) => {
         modifyIndexHtmlPath(config, browserOptions, context);
         modifyEntryPoint(config, browserOptions, context);
         modifyTsConfigPaths(config, browserOptions, context);
@@ -87,25 +87,25 @@ export function runBuilder(
           // There is no option to disable file watching in `webpack-dev-server`,
           // but webpack's file watcher can be overriden.
           config.plugin('vue-cli').use({
-            apply: compiler => {
+            apply: (compiler) => {
               compiler.hooks.afterEnvironment.tap('vue-cli', () => {
                 // eslint-disable-next-line @typescript-eslint/no-empty-function
                 compiler.watchFileSystem = { watch: () => {} };
               });
-            }
+            },
           });
         }
       },
       publicPath: browserOptions.publicPath,
       filenameHashing: browserOptions.filenameHashing,
       css: browserOptions.css,
-      devServer: options.devServer
+      devServer: options.devServer,
     };
 
     return {
       projectRoot,
       browserOptions,
-      inlineOptions
+      inlineOptions,
     };
   }
 
@@ -114,7 +114,7 @@ export function runBuilder(
   // it with a nx command.
   // TODO: Find a better way to rewrite vue-cli console output
   const buildRegex = /([p]?npm run|yarn) build/;
-  modifyChalkOutput('cyan', arg => {
+  modifyChalkOutput('cyan', (arg) => {
     if (buildRegex.test(arg)) {
       return arg.replace(
         buildRegex,
@@ -130,10 +130,10 @@ export function runBuilder(
 
       const service = new Service(projectRoot, {
         pkg: resolvePkg(context.workspaceRoot),
-        inlineOptions
+        inlineOptions,
       });
 
-      return new Observable(obs => {
+      return new Observable((obs) => {
         service
           .run(
             'serve',
@@ -146,12 +146,12 @@ export function runBuilder(
               port: options.port,
               https: options.https,
               public: options.public,
-              'skip-plugins': browserOptions.skipPlugins
+              'skip-plugins': browserOptions.skipPlugins,
             },
             ['serve']
           )
-          .then(success => obs.next(success))
-          .catch(err => obs.error(err));
+          .then((success) => obs.next(success))
+          .catch((err) => obs.error(err));
       });
     }),
     map(({ url }) => ({ success: true, baseUrl: url }))

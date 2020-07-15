@@ -1,7 +1,7 @@
 import {
   BuilderContext,
   BuilderOutput,
-  createBuilder
+  createBuilder,
 } from '@angular-devkit/architect';
 import { build } from '@docusaurus/core/lib';
 import { join } from 'path';
@@ -20,12 +20,12 @@ export function runBuilder(
   }
 
   return from(getProjectRoot(context)).pipe(
-    switchMap(projectRoot =>
+    switchMap((projectRoot) =>
       from(
         build(projectRoot, {
           bundleAnalyzer: options.bundleAnalyzer,
           outDir: join(context.workspaceRoot, options.outputPath),
-          minify: options.minify
+          minify: options.minify,
         })
       )
     ),

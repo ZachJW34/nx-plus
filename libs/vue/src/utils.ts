@@ -44,7 +44,7 @@ export function modifyChalkOutput(
         originalChalkFn(...args.map(transform));
       Object.setPrototypeOf(newChalkFn, originalChalkFn);
       return newChalkFn;
-    }
+    },
   });
 }
 

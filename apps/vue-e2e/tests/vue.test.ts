@@ -3,10 +3,10 @@ import {
   checkFilesExist,
   ensureNxProject,
   runNxCommandAsync,
-  uniq
+  uniq,
 } from '@nrwl/nx-plugin/testing';
 describe('vue e2e', () => {
-  it('should create, lint, test, e2e and build app', async done => {
+  it('should create, lint, test, e2e and build app', async (done) => {
     const appName = uniq('app');
     ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
     await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
@@ -39,7 +39,7 @@ describe('vue e2e', () => {
   }, 300000);
 
   describe('--directory subdir', () => {
-    it('should create and build app', async done => {
+    it('should create and build app', async (done) => {
       const appName = uniq('app');
       ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
