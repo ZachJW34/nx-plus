@@ -11,4 +11,13 @@ export interface BrowserBuilderSchema extends JsonObject {
   index: string;
   main: string;
   tsConfig: string;
+  publicPath: string;
+  filenameHashing: boolean;
+  productionSourceMap: boolean;
+  css: {
+    requireModuleExtension: boolean;
+    extract: boolean | object;
+    sourceMap: boolean;
+    loaderOptions: object;
+  };
 }

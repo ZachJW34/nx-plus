@@ -38,7 +38,11 @@ export function runBuilder(
         modifyTsConfigPaths(config, options, context);
         modifyCachePaths(config, context);
         modifyTypescriptAliases(config, options, context);
-      }
+      },
+      publicPath: options.publicPath,
+      filenameHashing: options.filenameHashing,
+      productionSourceMap: options.productionSourceMap,
+      css: options.css
     };
 
     return {

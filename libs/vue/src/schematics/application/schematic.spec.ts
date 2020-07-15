@@ -45,7 +45,13 @@ describe('application schematic', () => {
       tsConfig: 'apps/my-app/tsconfig.app.json'
     });
     expect(build.configurations.production).toEqual({
-      mode: 'production'
+      mode: 'production',
+      filenameHashing: true,
+      productionSourceMap: true,
+      css: {
+        extract: true,
+        sourceMap: false
+      }
     });
     expect(serve.builder).toBe('@nx-plus/vue:dev-server');
     expect(serve.options).toEqual({

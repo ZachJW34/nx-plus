@@ -24,12 +24,31 @@ const Service = require('@vue/cli-service/lib/Service');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { resolvePkg } = require('@vue/cli-shared-utils/lib/pkg');
 
-const devServerBuilderOverriddenKeys = ['mode', 'skipPlugins'];
+const devServerBuilderOverriddenKeys = [
+  'mode',
+  'skipPlugins',
+  'publicPath',
+  'css'
+];
 
 export function runBuilder(
   options: DevServerBuilderSchema,
   context: BuilderContext
 ): Observable<BuilderOutput> {
+  // The `css` option must be `undefined` in order for the
+  // browser builder option to serve as the default. JSON
+  // Schema does not support setting a default value of
+  // `undefined`.
+  // TODO: Handle this less obtrusively.
+  if (
+    options.css.requireModuleExtension === undefined &&
+    options.css.extract === undefined &&
+    options.css.sourceMap === undefined &&
+    !Object.keys(options.css.loaderOptions).length
+  ) {
+    options.css = undefined;
+  }
+
   // https://github.com/angular/angular-cli/blob/v9.1.0/packages/angular_devkit/build_angular/src/dev-server/index.ts#L133
   async function setup(): Promise<{
     projectRoot: string;
@@ -72,7 +91,11 @@ export function runBuilder(
             }
           });
         }
-      }
+      },
+      publicPath: browserOptions.publicPath,
+      filenameHashing: browserOptions.filenameHashing,
+      css: browserOptions.css,
+      devServer: options.devServer
     };
 
     return {

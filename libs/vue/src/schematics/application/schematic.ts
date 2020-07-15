@@ -272,7 +272,13 @@ export default function(options: ApplicationSchematicSchema): Rule {
         },
         configurations: {
           production: {
-            mode: 'production'
+            mode: 'production',
+            filenameHashing: true,
+            productionSourceMap: true,
+            css: {
+              extract: true,
+              sourceMap: false
+            }
           }
         }
       });

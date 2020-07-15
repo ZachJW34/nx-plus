@@ -12,4 +12,12 @@ export interface DevServerBuilderSchema extends JsonObject {
   skipPlugins?: string;
   browserTarget: string;
   watch: boolean;
+  publicPath?: string;
+  css: {
+    requireModuleExtension?: boolean;
+    extract?: boolean | object;
+    sourceMap?: boolean;
+    loaderOptions: object;
+  };
+  devServer: object;
 }
