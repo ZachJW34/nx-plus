@@ -15,7 +15,31 @@ jobs:
       - run:
           command: yarn affected:e2e --all
           no_output_timeout: 30m
+  affected:
+    docker:
+      - image: cypress/base:12
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run: yarn format:check --base origin/master --head HEAD
+      - run: yarn affected:lint --base origin/master --head HEAD
+      - run: yarn affected:test --base origin/master --head HEAD
+      - run:
+          command: yarn affected:e2e --base origin/master --head HEAD
+          no_output_timeout: 30m
+
 workflows:
+  version: 2
   default:
     jobs:
-      - all
+      - all:
+          filters:
+            branches:
+              only: 
+                - master
+      - affected:
+          filters:
+            branches:
+              ignore: 
+                - master
