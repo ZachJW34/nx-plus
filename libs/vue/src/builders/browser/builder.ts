@@ -3,11 +3,15 @@ import {
   BuilderOutput,
   createBuilder
 } from '@angular-devkit/architect';
-import { getSystemPath, join, normalize } from '@angular-devkit/core';
+import { getSystemPath, join, normalize, Path } from '@angular-devkit/core';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { BrowserBuilderSchema } from './schema';
-import { getProjectRoot, modifyChalkOutput } from '../../utils';
+import {
+  checkUnsupportedConfig,
+  getProjectRoot,
+  modifyChalkOutput,
+} from '../../utils';
 import {
   modifyCachePaths,
   modifyEntryPoint,
@@ -26,7 +30,7 @@ export function runBuilder(
   context: BuilderContext
 ): Observable<BuilderOutput> {
   async function setup(): Promise<{
-    projectRoot: string;
+    projectRoot: Path;
     inlineOptions;
   }> {
     const projectRoot = await getProjectRoot(context);
@@ -67,6 +71,8 @@ export function runBuilder(
 
   return from(setup()).pipe(
     switchMap(({ projectRoot, inlineOptions }) => {
+      checkUnsupportedConfig(context, projectRoot);
+
       const service = new Service(projectRoot, {
         pkg: resolvePkg(context.workspaceRoot),
         inlineOptions
