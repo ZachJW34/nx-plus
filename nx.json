@@ -26,12 +26,12 @@
       "tags": [],
       "implicitDependencies": ["docusaurus"]
     },
-    "vue-plugin": {
+    "vue": {
       "tags": []
     },
-    "vue-plugin-e2e": {
+    "vue-e2e": {
       "tags": [],
-      "implicitDependencies": ["vue-plugin"]
+      "implicitDependencies": ["vue"]
     }
   }
 }
