@@ -144,7 +144,7 @@ export default function (options: AppSchematicSchema): Rule {
         name: 'build-docusaurus',
         builder: '@nx-plus/docusaurus:build-docusaurus',
         options: {
-          outputPath: `dist/docusaurus/${normalizedOptions.projectName}`,
+          outputPath: `dist/${normalizedOptions.projectRoot}`,
         },
       });
     }),

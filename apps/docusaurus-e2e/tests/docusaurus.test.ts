@@ -12,7 +12,7 @@ describe('docusaurus e2e', () => {
 
     const result = await runNxCommandAsync(`run ${appName}:build-docusaurus`);
     expect(result.stdout).toContain(
-      `Success! Generated static files in dist/docusaurus/${appName}.`
+      `Success! Generated static files in dist/apps/${appName}.`
     );
 
     done();

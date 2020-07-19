@@ -67,8 +67,8 @@ nx run my-docs-app:build-docusaurus
 
 `nx run my-docs-app:build-docusaurus [...options]`
 
-| Options            | Default           | Description                                                                    |
-| ------------------ | ----------------- | ------------------------------------------------------------------------------ |
-| `--bundleAnalyzer` | false             | Visualize size of webpack output files with an interactive zoomable treemap.   |
-| `--outputPath`     | 'dist/docusaurus' | The full path for the new output directory, relative to the current workspace. |
-| `--minify`         | true              | Build website minimizing JS bundles.                                           |
+| Options            | Default | Description                                                                    |
+| ------------------ | ------- | ------------------------------------------------------------------------------ |
+| `--bundleAnalyzer` | false   | Visualize size of webpack output files with an interactive zoomable treemap.   |
+| `--outputPath`     | -       | The full path for the new output directory, relative to the current workspace. |
+| `--minify`         | true    | Build website minimizing JS bundles.                                           |
