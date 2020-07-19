@@ -3,6 +3,7 @@ import {
   BuilderOutput,
   createBuilder,
 } from '@angular-devkit/architect';
+import { getSystemPath } from '@angular-devkit/core';
 import { start } from '@docusaurus/core/lib';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -23,7 +24,7 @@ export function runBuilder(
     switchMap(
       (projectRoot) =>
         new Observable<any>((obs) => {
-          start(projectRoot, {
+          start(getSystemPath(projectRoot), {
             port: options.port.toString(),
             host: options.host,
             hotOnly: options.hotOnly,

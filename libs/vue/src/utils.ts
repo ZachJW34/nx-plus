@@ -21,18 +21,6 @@ export async function getProjectRoot(context: BuilderContext): Promise<Path> {
   );
 }
 
-export async function getProjectSourceRoot(
-  context: BuilderContext
-): Promise<string> {
-  const projectMetadata = await context.getProjectMetadata(
-    context.target.project
-  );
-  const projectSourceRoot = projectMetadata.sourceRoot as string | undefined;
-  return projectSourceRoot
-    ? resolve(normalize(context.workspaceRoot), normalize(projectSourceRoot))
-    : undefined;
-}
-
 export function modifyChalkOutput(
   method: string,
   transform: (arg: string) => string
