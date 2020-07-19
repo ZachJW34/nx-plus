@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json-schema.org/draft-07/schema",
   "$id": "https://json-schema.org/draft-07/schema",
   "title": "BuildDocusaurus builder",
   "description": "Build website",
@@ -20,5 +19,6 @@
       "default": true
     }
   },
-  "required": []
+  "required": ["outputPath"],
+  "additionalProperties": false
 }
