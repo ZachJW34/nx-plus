@@ -3,6 +3,7 @@ import {
   BuilderOutput,
   createBuilder,
 } from '@angular-devkit/architect';
+import { getSystemPath } from '@angular-devkit/core';
 import { build } from '@docusaurus/core/lib';
 import { join } from 'path';
 import { from, Observable } from 'rxjs';
@@ -23,7 +24,7 @@ export function runBuilder(
   return from(getProjectRoot(context)).pipe(
     switchMap((projectRoot) =>
       from(
-        build(projectRoot, {
+        build(getSystemPath(projectRoot), {
           bundleAnalyzer: options.bundleAnalyzer,
           outDir: join(context.workspaceRoot, options.outputPath),
           minify: options.minify,

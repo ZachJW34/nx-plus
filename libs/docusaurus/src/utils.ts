@@ -1,9 +1,12 @@
 import { BuilderContext } from '@angular-devkit/architect';
-import { join } from 'path';
+import { normalize, Path, resolve } from '@angular-devkit/core';
 
-export async function getProjectRoot(context: BuilderContext): Promise<string> {
+export async function getProjectRoot(context: BuilderContext): Promise<Path> {
   const projectMetadata = await context.getProjectMetadata(
     context.target.project
   );
-  return join(context.workspaceRoot, projectMetadata.root as string);
+  return resolve(
+    normalize(context.workspaceRoot),
+    normalize((projectMetadata.root as string) || '')
+  );
 }
