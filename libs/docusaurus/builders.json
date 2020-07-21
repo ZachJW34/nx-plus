@@ -1,15 +1,25 @@
 {
   "$schema": "../../node_modules/@angular-devkit/architect/src/builders-schema.json",
   "builders": {
+    "browser": {
+      "implementation": "./src/builders/browser/builder",
+      "schema": "./src/builders/browser/schema.json",
+      "description": "browser builder"
+    },
+    "dev-server": {
+      "implementation": "./src/builders/dev-server/builder",
+      "schema": "./src/builders/dev-server/schema.json",
+      "description": "dev-server builder"
+    },
     "build-docusaurus": {
-      "implementation": "./src/builders/build-docusaurus/builder",
-      "schema": "./src/builders/build-docusaurus/schema.json",
-      "description": "build-docusaurus builder"
+      "implementation": "./src/builders/browser/builder",
+      "schema": "./src/builders/browser/schema.json",
+      "description": "browser builder"
     },
     "docusaurus": {
-      "implementation": "./src/builders/docusaurus/builder",
-      "schema": "./src/builders/docusaurus/schema.json",
-      "description": "docusaurus builder"
+      "implementation": "./src/builders/dev-server/builder",
+      "schema": "./src/builders/dev-server/schema.json",
+      "description": "dev-server builder"
     }
   }
 }

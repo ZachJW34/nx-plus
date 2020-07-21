@@ -10,7 +10,7 @@ describe('docusaurus e2e', () => {
     ensureNxProject('@nx-plus/docusaurus', 'dist/libs/docusaurus');
     await runNxCommandAsync(`generate @nx-plus/docusaurus:app ${appName}`);
 
-    const result = await runNxCommandAsync(`run ${appName}:build-docusaurus`);
+    const result = await runNxCommandAsync(`build ${appName}`);
     expect(result.stdout).toContain(
       `Success! Generated static files in dist/apps/${appName}.`
     );

@@ -27,13 +27,13 @@ nx g @nx-plus/docusaurus:app my-docs-app
 ### Serve the application
 
 ```
-nx run my-docs-app:docusaurus
+nx serve my-docs-app
 ```
 
 ### Build the application
 
 ```
-nx run my-docs-app:build-docusaurus
+nx build my-docs-app
 ```
 
 ## Usage
@@ -52,9 +52,9 @@ nx run my-docs-app:build-docusaurus
 | `--directory`  | 'apps'  | A directory where the project is placed.   |
 | `--skipFormat` | false   | Skip formatting files.                     |
 
-### Docusaurus server builder
+### Docusaurus dev-server builder
 
-`nx run my-docs-app:docusaurus [...options]`
+`nx serve my-docs-app [...options]`
 
 | Options     | Default     | Description                                          |
 | ----------- | ----------- | ---------------------------------------------------- |
@@ -63,9 +63,9 @@ nx run my-docs-app:build-docusaurus
 | `--hotOnly` | false       | Do not fallback to page refresh if hot reload fails. |
 | `--open`    | false       | Open page in the browser.                            |
 
-### Docusaurus build builder
+### Docusaurus browser builder
 
-`nx run my-docs-app:build-docusaurus [...options]`
+`nx build my-docs-app [...options]`
 
 | Options            | Default | Description                                                                    |
 | ------------------ | ------- | ------------------------------------------------------------------------------ |

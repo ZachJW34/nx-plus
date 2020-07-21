@@ -1,6 +1,6 @@
 {
   "$id": "https://json-schema.org/draft-07/schema",
-  "title": "Docusaurus builder",
+  "title": "DevServer builder",
   "description": "Start development server",
   "type": "object",
   "properties": {
