@@ -134,17 +134,17 @@ export default function (options: AppSchematicSchema): Rule {
         projectType,
       }).targets;
       targets.add({
-        name: 'docusaurus',
-        builder: '@nx-plus/docusaurus:docusaurus',
+        name: 'build',
+        builder: '@nx-plus/docusaurus:browser',
         options: {
-          port: 3000,
+          outputPath: `dist/${normalizedOptions.projectRoot}`,
         },
       });
       targets.add({
-        name: 'build-docusaurus',
-        builder: '@nx-plus/docusaurus:build-docusaurus',
+        name: 'serve',
+        builder: '@nx-plus/docusaurus:dev-server',
         options: {
-          outputPath: `dist/${normalizedOptions.projectRoot}`,
+          port: 3000,
         },
       });
     }),

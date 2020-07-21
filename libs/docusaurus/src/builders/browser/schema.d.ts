@@ -1,6 +1,6 @@
 import { JsonObject } from '@angular-devkit/core';
 
-export interface BuildDocusaurusBuilderSchema extends JsonObject {
+export interface BrowserBuilderSchema extends JsonObject {
   bundleAnalyzer: boolean;
   outputPath: string;
   minify: boolean;
