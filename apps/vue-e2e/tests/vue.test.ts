@@ -2,36 +2,111 @@ import { tags } from '@angular-devkit/core';
 import {
   checkFilesExist,
   ensureNxProject,
+  runCommandAsync,
   runNxCommandAsync,
   uniq,
 } from '@nrwl/nx-plugin/testing';
 describe('vue e2e', () => {
-  it('should create, lint, test, e2e and build app', async (done) => {
+  it('should generate app', async (done) => {
     const appName = uniq('app');
     ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
     await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
 
-    const lintResult = await runNxCommandAsync(`lint ${appName}`);
-    expect(lintResult.stdout).toContain('All files pass linting.');
+    await testGeneratedApp(appName, {
+      lint: true,
+      test: true,
+      e2e: true,
+      build: true,
+      buildProd: true,
+    });
 
-    const testResult = await runNxCommandAsync(`test ${appName}`);
-    expect(testResult.stderr).toContain(tags.stripIndent`
-      Test Suites: 1 passed, 1 total
-      Tests:       1 passed, 1 total
-      Snapshots:   0 total
-    `);
+    done();
+  }, 300000);
 
-    const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e --headless`);
-    expect(e2eResult.stdout).toContain('All specs passed!');
+  describe('--routing', () => {
+    it('should generate app with routing', async (done) => {
+      const appName = uniq('app');
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+      await runNxCommandAsync(`generate @nx-plus/vue:app ${appName} --routing`);
 
-    const buildResult = await runNxCommandAsync(`build ${appName}`);
-    expect(buildResult.stdout).toContain('Build complete.');
+      await testGeneratedApp(appName, {
+        lint: true,
+        test: false,
+        e2e: true,
+        build: true,
+        buildProd: true,
+      });
+
+      expect(() =>
+        checkFilesExist(
+          `dist/apps/${appName}/js/about.js`,
+          `dist/apps/${appName}/js/about.js.map`
+        )
+      ).not.toThrow();
+
+      done();
+    }, 300000);
+  });
+
+  describe('--style scss', () => {
+    it('should generate app with scss', async (done) => {
+      const appName = uniq('app');
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+      await runNxCommandAsync(
+        `generate @nx-plus/vue:app ${appName} --style scss`
+      );
+
+      await testGeneratedApp(appName, {
+        lint: false,
+        test: false,
+        e2e: false,
+        build: true,
+        buildProd: true,
+      });
+
+      done();
+    }, 300000);
+  });
+
+  describe('vuex', () => {
+    it('should generate app and add vuex', async (done) => {
+      const appName = uniq('app');
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+      await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
+      await runNxCommandAsync(`generate @nx-plus/vue:vuex ${appName}`);
+
+      await testGeneratedApp(appName, {
+        lint: true,
+        test: false,
+        e2e: false,
+        build: true,
+        buildProd: true,
+      });
+
+      done();
+    }, 300000);
+  });
+
+  it('should generate app with routing and scss, and add vuex', async (done) => {
+    const appName = uniq('app');
+    ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+    await runNxCommandAsync(
+      `generate @nx-plus/vue:app ${appName} --routing --style scss`
+    );
+    await runNxCommandAsync(`generate @nx-plus/vue:vuex ${appName}`);
+
+    await testGeneratedApp(appName, {
+      lint: true,
+      test: false,
+      e2e: true,
+      build: true,
+      buildProd: true,
+    });
+
     expect(() =>
       checkFilesExist(
-        `dist/apps/${appName}/index.html`,
-        `dist/apps/${appName}/favicon.ico`,
-        `dist/apps/${appName}/js/app.js`,
-        `dist/apps/${appName}/img`
+        `dist/apps/${appName}/js/about.js`,
+        `dist/apps/${appName}/js/about.js.map`
       )
     ).not.toThrow();
 
@@ -39,7 +114,7 @@ describe('vue e2e', () => {
   }, 300000);
 
   describe('--directory subdir', () => {
-    it('should create and build app', async (done) => {
+    it('should generate app', async (done) => {
       const appName = uniq('app');
       ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
@@ -53,7 +128,7 @@ describe('vue e2e', () => {
           `dist/apps/subdir/${appName}/index.html`,
           `dist/apps/subdir/${appName}/favicon.ico`,
           `dist/apps/subdir/${appName}/js/app.js`,
-          `dist/apps/subdir/${appName}/img`
+          `dist/apps/subdir/${appName}/img/logo.png`
         )
       ).not.toThrow();
 
@@ -61,3 +136,65 @@ describe('vue e2e', () => {
     }, 300000);
   });
 });
+
+async function testGeneratedApp(
+  appName: string,
+  options: {
+    lint: boolean;
+    test: boolean;
+    e2e: boolean;
+    build: boolean;
+    buildProd: boolean;
+  }
+): Promise<void> {
+  if (options.lint) {
+    const lintResult = await runNxCommandAsync(`lint ${appName}`);
+    expect(lintResult.stdout).toContain('All files pass linting.');
+  }
+
+  if (options.test) {
+    const testResult = await runNxCommandAsync(`test ${appName}`);
+    expect(testResult.stderr).toContain(tags.stripIndent`
+      Test Suites: 1 passed, 1 total
+      Tests:       1 passed, 1 total
+      Snapshots:   0 total
+    `);
+  }
+
+  if (options.e2e) {
+    const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e --headless`);
+    expect(e2eResult.stdout).toContain('All specs passed!');
+  }
+
+  if (options.build) {
+    const buildResult = await runNxCommandAsync(`build ${appName}`);
+    expect(buildResult.stdout).toContain('Build complete.');
+    expect(() =>
+      checkFilesExist(
+        `dist/apps/${appName}/index.html`,
+        `dist/apps/${appName}/favicon.ico`,
+        `dist/apps/${appName}/js/app.js`,
+        `dist/apps/${appName}/img/logo.png`
+      )
+    ).not.toThrow();
+  }
+
+  if (options.buildProd) {
+    const buildResult = await runCommandAsync(
+      `../../../node_modules/.bin/cross-env NODE_ENV=production node ./node_modules/@nrwl/cli/bin/nx.js build ${appName} --prod --filenameHashing false`
+    );
+    expect(buildResult.stdout).toContain('Build complete.');
+    expect(() =>
+      checkFilesExist(
+        `dist/apps/${appName}/index.html`,
+        `dist/apps/${appName}/favicon.ico`,
+        `dist/apps/${appName}/js/app.js`,
+        `dist/apps/${appName}/js/app.js.map`,
+        `dist/apps/${appName}/js/chunk-vendors.js`,
+        `dist/apps/${appName}/js/chunk-vendors.js.map`,
+        `dist/apps/${appName}/img/logo.png`,
+        `dist/apps/${appName}/css/app.css`
+      )
+    ).not.toThrow();
+  }
+}
