@@ -48,12 +48,48 @@ describe('vue e2e', () => {
     }, 300000);
   });
 
-  describe('--style scss', () => {
+  describe('--style', () => {
     it('should generate app with scss', async (done) => {
       const appName = uniq('app');
       ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
         `generate @nx-plus/vue:app ${appName} --style scss`
+      );
+
+      await testGeneratedApp(appName, {
+        lint: false,
+        test: false,
+        e2e: false,
+        build: true,
+        buildProd: true,
+      });
+
+      done();
+    }, 300000);
+
+    it('should generate app with stylus', async (done) => {
+      const appName = uniq('app');
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+      await runNxCommandAsync(
+        `generate @nx-plus/vue:app ${appName} --style stylus`
+      );
+
+      await testGeneratedApp(appName, {
+        lint: false,
+        test: false,
+        e2e: false,
+        build: true,
+        buildProd: true,
+      });
+
+      done();
+    }, 300000);
+
+    it('should generate app with less', async (done) => {
+      const appName = uniq('app');
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+      await runNxCommandAsync(
+        `generate @nx-plus/vue:app ${appName} --style less`
       );
 
       await testGeneratedApp(appName, {
@@ -87,12 +123,10 @@ describe('vue e2e', () => {
     }, 300000);
   });
 
-  it('should generate app with routing and scss, and add vuex', async (done) => {
+  it('should generate app with routing and add vuex', async (done) => {
     const appName = uniq('app');
     ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
-    await runNxCommandAsync(
-      `generate @nx-plus/vue:app ${appName} --routing --style scss`
-    );
+    await runNxCommandAsync(`generate @nx-plus/vue:app ${appName} --routing`);
     await runNxCommandAsync(`generate @nx-plus/vue:vuex ${appName}`);
 
     await testGeneratedApp(appName, {
