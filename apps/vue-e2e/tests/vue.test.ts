@@ -2,10 +2,11 @@ import { tags } from '@angular-devkit/core';
 import {
   checkFilesExist,
   ensureNxProject,
-  runCommandAsync,
   runNxCommandAsync,
+  tmpProjPath,
   uniq,
 } from '@nrwl/nx-plugin/testing';
+import * as cp from 'child_process';
 describe('vue e2e', () => {
   it('should generate app', async (done) => {
     const appName = uniq('app');
@@ -214,9 +215,7 @@ async function testGeneratedApp(
   }
 
   if (options.buildProd) {
-    const buildResult = await runCommandAsync(
-      `../../../node_modules/.bin/cross-env NODE_ENV=production node ./node_modules/@nrwl/cli/bin/nx.js build ${appName} --prod --filenameHashing false`
-    );
+    const buildResult = await runBuildProdAsync(appName);
     expect(buildResult.stdout).toContain('Build complete.');
     expect(() =>
       checkFilesExist(
@@ -231,4 +230,31 @@ async function testGeneratedApp(
       )
     ).not.toThrow();
   }
+}
+
+// Vue CLI requires `NODE_ENV` be set to `production` to produce
+// a production build. Jest sets `NODE_ENV` to `test` by default.
+// This function is very similar to `runCommandAsync`.
+// https://github.com/nrwl/nx/blob/9.5.1/packages/nx-plugin/src/utils/testing-utils/async-commands.ts#L10
+function runBuildProdAsync(
+  appName: string
+): Promise<{
+  stdout: string;
+  stderr: string;
+}> {
+  return new Promise((resolve, reject) => {
+    cp.exec(
+      `node ./node_modules/@nrwl/cli/bin/nx.js build ${appName} --prod --filenameHashing false`,
+      {
+        cwd: tmpProjPath(),
+        env: { ...process.env, NODE_ENV: 'production' },
+      },
+      (err, stdout, stderr) => {
+        if (err) {
+          reject(err);
+        }
+        resolve({ stdout, stderr });
+      }
+    );
+  });
 }
