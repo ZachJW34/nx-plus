@@ -15,12 +15,6 @@ export function runBuilder(
   options: BrowserBuilderSchema,
   context: BuilderContext
 ): Observable<BuilderOutput> {
-  if (context.builder.builderName === 'build-docusaurus') {
-    context.logger.warn(
-      'The "@nx-plus/docusaurus:build-docusaurus" builder has been deprecated in favor of "@nx-plus/docusaurus:browser". Support will be removed in version 1.0.0.'
-    );
-  }
-
   return from(getProjectRoot(context)).pipe(
     switchMap((projectRoot) =>
       from(

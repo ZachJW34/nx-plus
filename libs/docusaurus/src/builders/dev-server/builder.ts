@@ -14,12 +14,6 @@ export function runBuilder(
   options: DevServerBuilderSchema,
   context: BuilderContext
 ): Observable<BuilderOutput> {
-  if (context.builder.builderName === 'docusaurus') {
-    context.logger.warn(
-      'The "@nx-plus/docusaurus:docusaurus" builder has been deprecated in favor of "@nx-plus/docusaurus:dev-server". Support will be removed in version 1.0.0.'
-    );
-  }
-
   return from(getProjectRoot(context)).pipe(
     switchMap(
       (projectRoot) =>

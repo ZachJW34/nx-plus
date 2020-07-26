@@ -10,16 +10,6 @@
       "implementation": "./src/builders/dev-server/builder",
       "schema": "./src/builders/dev-server/schema.json",
       "description": "dev-server builder"
-    },
-    "build-docusaurus": {
-      "implementation": "./src/builders/browser/builder",
-      "schema": "./src/builders/browser/schema.json",
-      "description": "browser builder"
-    },
-    "docusaurus": {
-      "implementation": "./src/builders/dev-server/builder",
-      "schema": "./src/builders/dev-server/schema.json",
-      "description": "dev-server builder"
     }
   }
 }
