@@ -72,3 +72,39 @@ nx build my-docs-app
 | `--bundleAnalyzer` | false   | Visualize size of webpack output files with an interactive zoomable treemap.   |
 | `--outputPath`     | -       | The full path for the new output directory, relative to the current workspace. |
 | `--minify`         | true    | Build website minimizing JS bundles.                                           |
+
+## Updating Nx Plus Docusaurus
+
+Nx Plus Docusaurus provides migrations which help you stay up to date with the latest version of Nx Plus Docusaurus.
+
+Not only do we migrate the version of Nx Plus Docusaurus, but we also update the versions of dependencies which we install such as `@docusaurus/core` and `react`.
+
+We recommend waiting for Nx Plus Docusaurus to update these dependencies for you as we verify that these versions work together.
+
+### How to Migrate
+
+#### Generate migrations.json
+
+All you have to do to update Nx Plus Docusaurus to the latest version is run the following:
+
+```
+nx migrate @nx-plus/docusaurus
+nx migrate @nx-plus/docusaurus@version # you can also specify version
+```
+
+This will fetch the specified version of `@nx-plus/docusaurus`, analyze the dependencies and fetch all the dependent packages. The process will keep going until the whole tree of dependencies is resolved. This will result in:
+
+- `package.json` being updated
+- `migrations.json` being generated
+
+At this point, no packages have been installed, and no other files have been touched.
+
+Now, you can inspect `package.json` to see if the changes make sense and install the packages by running `npm install` or `yarn`.
+
+#### Run Migrations
+
+`migrations.json` contains the transformations that must run to prepare the workspace to the newly installed versions of packages. To run all the migrations, invoke:
+
+```
+nx migrate --run-migrations=migrations.json
+```

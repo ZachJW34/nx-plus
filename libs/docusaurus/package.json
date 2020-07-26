@@ -31,6 +31,10 @@
     "@angular-devkit/architect": "~0.901.0",
     "@angular-devkit/core": "~9.1.0",
     "@angular-devkit/schematics": "~9.1.0",
-    "rxjs": "6.5.4"
+    "rxjs": "6.5.4",
+    "typescript": "~3.8.3"
+  },
+  "ng-update": {
+    "migrations": "./migrations.json"
   }
 }

@@ -49,6 +49,11 @@
                 "input": "./libs/docusaurus",
                 "glob": "builders.json",
                 "output": "."
+              },
+              {
+                "input": "./libs/docusaurus",
+                "glob": "migrations.json",
+                "output": "."
               }
             ]
           }
