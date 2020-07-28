@@ -14,7 +14,7 @@ jobs:
       - run: yarn affected:test --all
       - run:
           command: yarn affected:e2e --all
-          no_output_timeout: 20m
+          no_output_timeout: 30m
 workflows:
   default:
     jobs:

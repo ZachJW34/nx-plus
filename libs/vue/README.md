@@ -93,6 +93,23 @@ nx serve my-app
 | -------------- | ------- | ---------------------- |
 | `--skipFormat` | `false` | Skip formatting files. |
 
+### Library
+
+`nx g @nx-plus/vue:lib <name> [options]`
+
+| Arguments | Description               |
+| --------- | ------------------------- |
+| `<name>`  | The name of your library. |
+
+| Options            | Default | Description                                             |
+| ------------------ | ------- | ------------------------------------------------------- |
+| `--tags`           | -       | Tags to use for linting (comma-delimited).              |
+| `--directory`      | `libs`  | A directory where the project is placed.                |
+| `--unitTestRunner` | `jest`  | Test runner to use for unit tests.                      |
+| `--skipFormat`     | `false` | Skip formatting files.                                  |
+| `--skipTsConfig`   | `false` | Do not update tsconfig.json for development experience. |
+| `--publishable`    | `false` | Create a buildable library.                             |
+
 ## Builders (i.e. task runners)
 
 ### Dev Server
@@ -150,6 +167,33 @@ nx serve my-app
 | `css.extract`                | `false`       | Whether to extract CSS in your components into a standalone CSS file (instead of inlined in JavaScript and injected dynamically).                                                                                                    |
 | `css.sourceMap`              | `false`       | Whether to enable source maps for CSS. Setting this to `true` may affect build performance.                                                                                                                                          |
 | `css.loaderOptions`          | `{}`          | Pass options to CSS-related loaders.                                                                                                                                                                                                 |
+
+### Library
+
+`nx build <name> [options]`
+
+| Arguments | Description               |
+| --------- | ------------------------- |
+| `<name>`  | The name of your library. |
+
+| Options                      | Default                | Description                                                                                                                                                                                                                          |
+| ---------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--dest`                     | -                      | Specify output directory.                                                                                                                                                                                                            |
+| `--clean`                    | `true`                 | Remove the dist directory before building the project.                                                                                                                                                                               |
+| `--report`                   | `false`                | Generate report.html to help analyze bundle content.                                                                                                                                                                                 |
+| `--reportJson`               | `false`                | Generate report.json to help analyze bundle content.                                                                                                                                                                                 |
+| `--skipPlugins`              | -                      | Comma-separated list of plugin names to skip for this run.                                                                                                                                                                           |
+| `--watch`                    | `false`                | Watch for changes.                                                                                                                                                                                                                   |
+| `--entry`                    | -                      | The full path for the main entry point to your library, relative to the current workspace.                                                                                                                                           |
+| `--tsConfig`                 | -                      | The full path for the TypeScript configuration file, relative to the current workspace.                                                                                                                                              |
+| `--inlineVue`                | `false`                | Include the Vue module in the final bundle of library.                                                                                                                                                                               |
+| `--formats`                  | `commonjs,umd,umd-min` | List of output formats for library builds.                                                                                                                                                                                           |
+| `--name`                     | -                      | Name for library.                                                                                                                                                                                                                    |
+| `--filename`                 | -                      | File name for output.                                                                                                                                                                                                                |
+| `css.requireModuleExtension` | `true`                 | By default, only files that end in `*.module.[ext]` are treated as CSS modules. Setting this to `false` will allow you to drop `.module` in the filenames and treat all `*.(css\|scss\|sass\|less\|styl(us)?)` files as CSS modules. |
+| `css.extract`                | `true`                 | Whether to extract CSS in your components into a standalone CSS file (instead of inlined in JavaScript and injected dynamically).                                                                                                    |
+| `css.sourceMap`              | `false`                | Whether to enable source maps for CSS. Setting this to `true` may affect build performance.                                                                                                                                          |
+| `css.loaderOptions`          | `{}`                   | Pass options to CSS-related loaders.                                                                                                                                                                                                 |
 
 ### Linting
 

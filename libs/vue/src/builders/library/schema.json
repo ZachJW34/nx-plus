@@ -1,0 +1,97 @@
+{
+  "$id": "https://json-schema.org/draft-07/schema",
+  "title": "Library builder",
+  "description": "Build library",
+  "type": "object",
+  "properties": {
+    "dest": {
+      "type": "string",
+      "description": "Specify output directory."
+    },
+    "clean": {
+      "type": "boolean",
+      "description": "Remove the dist directory before building the project.",
+      "default": true
+    },
+    "report": {
+      "type": "boolean",
+      "description": "Generate report.html to help analyze bundle content.",
+      "default": false
+    },
+    "reportJson": {
+      "type": "boolean",
+      "description": "Generate report.json to help analyze bundle content.",
+      "default": false
+    },
+    "skipPlugins": {
+      "type": "string",
+      "description": "Comma-separated list of plugin names to skip for this run."
+    },
+    "entry": {
+      "type": "string",
+      "description": "The full path for the main entry point to your library, relative to the current workspace."
+    },
+    "watch": {
+      "type": "boolean",
+      "description": "Watch for changes.",
+      "default": false
+    },
+    "tsConfig": {
+      "type": "string",
+      "description": "The full path for the TypeScript configuration file, relative to the current workspace."
+    },
+    "inlineVue": {
+      "type": "boolean",
+      "description": "Include the Vue module in the final bundle of library.",
+      "default": false
+    },
+    "formats": {
+      "type": "string",
+      "description": "List of output formats for library builds.",
+      "default": "commonjs,umd,umd-min"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name for library."
+    },
+    "filename": {
+      "type": "string",
+      "description": "File name for output."
+    },
+    "css": {
+      "type": "object",
+      "properties": {
+        "requireModuleExtension": {
+          "type": "boolean",
+          "description": "By default, only files that ends in *.module.[ext] are treated as CSS modules. Setting this to false will allow you to drop .module in the filenames and treat all *.(css|scss|sass|less|styl(us)?) files as CSS modules.",
+          "default": true
+        },
+        "extract": {
+          "description": "Whether to extract CSS in your components into a standalone CSS files (instead of inlined in JavaScript and injected dynamically).",
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "default": true
+        },
+        "sourceMap": {
+          "type": "boolean",
+          "description": "Whether to enable source maps for CSS. Setting this to true may affect build performance.",
+          "default": false
+        },
+        "loaderOptions": {
+          "type": "object",
+          "description": "Pass options to CSS-related loaders.",
+          "default": {}
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["dest", "entry", "tsConfig"],
+  "additionalProperties": false
+}
