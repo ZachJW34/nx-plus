@@ -13,6 +13,12 @@
       "factory": "./src/schematics/vuex/schematic",
       "schema": "./src/schematics/vuex/schema.json",
       "description": "vuex schematic"
+    },
+    "library": {
+      "factory": "./src/schematics/library/schematic",
+      "schema": "./src/schematics/library/schema.json",
+      "description": "library schematic",
+      "aliases": ["lib"]
     }
   }
 }

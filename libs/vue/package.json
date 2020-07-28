@@ -37,6 +37,7 @@
     "@nrwl/jest": "^9.0.0",
     "@nrwl/linter": "^9.0.0",
     "@vue/cli-shared-utils": "~4.3.0",
+    "copy-webpack-plugin": "^5.1.1",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "rxjs": "6.5.4",
