@@ -12,7 +12,9 @@ jobs:
       - run: yarn format:check --all
       - run: yarn affected:lint --all
       - run: yarn affected:test --all
-      - run: yarn affected:e2e --all
+      - run:
+          command: yarn affected:e2e --all
+          no_output_timeout: 20m
 workflows:
   default:
     jobs:
