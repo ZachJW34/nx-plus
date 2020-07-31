@@ -80,7 +80,7 @@ function getDocusaurusConfig(
   return moduleExports.right as ts.ObjectLiteralExpression;
 }
 
-function updateDocusaurusConfig(path: string): Rule {
+export function updateDocusaurusConfig(path: string): Rule {
   return (tree: Tree) => {
     const docusaurusConfig = getDocusaurusConfig(tree, path);
     const linksProperty = getLinksProperty(docusaurusConfig);
