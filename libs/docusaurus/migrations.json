@@ -4,6 +4,11 @@
       "version": "0.4.0",
       "description": "fix docusaurus.config.js",
       "factory": "./src/migrations/update-0.4.0/update-0.4.0"
+    },
+    "update-0.4.1": {
+      "version": "0.4.1",
+      "description": "fix docusaurus.config.js for old architect targets",
+      "factory": "./src/migrations/update-0.4.1/update-0.4.1"
     }
   },
   "packageJsonUpdates": {
