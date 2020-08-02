@@ -1,46 +1,60 @@
-# Nx Docusaurus
+# Nx Plus Docusaurus
 
-> First class support for [Docusaurus](https://v2.docusaurus.io/) in your Nx workspace.
+> First class support for [Docusaurus](https://v2.docusaurus.io/) in your [Nx](https://nx.dev/) workspace.
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/ZachJW34/nx-plus/master/libs/docusaurus/nx-plus-docusaurus.png">
 </div>
 
+## Contents
+
+- [Prerequisite](#prerequisite)
+- [Getting Started](#getting-started)
+- [Schematics (i.e. code generation)](#schematics-ie-code-generation)
+- [Builders (i.e. task runners)](#builders-ie-task-runners)
+- [Updating Nx Plus Docusaurus](#updating-nx-plus-docusaurus)
+
+## Prerequisite
+
+If you have not already, [create an Nx workspace](https://github.com/nrwl/nx#creating-an-nx-workspace) with the following:
+
+```
+npx create-nx-workspace@^9.0.0
+```
+
+Nx Plus Docusaurus has support for Nx 9. Support for Nx 10 will be added soon.
+
+When creating your Nx workspace you may be prompted to choose a preset, **we do not support the `oss` preset at this time**.
+
 ## Getting Started
 
-### Add the Plugin
+### Install Plugin
 
 ```
-# With npm
-npm install --save-dev @nx-plus/docusaurus
+# npm
+npm install @nx-plus/docusaurus --save-dev
 
-# With yarn
-yarn add --dev @nx-plus/docusaurus
+# yarn
+yarn add @nx-plus/docusaurus --dev
 ```
 
-### Generate a Docusaurus application
+### Generate Your App
 
 ```
-nx g @nx-plus/docusaurus:app my-docs-app
+nx g @nx-plus/docusaurus:app my-app
 ```
 
-### Serve the application
+### Serve Your App
 
 ```
-nx serve my-docs-app
+nx serve my-app
 ```
 
-### Build the application
+## Schematics (i.e. code generation)
 
-```
-nx build my-docs-app
-```
+### Application
 
-## Usage
-
-### Docusaurus schematic
-
-`nx g @nx-plus/docusaurus:app <name> [...options]`
+`nx g @nx-plus/docusaurus:app <name> [options]`
 
 | Arguments | Description           |
 | --------- | --------------------- |
@@ -49,29 +63,39 @@ nx build my-docs-app
 | Options        | Default | Description                                |
 | -------------- | ------- | ------------------------------------------ |
 | `--tags`       | -       | Tags to use for linting (comma-delimited). |
-| `--directory`  | 'apps'  | A directory where the project is placed.   |
-| `--skipFormat` | false   | Skip formatting files.                     |
+| `--directory`  | `apps`  | A directory where the project is placed.   |
+| `--skipFormat` | `false` | Skip formatting files.                     |
 
-### Docusaurus dev-server builder
+## Builders (i.e. task runners)
 
-`nx serve my-docs-app [...options]`
+### Dev Server
+
+`nx serve <name> [options]`
+
+| Arguments | Description           |
+| --------- | --------------------- |
+| `<name>`  | The name of your app. |
 
 | Options     | Default     | Description                                          |
 | ----------- | ----------- | ---------------------------------------------------- |
-| `--port`    | 3000        | Use specified port.                                  |
-| `--host`    | 'localhost' | Use specified host.                                  |
-| `--hotOnly` | false       | Do not fallback to page refresh if hot reload fails. |
-| `--open`    | false       | Open page in the browser.                            |
+| `--port`    | `3000`      | Use specified port.                                  |
+| `--host`    | `localhost` | Use specified host.                                  |
+| `--hotOnly` | `false`     | Do not fallback to page refresh if hot reload fails. |
+| `--open`    | `false`     | Open page in the browser.                            |
 
-### Docusaurus browser builder
+### Browser
 
-`nx build my-docs-app [...options]`
+`nx build <name> [options]`
+
+| Arguments | Description           |
+| --------- | --------------------- |
+| `<name>`  | The name of your app. |
 
 | Options            | Default | Description                                                                    |
 | ------------------ | ------- | ------------------------------------------------------------------------------ |
-| `--bundleAnalyzer` | false   | Visualize size of webpack output files with an interactive zoomable treemap.   |
+| `--bundleAnalyzer` | `false` | Visualize size of webpack output files with an interactive zoomable treemap.   |
 | `--outputPath`     | -       | The full path for the new output directory, relative to the current workspace. |
-| `--minify`         | true    | Build website minimizing JS bundles.                                           |
+| `--minify`         | `true`  | Build website minimizing JS bundles.                                           |
 
 ## Updating Nx Plus Docusaurus
 
