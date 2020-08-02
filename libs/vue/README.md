@@ -1,10 +1,55 @@
-# Nx Vue
+# Nx Plus Vue
 
-> First class support for [Vue](https://vuejs.org/) in your Nx workspace.
+> First class support for [Vue](https://vuejs.org/) in your [Nx](https://nx.dev/) workspace.
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/ZachJW34/nx-plus/master/libs/vue/nx-plus-vue.png">
 </div>
+
+## Contents
+
+- [Prerequisite](#prerequisite)
+- [Getting Started](#getting-started)
+- [Nx Dependency Graph Support](#nx-dependency-graph-support)
+- [Schematics (i.e. code generation)](#schematics-ie-code-generation)
+- [Builders (i.e. task runners)](#builders-ie-task-runners)
+- [Updating Nx Plus Vue](#updating-nx-plus-vue)
+
+## Prerequisite
+
+If you have not already, [create an Nx workspace](https://github.com/nrwl/nx#creating-an-nx-workspace) with the following:
+
+```
+npx create-nx-workspace@^9.0.0
+```
+
+Nx Plus Vue has support for Nx 9. Support for Nx 10 will be added soon.
+
+When creating your Nx workspace you may be prompted to choose a preset, **we do not support the `oss` preset at this time**.
+
+## Getting Started
+
+### Install Plugin
+
+```
+# npm
+npm install @nx-plus/vue --save-dev
+
+# yarn
+yarn add @nx-plus/vue --dev
+```
+
+### Generate Your App
+
+```
+nx g @nx-plus/vue:app my-app
+```
+
+### Serve Your App
+
+```
+nx serve my-app
+```
 
 ## Nx Dependency Graph Support
 
@@ -16,41 +61,11 @@
 
 **Help us!** We dislike this hack just as much as you do. Please give this Nx [issue](https://github.com/nrwl/nx/issues/2960) a 👍 so that we can remove this hack in the future.
 
-## Getting Started
+## Schematics (i.e. code generation)
 
-### Add the Plugin
+### Application
 
-```
-# With npm
-npm install --save-dev @nx-plus/vue
-
-# With yarn
-yarn add --dev @nx-plus/vue
-```
-
-### Generate a Vue application
-
-```
-nx g @nx-plus/vue:app my-app
-```
-
-### Serve the application
-
-```
-nx serve my-app
-```
-
-### Build the application
-
-```
-nx build my-app
-```
-
-## Usage
-
-### App schematic
-
-`nx g @nx-plus/vue:app <name> [...options]`
+`nx g @nx-plus/vue:app <name> [options]`
 
 | Arguments | Description           |
 | --------- | --------------------- |
@@ -66,9 +81,9 @@ nx build my-app
 | `--routing`        | `false`   | Generate routing configuration.                |
 | `--skipFormat`     | `false`   | Skip formatting files.                         |
 
-### Vuex schematic
+### Vuex
 
-`nx g @nx-plus/vue:vuex <project> [...options]`
+`nx g @nx-plus/vue:vuex <project> [options]`
 
 | Arguments   | Description                                            |
 | ----------- | ------------------------------------------------------ |
@@ -78,9 +93,15 @@ nx build my-app
 | -------------- | ------- | ---------------------- |
 | `--skipFormat` | `false` | Skip formatting files. |
 
-### Dev server builder
+## Builders (i.e. task runners)
 
-`nx serve my-app [...options]`
+### Dev Server
+
+`nx serve <name> [options]`
+
+| Arguments | Description           |
+| --------- | --------------------- |
+| `<name>`  | The name of your app. |
 
 | Options                      | Default       | Description                                                                                                                                                                                                                          |
 | ---------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -102,9 +123,13 @@ nx build my-app
 | `css.loaderOptions`          | `{}`          | Pass options to CSS-related loaders.                                                                                                                                                                                                 |
 | `devServer`                  | `{}`          | All options for `webpack-dev-server` are supported.                                                                                                                                                                                  |
 
-### Browser builder
+### Browser
 
-`nx build my-app [...options]`
+`nx build <name> [options]`
+
+| Arguments | Description           |
+| --------- | --------------------- |
+| `<name>`  | The name of your app. |
 
 | Options                      | Default       | Description                                                                                                                                                                                                                          |
 | ---------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -126,20 +151,56 @@ nx build my-app
 | `css.sourceMap`              | `false`       | Whether to enable source maps for CSS. Setting this to `true` may affect build performance.                                                                                                                                          |
 | `css.loaderOptions`          | `{}`          | Pass options to CSS-related loaders.                                                                                                                                                                                                 |
 
-### Lint builder
+### Linting
 
-`nx lint my-app [...options]`
+`nx lint <name> [options]`
 
 We use `@nrwl/linter` for linting, so the options are as documented [here](https://github.com/nrwl/nx/blob/master/docs/angular/api-linter/builders/lint.md#lint).
 
-### Jest builder
+### Unit Testing
 
-`nx test my-app [...options]`
+`nx test <name> [options]`
 
 We use `@nrwl/jest` for unit testing, so the options are as documented [here](https://github.com/nrwl/nx/blob/master/docs/angular/api-jest/builders/jest.md#jest).
 
-### Cypress builder
+### E2E Testing
 
-`nx e2e my-app-e2e [...options]`
+`nx e2e <name> [options]`
 
 We use `@nrwl/cypress` for e2e testing, so the options are as documented [here](https://github.com/nrwl/nx/blob/master/docs/angular/api-cypress/builders/cypress.md#cypress).
+
+## Updating Nx Plus Vue
+
+Nx Plus Vue provides migrations which help you stay up to date with the latest version of Nx Plus Vue.
+
+Not only do we migrate the version of Nx Plus Vue, but we also update the versions of dependencies which we install such as `vue` and `vue-router`.
+
+We recommend waiting for Nx Plus Vue to update these dependencies for you as we verify that these versions work together.
+
+### How to Migrate
+
+#### Generate migrations.json
+
+All you have to do to update Nx Plus Vue to the latest version is run the following:
+
+```
+nx migrate @nx-plus/vue
+nx migrate @nx-plus/vue@version # you can also specify version
+```
+
+This will fetch the specified version of `@nx-plus/vue`, analyze the dependencies and fetch all the dependent packages. The process will keep going until the whole tree of dependencies is resolved. This will result in:
+
+- `package.json` being updated
+- `migrations.json` being generated
+
+At this point, no packages have been installed, and no other files have been touched.
+
+Now, you can inspect `package.json` to see if the changes make sense and install the packages by running `npm install` or `yarn`.
+
+#### Run Migrations
+
+`migrations.json` contains the transformations that must run to prepare the workspace to the newly installed versions of packages. To run all the migrations, invoke:
+
+```
+nx migrate --run-migrations=migrations.json
+```
