@@ -61,3 +61,27 @@ export function checkUnsupportedConfig(
     );
   }
 }
+
+export function resolveConfigureWebpack(
+  vueNxConfigPath: string,
+  projectRoot: string
+) {
+  let vueConfig = {
+    configureWebpack: {},
+  };
+
+  if (vueNxConfigPath) {
+    const host = new virtualFs.SyncDelegateHost(new NodeJsSyncHost());
+    const vueNxConfigExists = host.exists(
+      join(normalize(projectRoot), vueNxConfigPath)
+    );
+
+    if (vueNxConfigExists) {
+      const path = join(normalize(projectRoot), vueNxConfigPath);
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      vueConfig = require(path);
+    }
+  }
+
+  return vueConfig?.configureWebpack ?? {};
+}

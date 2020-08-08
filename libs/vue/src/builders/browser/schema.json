@@ -96,6 +96,11 @@
         }
       },
       "additionalProperties": false
+    },
+    "vueNxConfigPath": {
+      "type": "string",
+      "description": "The path to the vue-nx.config.js file, relative to the current workspace.",
+      "default": "vue-nx.config.js"
     }
   },
   "required": ["dest", "index", "main", "tsConfig"],

@@ -4,7 +4,14 @@ import {
   createBuilder,
   targetFromTargetString,
 } from '@angular-devkit/architect';
-import { JsonObject, Path } from '@angular-devkit/core';
+import {
+  getSystemPath,
+  join,
+  JsonObject,
+  normalize,
+  Path,
+  virtualFs,
+} from '@angular-devkit/core';
 import { cliCommand } from '@nrwl/workspace/src/core/file-utils';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -14,6 +21,7 @@ import {
   checkUnsupportedConfig,
   getProjectRoot,
   modifyChalkOutput,
+  resolveConfigureWebpack,
 } from '../../utils';
 import {
   modifyCachePaths,
@@ -22,6 +30,7 @@ import {
   modifyTsConfigPaths,
   modifyTypescriptAliases,
 } from '../../webpack';
+import { NodeJsSyncHost } from '@angular-devkit/core/node';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Service = require('@vue/cli-service/lib/Service');
@@ -74,6 +83,10 @@ export function runBuilder(
     >({ ...rawBrowserOptions, ...overrides }, browserName);
 
     const projectRoot = await getProjectRoot(context);
+    const configureWebpack = resolveConfigureWebpack(
+      options.vueNxConfigPath,
+      projectRoot
+    );
 
     const inlineOptions = {
       chainWebpack: (config) => {
@@ -90,7 +103,9 @@ export function runBuilder(
             apply: (compiler) => {
               compiler.hooks.afterEnvironment.tap('vue-cli', () => {
                 // eslint-disable-next-line @typescript-eslint/no-empty-function
-                compiler.watchFileSystem = { watch: () => {} };
+                compiler.watchFileSystem = {
+                  watch: () => {},
+                };
               });
             },
           });
@@ -99,6 +114,7 @@ export function runBuilder(
       publicPath: browserOptions.publicPath,
       filenameHashing: browserOptions.filenameHashing,
       css: browserOptions.css,
+      configureWebpack,
       devServer: options.devServer,
     };
 

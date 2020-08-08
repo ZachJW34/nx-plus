@@ -89,6 +89,11 @@
       },
       "additionalProperties": false
     },
+    "vueNxConfigPath": {
+      "type": "string",
+      "description": "The path to the vue-nx.config.js file, relative to the current project.",
+      "default": "vue-nx.config.js"
+    },
     "devServer": {
       "type": "object",
       "description": "All options for webpack-dev-server are supported.",
