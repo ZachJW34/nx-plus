@@ -9,6 +9,11 @@
       "version": "0.4.1",
       "description": "fix docusaurus.config.js for old architect targets",
       "factory": "./src/migrations/update-0.4.1/update-0.4.1"
+    },
+    "update-0.6.0": {
+      "version": "0.6.0",
+      "description": "update docusaurus dependencies",
+      "factory": "./src/migrations/update-0.6.0/update-0.6.0"
     }
   },
   "packageJsonUpdates": {
@@ -21,6 +26,19 @@
         },
         "@docusaurus/preset-classic": {
           "version": "^2.0.0-alpha.59",
+          "alwaysAddToPackageJson": false
+        }
+      }
+    },
+    "0.6.0": {
+      "version": "0.6.0",
+      "packages": {
+        "@docusaurus/core": {
+          "version": "^2.0.0-alpha.61",
+          "alwaysAddToPackageJson": false
+        },
+        "@docusaurus/preset-classic": {
+          "version": "^2.0.0-alpha.61",
           "alwaysAddToPackageJson": false
         }
       }
