@@ -23,7 +23,9 @@
     "update": "nx migrate latest",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "create-playground": "node tools/scripts/create-playground.js",
+    "update-playground": "node tools/scripts/update-playground.js"
   },
   "husky": {
     "hooks": {
@@ -45,6 +47,7 @@
     "@nrwl/jest": "9.4.5",
     "@nrwl/nx-plugin": "9.4.5",
     "@nrwl/workspace": "9.4.5",
+    "@types/fs-extra": "^9.0.1",
     "@types/jest": "25.1.4",
     "@types/node": "~8.9.4",
     "@typescript-eslint/eslint-plugin": "2.19.2",
@@ -54,6 +57,7 @@
     "dotenv": "6.2.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.0.0",
+    "fs-extra": "^9.0.1",
     "husky": "^4.2.5",
     "jest": "25.2.3",
     "lint-staged": "^10.2.11",
