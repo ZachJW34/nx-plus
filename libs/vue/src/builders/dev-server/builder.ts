@@ -102,8 +102,8 @@ export function runBuilder(
           config.plugin('vue-cli').use({
             apply: (compiler) => {
               compiler.hooks.afterEnvironment.tap('vue-cli', () => {
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 compiler.watchFileSystem = {
+                  // eslint-disable-next-line @typescript-eslint/no-empty-function
                   watch: () => {},
                 };
               });
