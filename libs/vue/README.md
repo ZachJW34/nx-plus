@@ -167,6 +167,7 @@ nx serve my-app
 | `css.extract`                | `false`       | Whether to extract CSS in your components into a standalone CSS file (instead of inlined in JavaScript and injected dynamically).                                                                                                    |
 | `css.sourceMap`              | `false`       | Whether to enable source maps for CSS. Setting this to `true` may affect build performance.                                                                                                                                          |
 | `css.loaderOptions`          | `{}`          | Pass options to CSS-related loaders.                                                                                                                                                                                                 |
+| `--stdin`                    | `false`       | Close when stdin ends.                                                                                                                                                                                                               |
 
 ### Library
 

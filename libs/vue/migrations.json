@@ -1,0 +1,28 @@
+{
+  "schematics": {
+    "update-0.6.0": {
+      "version": "0.6.0",
+      "description": "update dependencies",
+      "factory": "./src/migrations/update-0.6.0/update-0.6.0"
+    }
+  },
+  "packageJsonUpdates": {
+    "0.6.0": {
+      "version": "0.6.0",
+      "packages": {
+        "@vue/cli-plugin-typescript": {
+          "version": "~4.5.0",
+          "alwaysAddToPackageJson": false
+        },
+        "@vue/cli-service": {
+          "version": "~4.5.0",
+          "alwaysAddToPackageJson": false
+        },
+        "@vue/test-utils": {
+          "version": "^1.0.3",
+          "alwaysAddToPackageJson": false
+        }
+      }
+    }
+  }
+}

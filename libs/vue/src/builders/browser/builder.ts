@@ -89,6 +89,7 @@ export function runBuilder(
         'report-json': options.reportJson,
         'skip-plugins': options.skipPlugins,
         watch: options.watch,
+        stdin: options.stdin,
       };
 
       if (options.watch) {
