@@ -130,6 +130,11 @@
                 "input": "./libs/vue",
                 "glob": "patch-nx-dep-graph.js",
                 "output": "."
+              },
+              {
+                "input": "./libs/vue",
+                "glob": "migrations.json",
+                "output": "."
               }
             ]
           }

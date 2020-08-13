@@ -121,7 +121,7 @@ function addJest(options: NormalizedSchema): Rule {
     addDepsToPackageJson(
       {},
       {
-        '@vue/test-utils': '1.0.0-beta.31',
+        '@vue/test-utils': '^1.0.3',
         'babel-core': '^7.0.0-bridge.0',
         'jest-serializer-vue': '^2.0.2',
         'jest-transform-stub': '^2.0.0',
@@ -277,8 +277,8 @@ export default function (options: LibrarySchematicSchema): Rule {
         vue: '^2.6.11',
       },
       {
-        '@vue/cli-plugin-typescript': '~4.3.0',
-        '@vue/cli-service': '~4.3.0',
+        '@vue/cli-plugin-typescript': '~4.5.0',
+        '@vue/cli-service': '~4.5.0',
         '@vue/eslint-config-typescript': '^5.0.2',
         'eslint-plugin-vue': '^6.2.2',
         'vue-template-compiler': '^2.6.11',
