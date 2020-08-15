@@ -4,7 +4,7 @@ import {
   createBuilder,
   targetFromTargetString,
 } from '@angular-devkit/architect';
-import { JsonObject, Path } from '@angular-devkit/core';
+import { getSystemPath, JsonObject, Path } from '@angular-devkit/core';
 import { cliCommand } from '@nrwl/workspace/src/core/file-utils';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -128,7 +128,7 @@ export function runBuilder(
     switchMap(({ projectRoot, browserOptions, inlineOptions }) => {
       checkUnsupportedConfig(context, projectRoot);
 
-      const service = new Service(projectRoot, {
+      const service = new Service(getSystemPath(projectRoot), {
         pkg: resolvePkg(context.workspaceRoot),
         inlineOptions,
       });
