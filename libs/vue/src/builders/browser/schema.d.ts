@@ -20,5 +20,5 @@ export interface BrowserBuilderSchema extends JsonObject {
     sourceMap: boolean;
     loaderOptions: object;
   };
-  vueNxConfigPath: string;
+  stdin: boolean;
 }

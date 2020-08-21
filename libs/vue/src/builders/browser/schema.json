@@ -97,10 +97,10 @@
       },
       "additionalProperties": false
     },
-    "vueNxConfigPath": {
-      "type": "string",
-      "description": "The path to the vue-nx.config.js file, relative to the current workspace.",
-      "default": "vue-nx.config.js"
+    "stdin": {
+      "type": "boolean",
+      "description": "Close when stdin ends.",
+      "default": false
     }
   },
   "required": ["dest", "index", "main", "tsConfig"],

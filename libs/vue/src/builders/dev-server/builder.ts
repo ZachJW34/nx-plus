@@ -34,6 +34,7 @@ const devServerBuilderOverriddenKeys = [
   'skipPlugins',
   'publicPath',
   'css',
+  'stdin',
 ];
 
 export function runBuilder(

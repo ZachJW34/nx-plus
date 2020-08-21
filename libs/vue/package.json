@@ -36,16 +36,19 @@
     "@nrwl/cypress": "^9.0.0",
     "@nrwl/jest": "^9.0.0",
     "@nrwl/linter": "^9.0.0",
-    "@vue/cli-shared-utils": "~4.3.0",
+    "@vue/cli-shared-utils": "~4.5.0",
     "copy-webpack-plugin": "^5.1.1",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "rxjs": "6.5.4",
-    "sass": "^1.26.3",
+    "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "tsconfig-paths-webpack-plugin": "3.2.0",
+    "tsconfig-paths-webpack-plugin": "3.3.0",
     "typescript": "~3.8.3"
+  },
+  "ng-update": {
+    "migrations": "./migrations.json"
   }
 }
