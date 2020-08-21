@@ -4,14 +4,7 @@ import {
   createBuilder,
   targetFromTargetString,
 } from '@angular-devkit/architect';
-import {
-  getSystemPath,
-  join,
-  JsonObject,
-  normalize,
-  Path,
-  virtualFs,
-} from '@angular-devkit/core';
+import { getSystemPath, JsonObject, Path } from '@angular-devkit/core';
 import { cliCommand } from '@nrwl/workspace/src/core/file-utils';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -30,7 +23,6 @@ import {
   modifyTsConfigPaths,
   modifyTypescriptAliases,
 } from '../../webpack';
-import { NodeJsSyncHost } from '@angular-devkit/core/node';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Service = require('@vue/cli-service/lib/Service');
@@ -144,7 +136,7 @@ export function runBuilder(
     switchMap(({ projectRoot, browserOptions, inlineOptions }) => {
       checkUnsupportedConfig(context, projectRoot);
 
-      const service = new Service(projectRoot, {
+      const service = new Service(getSystemPath(projectRoot), {
         pkg: resolvePkg(context.workspaceRoot),
         inlineOptions,
       });
