@@ -35,10 +35,7 @@ export function runBuilder(
     inlineOptions;
   }> {
     const projectRoot = await getProjectRoot(context);
-    const configureWebpack = resolveConfigureWebpack(
-      options.vueNxConfigPath,
-      projectRoot
-    );
+    const configureWebpack = resolveConfigureWebpack(projectRoot);
 
     const inlineOptions = {
       chainWebpack: (config) => {

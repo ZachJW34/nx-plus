@@ -76,10 +76,7 @@ export function runBuilder(
     >({ ...rawBrowserOptions, ...overrides }, browserName);
 
     const projectRoot = await getProjectRoot(context);
-    const configureWebpack = resolveConfigureWebpack(
-      options.vueNxConfigPath,
-      projectRoot
-    );
+    const configureWebpack = resolveConfigureWebpack(projectRoot);
 
     const inlineOptions = {
       chainWebpack: (config) => {
@@ -95,10 +92,8 @@ export function runBuilder(
           config.plugin('vue-cli').use({
             apply: (compiler) => {
               compiler.hooks.afterEnvironment.tap('vue-cli', () => {
-                compiler.watchFileSystem = {
-                  // eslint-disable-next-line @typescript-eslint/no-empty-function
-                  watch: () => {},
-                };
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                compiler.watchFileSystem = { watch: () => {} };
               });
             },
           });

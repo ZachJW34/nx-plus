@@ -19,6 +19,5 @@ export interface DevServerBuilderSchema extends JsonObject {
     sourceMap?: boolean;
     loaderOptions: object;
   };
-  vueNxConfigPath: string;
   devServer: object;
 }

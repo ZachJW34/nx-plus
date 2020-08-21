@@ -1,5 +1,6 @@
 import { BuilderContext } from '@angular-devkit/architect';
 import {
+  getSystemPath,
   join,
   normalize,
   Path,
@@ -63,25 +64,25 @@ export function checkUnsupportedConfig(
 }
 
 export function resolveConfigureWebpack(
-  vueNxConfigPath: string,
-  projectRoot: string
+  projectRoot: string,
+  pathToConfigureWebpack = 'configure-webpack.js'
 ) {
-  let vueConfig = {
-    configureWebpack: {},
-  };
+  let configureWebpack = {};
 
-  if (vueNxConfigPath) {
+  if (pathToConfigureWebpack) {
     const host = new virtualFs.SyncDelegateHost(new NodeJsSyncHost());
-    const vueNxConfigExists = host.exists(
-      join(normalize(projectRoot), vueNxConfigPath)
+    const configureWebpackPath = host.exists(
+      join(normalize(projectRoot), pathToConfigureWebpack)
     );
 
-    if (vueNxConfigExists) {
-      const path = join(normalize(projectRoot), vueNxConfigPath);
+    if (configureWebpackPath) {
+      const path = getSystemPath(
+        join(normalize(projectRoot), pathToConfigureWebpack)
+      );
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      vueConfig = require(path);
+      configureWebpack = require(path);
     }
   }
 
-  return vueConfig?.configureWebpack ?? {};
+  return configureWebpack ?? {};
 }
