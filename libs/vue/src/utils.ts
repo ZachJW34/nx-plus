@@ -63,26 +63,12 @@ export function checkUnsupportedConfig(
   }
 }
 
-export function resolveConfigureWebpack(
-  projectRoot: string,
-  pathToConfigureWebpack = 'configure-webpack.js'
-) {
-  let configureWebpack = {};
+export function resolveConfigureWebpack(projectRoot: string) {
+  const pathToWebpack = join(normalize(projectRoot), 'configure-webpack.js');
 
-  if (pathToConfigureWebpack) {
-    const host = new virtualFs.SyncDelegateHost(new NodeJsSyncHost());
-    const configureWebpackPath = host.exists(
-      join(normalize(projectRoot), pathToConfigureWebpack)
-    );
+  const host = new virtualFs.SyncDelegateHost(new NodeJsSyncHost());
 
-    if (configureWebpackPath) {
-      const path = getSystemPath(
-        join(normalize(projectRoot), pathToConfigureWebpack)
-      );
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      configureWebpack = require(path);
-    }
-  }
-
-  return configureWebpack ?? {};
+  return host.exists(pathToWebpack)
+    ? require(getSystemPath(pathToWebpack))
+    : {};
 }
