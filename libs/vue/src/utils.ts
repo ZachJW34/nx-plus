@@ -64,11 +64,13 @@ export function checkUnsupportedConfig(
 }
 
 export function resolveConfigureWebpack(projectRoot: string) {
-  const pathToWebpack = join(normalize(projectRoot), 'configure-webpack.js');
-
+  const configureWebpackPath = join(
+    normalize(projectRoot),
+    'configure-webpack.js'
+  );
   const host = new virtualFs.SyncDelegateHost(new NodeJsSyncHost());
 
-  return host.exists(pathToWebpack)
-    ? require(getSystemPath(pathToWebpack))
-    : {};
+  return host.exists(configureWebpackPath)
+    ? require(getSystemPath(configureWebpackPath))
+    : undefined;
 }
