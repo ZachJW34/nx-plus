@@ -77,6 +77,9 @@ function addFiles(options: NormalizedSchema): Rule {
       options.unitTestRunner === 'none'
         ? filter((file) => file !== '/tests/unit/example.spec.ts')
         : noop(),
+      options.publishable
+        ? noop()
+        : filter((file) => file !== '/configure-webpack.js'),
       move(options.projectRoot),
     ])
   );

@@ -14,6 +14,7 @@ import {
   checkUnsupportedConfig,
   getProjectRoot,
   modifyChalkOutput,
+  resolveConfigureWebpack,
 } from '../../utils';
 import {
   modifyCachePaths,
@@ -75,6 +76,7 @@ export function runBuilder(
     >({ ...rawBrowserOptions, ...overrides }, browserName);
 
     const projectRoot = await getProjectRoot(context);
+    const configureWebpack = resolveConfigureWebpack(projectRoot);
 
     const inlineOptions = {
       chainWebpack: (config) => {
@@ -100,6 +102,7 @@ export function runBuilder(
       publicPath: browserOptions.publicPath,
       filenameHashing: browserOptions.filenameHashing,
       css: browserOptions.css,
+      configureWebpack,
       devServer: options.devServer,
     };
 
