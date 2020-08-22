@@ -1,5 +1,6 @@
 import { BuilderContext } from '@angular-devkit/architect';
 import {
+  getSystemPath,
   join,
   normalize,
   Path,
@@ -60,4 +61,14 @@ export function checkUnsupportedConfig(
       `You must specify vue-cli config options in '${workspaceFileName}'.`
     );
   }
+}
+
+export function resolveConfigureWebpack(projectRoot: string) {
+  const pathToWebpack = join(normalize(projectRoot), 'configure-webpack.js');
+
+  const host = new virtualFs.SyncDelegateHost(new NodeJsSyncHost());
+
+  return host.exists(pathToWebpack)
+    ? require(getSystemPath(pathToWebpack))
+    : {};
 }

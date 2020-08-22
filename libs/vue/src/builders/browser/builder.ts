@@ -11,6 +11,7 @@ import {
   checkUnsupportedConfig,
   getProjectRoot,
   modifyChalkOutput,
+  resolveConfigureWebpack,
 } from '../../utils';
 import {
   modifyCachePaths,
@@ -34,6 +35,7 @@ export function runBuilder(
     inlineOptions;
   }> {
     const projectRoot = await getProjectRoot(context);
+    const configureWebpack = resolveConfigureWebpack(projectRoot);
 
     const inlineOptions = {
       chainWebpack: (config) => {
@@ -47,6 +49,7 @@ export function runBuilder(
       filenameHashing: options.filenameHashing,
       productionSourceMap: options.productionSourceMap,
       css: options.css,
+      configureWebpack,
     };
 
     return {
