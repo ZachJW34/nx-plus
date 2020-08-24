@@ -22,7 +22,6 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/docusaurus/jest.config.js",
-            "tsConfig": "libs/docusaurus/tsconfig.spec.json",
             "passWithNoTests": true
           }
         },
@@ -55,7 +54,8 @@
                 "glob": "migrations.json",
                 "output": "."
               }
-            ]
+            ],
+            "srcRootForCompilationRoot": "libs/docusaurus"
           }
         }
       }
@@ -98,7 +98,6 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/vue/jest.config.js",
-            "tsConfig": "libs/vue/tsconfig.spec.json",
             "passWithNoTests": true
           }
         },
@@ -136,7 +135,8 @@
                 "glob": "migrations.json",
                 "output": "."
               }
-            ]
+            ],
+            "srcRootForCompilationRoot": "libs/vue"
           }
         }
       }

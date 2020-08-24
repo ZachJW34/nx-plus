@@ -146,6 +146,11 @@ describe('application schematic', () => {
         }
         </style>
       `);
+
+    const tsConfigJson = readJsonInTree(tree, 'apps/my-app/tsconfig.json');
+    expect(tsConfigJson.references[1]).toEqual({
+      path: './tsconfig.spec.json',
+    });
   });
 
   it('should add postinstall script', async () => {
@@ -252,6 +257,9 @@ describe('application schematic', () => {
       expect(tree.readContent('apps/my-app/.eslintrc.js')).not.toContain(
         'overrides:'
       );
+
+      const tsConfigJson = readJsonInTree(tree, 'apps/my-app/tsconfig.json');
+      expect(tsConfigJson.references[1]).toBeUndefined();
     });
   });
 
@@ -412,6 +420,14 @@ describe('application schematic', () => {
       expect(
         tree.readContent('apps/subdir/my-app-e2e/src/integration/app.spec.ts')
       ).toContain("'Welcome to Your Vue.js + TypeScript App'");
+
+      const tsConfigJson = readJsonInTree(
+        tree,
+        'apps/subdir/my-app/tsconfig.json'
+      );
+      expect(tsConfigJson.references[1]).toEqual({
+        path: './tsconfig.spec.json',
+      });
     });
   });
 });

@@ -25,14 +25,14 @@
   },
   "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/docusaurus#readme",
   "peerDependencies": {
-    "@nrwl/workspace": "^9.0.0"
+    "@nrwl/workspace": "^10.0.0"
   },
   "dependencies": {
-    "@angular-devkit/architect": "~0.901.0",
-    "@angular-devkit/core": "~9.1.0",
-    "@angular-devkit/schematics": "~9.1.0",
-    "rxjs": "6.5.4",
-    "typescript": "~3.8.3"
+    "@angular-devkit/architect": "0.1000.7",
+    "@angular-devkit/core": "10.0.7",
+    "@angular-devkit/schematics": "10.0.7",
+    "rxjs": "6.5.5",
+    "typescript": "3.9.7"
   },
   "ng-update": {
     "migrations": "./migrations.json"

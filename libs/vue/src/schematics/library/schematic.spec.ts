@@ -24,7 +24,7 @@ describe('library schematic', () => {
     appTree = createEmptyWorkspace(Tree.empty());
   });
 
-  it('should update workspace.json and tsconfig.json', async () => {
+  it('should update workspace.json and tsconfig.base.json', async () => {
     const tree = await testRunner
       .runSchematicAsync('lib', options, appTree)
       .toPromise();
@@ -36,8 +36,8 @@ describe('library schematic', () => {
     expect(lint.builder).toBe('@nrwl/linter:lint');
     expect(test.builder).toBe('@nrwl/jest:jest');
 
-    const tsConfigJson = readJsonInTree(tree, 'tsconfig.json');
-    expect(tsConfigJson.compilerOptions.paths['@proj/my-lib']).toEqual([
+    const tsConfigBaseJson = readJsonInTree(tree, 'tsconfig.base.json');
+    expect(tsConfigBaseJson.compilerOptions.paths['@proj/my-lib']).toEqual([
       'libs/my-lib/src/index.ts',
     ]);
   });
@@ -82,6 +82,11 @@ describe('library schematic', () => {
       },
     },
   ]`);
+
+    const tsConfigJson = readJsonInTree(tree, 'libs/my-lib/tsconfig.json');
+    expect(tsConfigJson.references[1]).toEqual({
+      path: './tsconfig.spec.json',
+    });
   });
 
   describe('--publishable', () => {
@@ -134,11 +139,14 @@ describe('library schematic', () => {
       expect(tree.readContent('libs/my-lib/.eslintrc.js')).not.toContain(
         'overrides:'
       );
+
+      const tsConfigJson = readJsonInTree(tree, 'libs/my-lib/tsconfig.json');
+      expect(tsConfigJson.references[1]).toBeUndefined();
     });
   });
 
   describe('--directory subdir', () => {
-    it('should update workspace.json and tsconfig.json', async () => {
+    it('should update workspace.json and tsconfig.base.json', async () => {
       const tree = await testRunner
         .runSchematicAsync(
           'lib',
@@ -161,9 +169,9 @@ describe('library schematic', () => {
         'libs/subdir/my-lib/src'
       );
 
-      const tsConfigJson = readJsonInTree(tree, 'tsconfig.json');
+      const tsConfigBaseJson = readJsonInTree(tree, 'tsconfig.base.json');
       expect(
-        tsConfigJson.compilerOptions.paths['@proj/subdir/my-lib']
+        tsConfigBaseJson.compilerOptions.paths['@proj/subdir/my-lib']
       ).toEqual(['libs/subdir/my-lib/src/index.ts']);
     });
 
@@ -220,6 +228,14 @@ describe('library schematic', () => {
       ).toEqual({
         name: '@proj/my-lib',
         version: '0.0.0',
+      });
+
+      const tsConfigJson = readJsonInTree(
+        tree,
+        'libs/subdir/my-lib/tsconfig.json'
+      );
+      expect(tsConfigJson.references[1]).toEqual({
+        path: './tsconfig.spec.json',
       });
     });
   });
