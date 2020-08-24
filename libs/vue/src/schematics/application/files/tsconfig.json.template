@@ -1,10 +1,16 @@
 {
-  "extends": "<%= offsetFromRoot %>tsconfig.json",
+  "extends": "<%= offsetFromRoot %>tsconfig.base.json",
   "compilerOptions": {
     "jsx": "preserve",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "types": ["webpack-env", "node"]
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.vue"]
+  "include": [],
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
 }

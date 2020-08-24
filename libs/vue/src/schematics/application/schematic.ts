@@ -166,6 +166,12 @@ function addJest(options: NormalizedSchema): Rule {
     }),
     updateJsonInTree(`${options.projectRoot}/tsconfig.spec.json`, (json) => {
       json.include = json.include.filter((pattern) => !/\.jsx?$/.test(pattern));
+      json.compilerOptions = {
+        ...json.compilerOptions,
+        jsx: 'preserve',
+        esModuleInterop: true,
+        allowSyntheticDefaultImports: true,
+      };
       return json;
     }),
     (tree: Tree) => {
@@ -183,7 +189,10 @@ function addJest(options: NormalizedSchema): Rule {
           coverageDirectory: '${offsetFromRoot(options.projectRoot)}coverage/${
         options.projectRoot
       }',
-          snapshotSerializers: ['jest-serializer-vue']
+          snapshotSerializers: ['jest-serializer-vue'],
+          globals: { 'ts-jest': { tsConfig: '<rootDir>/tsconfig.spec.json' }, 'vue-jest': { tsConfig: '${
+            options.projectRoot
+          }/tsconfig.spec.json' } },
         };
       `;
       tree.overwrite(`${options.projectRoot}/jest.config.js`, content);
