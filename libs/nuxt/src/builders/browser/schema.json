@@ -1,0 +1,14 @@
+{
+  "$id": "https://json-schema.org/draft-07/schema",
+  "title": "Browser builder",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "buildDir": {
+      "type": "string",
+      "description": "Define the dist directory for your Nuxt.js application."
+    }
+  },
+  "required": ["buildDir"],
+  "additionalProperties": false
+}

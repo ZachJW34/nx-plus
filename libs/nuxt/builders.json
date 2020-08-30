@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/architect/src/builders-schema.json",
+  "builders": {
+    "browser": {
+      "implementation": "./src/builders/browser/builder",
+      "schema": "./src/builders/browser/schema.json",
+      "description": "browser builder"
+    },
+    "server": {
+      "implementation": "./src/builders/server/builder",
+      "schema": "./src/builders/server/schema.json",
+      "description": "server builder"
+    }
+  }
+}

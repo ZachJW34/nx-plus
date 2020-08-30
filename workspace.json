@@ -157,6 +157,77 @@
           }
         }
       }
+    },
+    "nuxt": {
+      "root": "libs/nuxt",
+      "sourceRoot": "libs/nuxt/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "libs/nuxt/tsconfig.lib.json",
+              "libs/nuxt/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/nuxt/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/nuxt/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "builder": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/libs/nuxt",
+            "tsConfig": "libs/nuxt/tsconfig.lib.json",
+            "packageJson": "libs/nuxt/package.json",
+            "main": "libs/nuxt/src/index.ts",
+            "assets": [
+              "libs/nuxt/*.md",
+              {
+                "input": "./libs/nuxt/src",
+                "glob": "**/*.!(ts)",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/nuxt",
+                "glob": "collection.json",
+                "output": "."
+              },
+              {
+                "input": "./libs/nuxt",
+                "glob": "builders.json",
+                "output": "."
+              }
+            ],
+            "srcRootForCompilationRoot": "libs/nuxt"
+          }
+        }
+      }
+    },
+    "nuxt-e2e": {
+      "projectType": "application",
+      "root": "apps/nuxt-e2e",
+      "sourceRoot": "apps/nuxt-e2e/src",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/nx-plugin:e2e",
+          "options": {
+            "target": "nuxt:build",
+            "npmPackageName": "@nx-plus/nuxt",
+            "pluginOutputPath": "dist/libs/nuxt",
+            "jestConfig": "apps/nuxt-e2e/jest.config.js",
+            "tsSpecConfig": "apps/nuxt-e2e/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

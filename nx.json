@@ -32,6 +32,13 @@
     "vue-e2e": {
       "tags": [],
       "implicitDependencies": ["vue"]
+    },
+    "nuxt": {
+      "tags": []
+    },
+    "nuxt-e2e": {
+      "tags": [],
+      "implicitDependencies": ["nuxt"]
     }
   },
   "affected": {
