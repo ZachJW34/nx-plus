@@ -1,0 +1,41 @@
+{
+  "name": "@nx-plus/nuxt",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "schematics": "./collection.json",
+  "builders": "./builders.json",
+  "description": "Nuxt plugin for Nx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZachJW34/nx-plus.git"
+  },
+  "keywords": [
+    "nx",
+    "nuxt",
+    "vuex",
+    "jest",
+    "cypress",
+    "monorepo"
+  ],
+  "author": "Bucky Maler <maler.bucky@gmail.com> (http://buckymaler.com/)",
+  "contributors": [
+    "Zachary Williams <zachjw34@gmail.com> (https://github.com/ZachJW34/)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ZachJW34/nx-plus/issues"
+  },
+  "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/nuxt#readme",
+  "peerDependencies": {
+    "@nrwl/workspace": "^10.0.0"
+  },
+  "dependencies": {
+    "@angular-devkit/architect": "0.1000.7",
+    "@angular-devkit/core": "10.0.7",
+    "@angular-devkit/schematics": "10.0.7",
+    "@nrwl/cypress": "^10.0.0",
+    "@nrwl/jest": "^10.0.0",
+    "@nrwl/linter": "^10.0.0",
+    "rxjs": "6.5.5"
+  }
+}

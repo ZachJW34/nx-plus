@@ -1,0 +1,25 @@
+{
+  "$id": "https://json-schema.org/draft-07/schema",
+  "title": "Server builder",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "browserTarget": {
+      "type": "string",
+      "description": "Target to serve.",
+      "pattern": "^[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
+    },
+    "watch": {
+      "type": "boolean",
+      "description": "Watch for changes.",
+      "hidden": true
+    },
+    "dev": {
+      "type": "boolean",
+      "description": "Define the development or production mode of Nuxt.js.",
+      "default": true
+    }
+  },
+  "required": ["browserTarget"],
+  "additionalProperties": false
+}
