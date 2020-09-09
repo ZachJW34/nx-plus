@@ -1,5 +1,6 @@
 import { BuilderContext } from '@angular-devkit/architect';
 import { getSystemPath, join, normalize, Path } from '@angular-devkit/core';
+import {loadModule, semver} from '@vue/cli-shared-utils';
 import { BrowserBuilderSchema } from './builders/browser/schema';
 import { LibraryBuilderSchema } from './builders/library/schema';
 
@@ -51,7 +52,11 @@ export function modifyTsConfigPaths(
       return loaderOptions;
     });
   config.plugin('fork-ts-checker').tap((args) => {
-    args[0].tsconfig = tsConfigPath;
+    const vue = loadModule('vue', getSystemPath(normalize(context.workspaceRoot)));
+    const isVue3 = (vue && semver.major(vue.version) === 3);
+    if (!isVue3) {
+      args[0].tsconfig = tsConfigPath;
+    }
     return args;
   });
 }
