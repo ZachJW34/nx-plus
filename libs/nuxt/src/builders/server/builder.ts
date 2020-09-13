@@ -16,6 +16,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { ServerBuilderSchema } from './schema';
 import { BrowserBuilderSchema } from '../browser/schema';
 import { getProjectRoot } from '../../utils';
+import { modifyTypescriptAliases } from '../../webpack';
 
 const serverBuilderOverriddenKeys = [];
 
@@ -48,6 +49,20 @@ export function runBuilder(
         buildDir: getSystemPath(
           join(normalize(context.workspaceRoot), browserOptions.buildDir)
         ),
+        build: {
+          extend(config, ctx) {
+            modifyTypescriptAliases(config, projectRoot);
+
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const { default: nuxtConfig } = require(getSystemPath(
+              join(projectRoot, 'nuxt.config.js')
+            ));
+
+            if (nuxtConfig.build && nuxtConfig.build.extend) {
+              nuxtConfig.build.extend(config, ctx);
+            }
+          },
+        },
       },
     });
 
