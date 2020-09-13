@@ -9,6 +9,7 @@ import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { BrowserBuilderSchema } from './schema';
 import { getProjectRoot } from '../../utils';
+import { modifyTypescriptAliases } from '../../webpack';
 
 export function runBuilder(
   options: BrowserBuilderSchema,
@@ -24,6 +25,20 @@ export function runBuilder(
         buildDir: getSystemPath(
           join(normalize(context.workspaceRoot), options.buildDir)
         ),
+        build: {
+          extend(config, ctx) {
+            modifyTypescriptAliases(config, projectRoot);
+
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const { default: nuxtConfig } = require(getSystemPath(
+              join(projectRoot, 'nuxt.config.js')
+            ));
+
+            if (nuxtConfig.build && nuxtConfig.build.extend) {
+              nuxtConfig.build.extend(config, ctx);
+            }
+          },
+        },
       },
     });
 
