@@ -152,6 +152,24 @@ describe('vue e2e', () => {
       done();
     }, 300000);
 
+    describe('--js', () => {
+      it('should generate app', async (done) => {
+        const appName = uniq('app');
+        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+        await runNxCommandAsync(`generate @nx-plus/vue:app ${appName} --js`);
+
+        await testGeneratedApp(appName, {
+          lint: true,
+          test: true,
+          e2e: true,
+          build: true,
+          buildProd: true,
+        });
+
+        done();
+      }, 300000);
+    });
+
     describe('--directory subdir', () => {
       it('should generate app', async (done) => {
         const appName = uniq('app');
@@ -248,6 +266,26 @@ describe('vue e2e', () => {
 
       done();
     }, 300000);
+
+    describe('--js', () => {
+      it('should generate lib', async (done) => {
+        const lib = uniq('lib');
+        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+        await runNxCommandAsync(`generate @nx-plus/vue:lib ${lib} --js`);
+
+        const lintResult = await runNxCommandAsync(`lint ${lib}`);
+        expect(lintResult.stdout).toContain('All files pass linting.');
+
+        const testResult = await runNxCommandAsync(`test ${lib}`);
+        expect(testResult.stderr).toContain(tags.stripIndent`
+        Test Suites: 1 passed, 1 total
+        Tests:       1 passed, 1 total
+        Snapshots:   0 total
+      `);
+
+        done();
+      }, 300000);
+    });
 
     describe('--directory subdir', () => {
       it('should generate publishable lib', async (done) => {

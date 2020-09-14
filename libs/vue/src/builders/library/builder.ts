@@ -14,6 +14,7 @@ import {
   resolveConfigureWebpack,
 } from '../../utils';
 import {
+  modifyBabelLoader,
   modifyCachePaths,
   modifyCopyAssets,
   modifyTsConfigPaths,
@@ -41,6 +42,7 @@ export function runBuilder(
         modifyCachePaths(config, context);
         modifyTypescriptAliases(config, options, context);
         modifyCopyAssets(config, options, context, projectRoot);
+        modifyBabelLoader(config, projectRoot);
       },
       css: options.css,
       configureWebpack: resolveConfigureWebpack(projectRoot),

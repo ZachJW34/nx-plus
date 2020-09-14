@@ -13,6 +13,7 @@ describe('library schematic', () => {
     skipFormat: false,
     publishable: false,
     skipTsConfig: false,
+    js: false,
   };
 
   const testRunner = new SchematicTestRunner(
@@ -53,6 +54,7 @@ describe('library schematic', () => {
       'libs/my-lib/tsconfig.lib.json',
       'libs/my-lib/jest.config.js',
       'libs/my-lib/.eslintrc.js',
+      'libs/my-lib/babel.config.js',
       'libs/my-lib/tests/unit/example.spec.ts',
       'libs/my-lib/src/shims-tsx.d.ts',
       'libs/my-lib/src/shims-vue.d.ts',
@@ -145,6 +147,50 @@ describe('library schematic', () => {
     });
   });
 
+  describe('--js', () => {
+    it('should generate javascript files', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('lib', { ...options, js: true }, appTree)
+        .toPromise();
+
+      [
+        'libs/my-lib/src/index.js',
+        'libs/my-lib/tests/unit/example.spec.js',
+      ].forEach((path) => expect(tree.exists(path)).toBeTruthy());
+
+      [
+        'libs/my-lib/src/shims-tsx.d.ts',
+        'libs/my-lib/src/shims-tsx.d.ts',
+      ].forEach((path) => expect(tree.exists(path)).toBeFalsy());
+    });
+
+    it('should update source files', async () => {
+      const tree = await testRunner
+        .runSchematicAsync(
+          'lib',
+          { ...options, publishable: true, js: true },
+          appTree
+        )
+        .toPromise();
+
+      const workspaceJson = readJsonInTree(tree, 'workspace.json');
+      expect(
+        workspaceJson.projects['my-lib'].architect.build.options.entry
+      ).toBe('libs/my-lib/src/index.js');
+
+      const tsConfig = readJsonInTree(tree, 'tsconfig.base.json');
+      expect(tsConfig.compilerOptions.paths['@proj/my-lib']).toEqual([
+        'libs/my-lib/src/index.js',
+      ]);
+
+      const helloWorldComponent = tree.readContent(
+        'libs/my-lib/src/lib/HelloWorld.vue'
+      );
+      expect(helloWorldComponent).toContain('Welcome to Your Vue.js Library');
+      expect(helloWorldComponent).not.toContain('<script lang="ts">');
+    });
+  });
+
   describe('--directory subdir', () => {
     it('should update workspace.json and tsconfig.base.json', async () => {
       const tree = await testRunner
@@ -190,6 +236,7 @@ describe('library schematic', () => {
         'libs/subdir/my-lib/tsconfig.lib.json',
         'libs/subdir/my-lib/jest.config.js',
         'libs/subdir/my-lib/.eslintrc.js',
+        'libs/subdir/my-lib/babel.config.js',
         'libs/subdir/my-lib/tests/unit/example.spec.ts',
         'libs/subdir/my-lib/src/shims-tsx.d.ts',
         'libs/subdir/my-lib/src/shims-vue.d.ts',

@@ -78,7 +78,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script<% if (!js) {  %> lang="ts"<% } %>>
 import Vue from 'vue';
 
 export default Vue.extend({

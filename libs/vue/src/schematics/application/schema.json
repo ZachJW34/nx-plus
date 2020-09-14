@@ -69,6 +69,11 @@
       "type": "boolean",
       "description": "Skip formatting files",
       "default": false
+    },
+    "js": {
+      "type": "boolean",
+      "description": "Generate JavaScript files rather than TypeScript files.",
+      "default": false
     }
   },
   "required": ["name"]

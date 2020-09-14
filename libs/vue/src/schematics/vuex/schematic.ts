@@ -14,6 +14,18 @@ import {
 import * as ts from 'typescript';
 import { VuexSchematicSchema } from './schema';
 
+function getMainPath(tree: Tree, project: string): string {
+  const { sourceRoot } = getProjectConfig(tree, project);
+  const mainTsPath = join(normalize(sourceRoot), 'main.ts');
+  const mainJsPath = join(normalize(sourceRoot), 'main.js');
+
+  if (!tree.exists(mainTsPath) && !tree.exists(mainJsPath)) {
+    throw new Error(`Could not find ${mainTsPath} or ${mainJsPath}.`);
+  }
+
+  return tree.exists(mainTsPath) ? mainTsPath : mainJsPath;
+}
+
 function addStoreConfig(options: VuexSchematicSchema): Rule {
   return (tree: Tree) => {
     const { sourceRoot } = getProjectConfig(tree, options.project);
@@ -30,7 +42,10 @@ function addStoreConfig(options: VuexSchematicSchema): Rule {
         modules: {}
       });
     `;
-    tree.create(join(normalize(sourceRoot), 'store/index.ts'), content);
+    const storeIndex = `store/index.${
+      getMainPath(tree, options.project).endsWith('.ts') ? 'ts' : 'js'
+    }`;
+    tree.create(join(normalize(sourceRoot), storeIndex), content);
     return tree;
   };
 }
@@ -58,12 +73,7 @@ function getNewVueExpression(
 
 function addStoreToMain(options: VuexSchematicSchema): Rule {
   return (tree: Tree) => {
-    const { sourceRoot } = getProjectConfig(tree, options.project);
-    const mainPath = join(normalize(sourceRoot), 'main.ts');
-
-    if (!tree.exists(mainPath)) {
-      throw new Error(`Could not find ${mainPath}.`);
-    }
+    const mainPath = getMainPath(tree, options.project);
 
     const mainSourceFile = ts.createSourceFile(
       mainPath,

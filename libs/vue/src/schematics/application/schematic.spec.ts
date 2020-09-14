@@ -15,6 +15,7 @@ describe('application schematic', () => {
     routing: false,
     style: 'css',
     skipFormat: false,
+    js: false,
   };
 
   const testRunner = new SchematicTestRunner(
@@ -77,6 +78,7 @@ describe('application schematic', () => {
       'apps/my-app/tsconfig.app.json',
       'apps/my-app/jest.config.js',
       'apps/my-app/.eslintrc.js',
+      'apps/my-app/babel.config.js',
       'apps/my-app/tests/unit/example.spec.ts',
       'apps/my-app/src/shims-vue.d.ts',
       'apps/my-app/src/main.ts',
@@ -341,6 +343,47 @@ describe('application schematic', () => {
     });
   });
 
+  describe('--js', () => {
+    it('should generate javascript files', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', { ...options, js: true }, appTree)
+        .toPromise();
+
+      [
+        'apps/my-app/src/main.js',
+        'apps/my-app/tests/unit/example.spec.js',
+      ].forEach((path) => expect(tree.exists(path)).toBeTruthy());
+
+      [
+        'apps/my-app/src/shims-tsx.d.ts',
+        'apps/my-app/src/shims-tsx.d.ts',
+      ].forEach((path) => expect(tree.exists(path)).toBeFalsy());
+    });
+
+    it('should update source files', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', { ...options, js: true }, appTree)
+        .toPromise();
+
+      const workspaceJson = readJsonInTree(tree, 'workspace.json');
+      expect(
+        workspaceJson.projects['my-app'].architect.build.options.main
+      ).toBe('apps/my-app/src/main.js');
+
+      const appComponent = tree.readContent('apps/my-app/src/App.vue');
+      expect(appComponent).toContain('Welcome to Your Vue.js App');
+      expect(appComponent).not.toContain('<script lang="ts">');
+      const helloWorldComponent = tree.readContent(
+        'apps/my-app/src/components/HelloWorld.vue'
+      );
+      expect(helloWorldComponent).not.toContain('<script lang="ts">');
+      const appSpec = tree.readContent(
+        'apps/my-app-e2e/src/integration/app.spec.js'
+      );
+      expect(appSpec).toContain('Welcome to Your Vue.js App');
+    });
+  });
+
   describe('--directory subdir', () => {
     it('should update workspace.json', async () => {
       const tree = await testRunner
@@ -382,6 +425,7 @@ describe('application schematic', () => {
         'apps/subdir/my-app/tsconfig.app.json',
         'apps/subdir/my-app/jest.config.js',
         'apps/subdir/my-app/.eslintrc.js',
+        'apps/subdir/my-app/babel.config.js',
         'apps/subdir/my-app/tests/unit/example.spec.ts',
         'apps/subdir/my-app/src/shims-vue.d.ts',
         'apps/subdir/my-app/src/main.ts',

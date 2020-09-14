@@ -17,6 +17,7 @@ import {
   resolveConfigureWebpack,
 } from '../../utils';
 import {
+  modifyBabelLoader,
   modifyCachePaths,
   modifyEntryPoint,
   modifyIndexHtmlPath,
@@ -84,6 +85,7 @@ export function runBuilder(
         modifyTsConfigPaths(config, browserOptions, context);
         modifyCachePaths(config, context);
         modifyTypescriptAliases(config, browserOptions, context);
+        modifyBabelLoader(config, projectRoot);
 
         if (!options.watch) {
           // There is no option to disable file watching in `webpack-dev-server`,

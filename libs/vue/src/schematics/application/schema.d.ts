@@ -7,4 +7,5 @@ export interface ApplicationSchematicSchema {
   e2eTestRunner: 'cypress' | 'none';
   routing: boolean;
   skipFormat: boolean;
+  js: boolean;
 }

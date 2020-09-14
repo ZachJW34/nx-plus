@@ -32,6 +32,7 @@ import {
   readJsonInTree,
   NxJson,
 } from '@nrwl/workspace';
+import { toJS } from '@nrwl/workspace/src/utils/rules/to-js';
 import { LibrarySchematicSchema } from './schema';
 
 /**
@@ -81,6 +82,9 @@ function addFiles(options: NormalizedSchema): Rule {
         ? noop()
         : filter((file) => file !== '/configure-webpack.js'),
       move(options.projectRoot),
+      ...(options.js
+        ? [toJS(), filter((file) => !file.includes('shims'))]
+        : [noop()]),
     ])
   );
 }
@@ -115,16 +119,26 @@ function addJest(options: NormalizedSchema): Rule {
             '^.+\\.vue$': 'vue-jest',
             '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':
               'jest-transform-stub',
-            '^.+\\.tsx?$': 'ts-jest'
+              '^.+\\.[tj]sx?$': [
+                'babel-jest',
+                { cwd: __dirname, configFile: './babel.config.js' },
+              ],
           },
           moduleFileExtensions: ["ts", "tsx", "vue", "js", "json"],
           coverageDirectory: '${offsetFromRoot(options.projectRoot)}coverage/${
         options.projectRoot
       }',
           snapshotSerializers: ['jest-serializer-vue'],
-          globals: { 'ts-jest': { tsConfig: '<rootDir>/tsconfig.spec.json' }, 'vue-jest': { tsConfig: '${
-            options.projectRoot
-          }/tsconfig.spec.json' } },
+          globals: {
+            'ts-jest': { tsConfig: '<rootDir>/tsconfig.spec.json' },
+            'vue-jest': {
+              tsConfig: '${options.projectRoot}/tsconfig.spec.json',
+              babelConfig: {
+                cwd: __dirname,
+                configFile: './babel.config.js',
+              },
+            },
+          },
         };
       `;
       tree.overwrite(`${options.projectRoot}/jest.config.js`, content);
@@ -135,6 +149,7 @@ function addJest(options: NormalizedSchema): Rule {
       {
         '@vue/test-utils': '^1.0.3',
         'babel-core': '^7.0.0-bridge.0',
+        'babel-jest': '^24.9.0',
         'jest-serializer-vue': '^2.0.2',
         'jest-transform-stub': '^2.0.0',
         'vue-jest': '^3.0.5',
@@ -230,7 +245,7 @@ function addPublishable(options: NormalizedSchema) {
         builder: '@nx-plus/vue:library',
         options: {
           dest: `dist/${options.projectRoot}`,
-          entry: `${options.projectRoot}/src/index.ts`,
+          entry: `${options.projectRoot}/src/index.${options.js ? 'js' : 'ts'}`,
           tsConfig: `${options.projectRoot}/tsconfig.lib.json`,
         },
       });
@@ -255,7 +270,7 @@ function updateTsConfig(options: NormalizedSchema): Rule {
         c.paths = c.paths || {};
         delete c.paths[options.name];
         c.paths[`@${nxJson.npmScope}/${options.projectDirectory}`] = [
-          `${options.projectRoot}/src/index.ts`,
+          `${options.projectRoot}/src/index.${options.js ? 'js' : 'ts'}`,
         ];
         return json;
       })(host, context);
@@ -289,6 +304,7 @@ export default function (options: LibrarySchematicSchema): Rule {
         vue: '^2.6.11',
       },
       {
+        '@vue/cli-plugin-babel': '~4.5.0',
         '@vue/cli-plugin-typescript': '~4.5.0',
         '@vue/cli-service': '~4.5.0',
         '@vue/eslint-config-typescript': '^5.0.2',

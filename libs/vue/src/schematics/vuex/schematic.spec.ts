@@ -18,12 +18,12 @@ describe('vuex schematic', () => {
 
   beforeEach(async () => {
     appTree = createEmptyWorkspace(Tree.empty());
-    appTree = await testRunner
-      .runSchematicAsync('app', { name: 'my-app' }, appTree)
-      .toPromise();
   });
 
   it('should generate Vuex configuration', async () => {
+    appTree = await testRunner
+      .runSchematicAsync('app', { name: 'my-app' }, appTree)
+      .toPromise();
     const tree = await testRunner
       .runSchematicAsync('vuex', options, appTree)
       .toPromise();
@@ -34,6 +34,29 @@ describe('vuex schematic', () => {
     expect(tree.exists('apps/my-app/src/store/index.ts')).toBeTruthy();
 
     const main = tree.readContent('apps/my-app/src/main.ts');
+    expect(main).toContain("import store from './store';");
+    expect(main).toContain(tags.stripIndent`
+      new Vue({
+        store,
+        render: (h) => h(App),
+      }).$mount('#app');
+    `);
+  });
+
+  it('should generate Vuex configuration for javascript project', async () => {
+    appTree = await testRunner
+      .runSchematicAsync('app', { name: 'my-app', js: true }, appTree)
+      .toPromise();
+    const tree = await testRunner
+      .runSchematicAsync('vuex', options, appTree)
+      .toPromise();
+
+    const packageJson = readJsonInTree(tree, 'package.json');
+    expect(packageJson.dependencies['vuex']).toBeDefined();
+
+    expect(tree.exists('apps/my-app/src/store/index.js')).toBeTruthy();
+
+    const main = tree.readContent('apps/my-app/src/main.js');
     expect(main).toContain("import store from './store';");
     expect(main).toContain(tags.stripIndent`
       new Vue({

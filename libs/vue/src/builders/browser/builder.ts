@@ -14,6 +14,7 @@ import {
   resolveConfigureWebpack,
 } from '../../utils';
 import {
+  modifyBabelLoader,
   modifyCachePaths,
   modifyEntryPoint,
   modifyIndexHtmlPath,
@@ -43,6 +44,7 @@ export function runBuilder(
         modifyTsConfigPaths(config, options, context);
         modifyCachePaths(config, context);
         modifyTypescriptAliases(config, options, context);
+        modifyBabelLoader(config, projectRoot);
       },
       publicPath: options.publicPath,
       filenameHashing: options.filenameHashing,

@@ -41,6 +41,11 @@
       "type": "boolean",
       "default": false,
       "description": "Create a buildable library."
+    },
+    "js": {
+      "type": "boolean",
+      "description": "Generate JavaScript files rather than TypeScript files.",
+      "default": false
     }
   },
   "required": ["name"],

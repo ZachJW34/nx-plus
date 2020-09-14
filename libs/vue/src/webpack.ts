@@ -142,3 +142,15 @@ export function modifyCopyAssets(
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     .use(require('copy-webpack-plugin'), [transformedAssetPatterns]);
 }
+
+export function modifyBabelLoader(config, projectRoot: Path) {
+  ['js', 'ts', 'tsx'].forEach((ext) =>
+    config.module
+      .rule(ext)
+      .use('babel-loader')
+      .tap((options) => ({
+        ...options,
+        configFile: getSystemPath(join(projectRoot, 'babel.config.js')),
+      }))
+  );
+}

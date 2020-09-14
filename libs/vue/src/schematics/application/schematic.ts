@@ -28,6 +28,7 @@ import {
   updateJsonInTree,
   updateWorkspace,
 } from '@nrwl/workspace';
+import { toJS } from '@nrwl/workspace/src/utils/rules/to-js';
 import { ApplicationSchematicSchema } from './schema';
 
 /**
@@ -89,6 +90,9 @@ function addFiles(options: NormalizedSchema): Rule {
               ].includes(file)
           ),
       move(options.projectRoot),
+      ...(options.js
+        ? [toJS(), filter((file) => !file.includes('shims'))]
+        : [noop()]),
     ])
   );
 }
@@ -183,16 +187,26 @@ function addJest(options: NormalizedSchema): Rule {
             '^.+\\.vue$': 'vue-jest',
             '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':
               'jest-transform-stub',
-            '^.+\\.tsx?$': 'ts-jest'
+              '^.+\\.[tj]sx?$': [
+                'babel-jest',
+                { cwd: __dirname, configFile: './babel.config.js' },
+              ],
           },
           moduleFileExtensions: ["ts", "tsx", "vue", "js", "json"],
           coverageDirectory: '${offsetFromRoot(options.projectRoot)}coverage/${
         options.projectRoot
       }',
           snapshotSerializers: ['jest-serializer-vue'],
-          globals: { 'ts-jest': { tsConfig: '<rootDir>/tsconfig.spec.json' }, 'vue-jest': { tsConfig: '${
-            options.projectRoot
-          }/tsconfig.spec.json' } },
+          globals: {
+            'ts-jest': { tsConfig: '<rootDir>/tsconfig.spec.json' },
+            'vue-jest': {
+              tsConfig: '${options.projectRoot}/tsconfig.spec.json',
+              babelConfig: {
+                cwd: __dirname,
+                configFile: './babel.config.js',
+              },
+            },
+          },
         };
       `;
       tree.overwrite(`${options.projectRoot}/jest.config.js`, content);
@@ -203,6 +217,7 @@ function addJest(options: NormalizedSchema): Rule {
       {
         '@vue/test-utils': '^1.0.3',
         'babel-core': '^7.0.0-bridge.0',
+        'babel-jest': '^24.9.0',
         'jest-serializer-vue': '^2.0.2',
         'jest-transform-stub': '^2.0.0',
         'vue-jest': '^3.0.5',
@@ -220,11 +235,12 @@ function addCypress(options: NormalizedSchema): Rule {
       name: options.name + '-e2e',
       directory: options.directory,
       linter: Linter.EsLint,
-      js: false,
+      js: options.js,
     }),
     (tree) => {
-      const appSpecPath =
-        options.projectRoot + '-e2e/src/integration/app.spec.ts';
+      const appSpecPath = `${
+        options.projectRoot
+      }-e2e/src/integration/app.spec.${options.js ? 'js' : 'ts'}`;
       tree.overwrite(
         appSpecPath,
         tree
@@ -232,7 +248,7 @@ function addCypress(options: NormalizedSchema): Rule {
           .toString('utf-8')
           .replace(
             `Welcome to ${options.projectName}!`,
-            'Welcome to Your Vue.js + TypeScript App'
+            `Welcome to Your Vue.js${!options.js ? ' + TypeScript' : ''} App`
           )
       );
     },
@@ -273,7 +289,9 @@ export default function (options: ApplicationSchematicSchema): Rule {
         options: {
           dest: `dist/${normalizedOptions.projectRoot}`,
           index: `${normalizedOptions.projectRoot}/public/index.html`,
-          main: `${normalizedOptions.projectRoot}/src/main.ts`,
+          main: `${normalizedOptions.projectRoot}/src/main.${
+            options.js ? 'js' : 'ts'
+          }`,
           tsConfig: `${normalizedOptions.projectRoot}/tsconfig.app.json`,
         },
         configurations: {
@@ -317,6 +335,7 @@ export default function (options: ApplicationSchematicSchema): Rule {
         ...(options.routing ? { 'vue-router': '^3.2.0' } : {}),
       },
       {
+        '@vue/cli-plugin-babel': '~4.5.0',
         '@vue/cli-plugin-typescript': '~4.5.0',
         '@vue/cli-service': '~4.5.0',
         '@vue/eslint-config-typescript': '^5.0.2',
