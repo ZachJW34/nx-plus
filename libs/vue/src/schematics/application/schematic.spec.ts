@@ -92,7 +92,11 @@ describe('application schematic', () => {
       tree,
       'apps/my-app/tsconfig.app.json'
     );
-    expect(tsconfigAppJson.exclude).toEqual(['**/*.spec.ts', '**/*.spec.tsx']);
+    expect(tsconfigAppJson.exclude).toEqual([
+      'configure-webpack.js',
+      '**/*.spec.ts',
+      '**/*.spec.tsx',
+    ]);
 
     const eslintConfig = tree.readContent('apps/my-app/.eslintrc.js');
     expect(eslintConfig).toContain(`extends: [
@@ -254,7 +258,7 @@ describe('application schematic', () => {
         tree,
         'apps/my-app/tsconfig.app.json'
       );
-      expect(tsconfigAppJson.exclude).toBeUndefined();
+      expect(tsconfigAppJson.exclude).toEqual(['configure-webpack.js']);
 
       expect(tree.readContent('apps/my-app/.eslintrc.js')).not.toContain(
         'overrides:'
@@ -440,6 +444,7 @@ describe('application schematic', () => {
         'apps/subdir/my-app/tsconfig.app.json'
       );
       expect(tsconfigAppJson.exclude).toEqual([
+        'configure-webpack.js',
         '**/*.spec.ts',
         '**/*.spec.tsx',
       ]);

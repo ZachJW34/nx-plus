@@ -66,7 +66,11 @@ describe('library schematic', () => {
       tree,
       'libs/my-lib/tsconfig.lib.json'
     );
-    expect(tsconfigLibJson.exclude).toEqual(['**/*.spec.ts', '**/*.spec.tsx']);
+    expect(tsconfigLibJson.exclude).toEqual([
+      'configure-webpack.js',
+      '**/*.spec.ts',
+      '**/*.spec.tsx',
+    ]);
 
     const eslintConfig = tree.readContent('libs/my-lib/.eslintrc.js');
     expect(eslintConfig).toContain(`extends: [
@@ -136,7 +140,7 @@ describe('library schematic', () => {
         tree,
         'libs/my-lib/tsconfig.lib.json'
       );
-      expect(tsconfigLibJson.exclude).toBeUndefined();
+      expect(tsconfigLibJson.exclude).toEqual(['configure-webpack.js']);
 
       expect(tree.readContent('libs/my-lib/.eslintrc.js')).not.toContain(
         'overrides:'
@@ -249,6 +253,7 @@ describe('library schematic', () => {
         'libs/subdir/my-lib/tsconfig.lib.json'
       );
       expect(tsconfigLibJson.exclude).toEqual([
+        'configure-webpack.js',
         '**/*.spec.ts',
         '**/*.spec.tsx',
       ]);

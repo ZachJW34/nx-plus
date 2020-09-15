@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "<%= offsetFromRoot %>dist/out-tsc",
     "types": ["webpack-env", "node"]
-  },<% if (unitTestRunner === 'jest') { %>
-  "exclude": ["**/*.spec.ts", "**/*.spec.tsx"],<% } %>
-  "include": ["**/*.ts", "**/*.tsx", "**/*.vue"]
+  },
+  "exclude": ["configure-webpack.js"<% if (unitTestRunner === 'jest') { %>, "**/*.spec.ts", "**/*.spec.tsx"<% } %>],
+  "include": ["**/*.js", "**/*.ts", "**/*.tsx", "**/*.vue"]
 }
