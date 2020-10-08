@@ -15,9 +15,12 @@ export interface DevServerBuilderSchema extends JsonObject {
   publicPath?: string;
   css: {
     requireModuleExtension?: boolean;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     extract?: boolean | object;
     sourceMap?: boolean;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     loaderOptions: object;
   };
+  // eslint-disable-next-line @typescript-eslint/ban-types
   devServer: object;
 }

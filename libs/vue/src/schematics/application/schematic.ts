@@ -131,7 +131,8 @@ function addEsLint(options: NormalizedSchema): Rule {
         ...generateProjectLint(
           options.projectRoot,
           `${options.projectRoot}/tsconfig.app.json`,
-          Linter.EsLint
+          Linter.EsLint,
+          [`${options.projectRoot}/**/*.{ts,tsx,vue}`]
         ),
       });
     }),
@@ -140,15 +141,16 @@ function addEsLint(options: NormalizedSchema): Rule {
     }),
     // Extending the root ESLint config should be the first value in the
     // app's local ESLint config extends array.
-    updateJsonInTree(`${options.projectRoot}/.eslintrc`, (json) => {
+    updateJsonInTree(`${options.projectRoot}/.eslintrc.json`, (json) => {
       json.extends.unshift(json.extends.pop());
       return json;
     }),
     (tree: Tree) => {
-      const configPath = `${options.projectRoot}/.eslintrc`;
+      const configPath = `${options.projectRoot}/.eslintrc.json`;
       const content = tree.read(configPath).toString('utf-8').trim();
-      tree.rename(configPath, `${configPath}.js`);
-      tree.overwrite(`${configPath}.js`, `module.exports = ${content};`);
+      const newConfigPath = configPath.slice(0, -2);
+      tree.rename(configPath, newConfigPath);
+      tree.overwrite(newConfigPath, `module.exports = ${content};`);
     },
   ]);
 }
@@ -177,8 +179,8 @@ function addJest(options: NormalizedSchema): Rule {
     (tree: Tree) => {
       const content = tags.stripIndent`
         module.exports = {
-          name: '${options.projectName}',
-          preset: '${offsetFromRoot(options.projectRoot)}jest.config.js',
+          displayName: '${options.projectName}',
+          preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
           transform: {
             '^.+\\.vue$': 'vue-jest',
             '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':

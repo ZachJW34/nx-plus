@@ -45,7 +45,7 @@ describe('nuxt schematic', () => {
       browserTarget: 'my-app:build:production',
       dev: false,
     });
-    expect(lint.builder).toBe('@nrwl/linter:lint');
+    expect(lint.builder).toBe('@nrwl/linter:eslint');
     expect(test.builder).toBe('@nrwl/jest:jest');
 
     expect(workspaceJson.projects['my-app-e2e']).toBeDefined();
@@ -71,7 +71,7 @@ describe('nuxt schematic', () => {
 
     const eslintConfig = tree.readContent('apps/my-app/.eslintrc.js');
     expect(eslintConfig).toContain(`extends: [
-    '../../.eslintrc',
+    '../../.eslintrc.json',
     '@nuxtjs/eslint-config-typescript',
     'plugin:nuxt/recommended',
     'prettier',
@@ -167,7 +167,7 @@ describe('nuxt schematic', () => {
 
       const eslintConfig = tree.readContent('apps/subdir/my-app/.eslintrc.js');
       expect(eslintConfig).toContain(`extends: [
-    '../../../.eslintrc',
+    '../../../.eslintrc.json',
     '@nuxtjs/eslint-config-typescript',
     'plugin:nuxt/recommended',
     'prettier',

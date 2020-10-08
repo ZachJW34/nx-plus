@@ -12,8 +12,10 @@ export interface LibraryBuilderSchema extends JsonObject {
   inlineVue: boolean;
   css: {
     requireModuleExtension: boolean;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     extract: boolean | object;
     sourceMap: boolean;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     loaderOptions: object;
   };
   formats: string;

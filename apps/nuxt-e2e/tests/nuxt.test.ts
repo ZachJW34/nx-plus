@@ -4,6 +4,7 @@ import {
   ensureNxProject,
   runNxCommandAsync,
   uniq,
+  updateFile,
 } from '@nrwl/nx-plugin/testing';
 describe('nuxt e2e', () => {
   it('should generate app', async (done) => {
@@ -46,6 +47,24 @@ describe('nuxt e2e', () => {
         `dist/apps/${appName}/components`
       )
     ).not.toThrow();
+
+    done();
+  }, 300000);
+
+  it('should report lint error in index.vue', async (done) => {
+    const appName = uniq('app');
+    ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
+    await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
+
+    updateFile(
+      `apps/${appName}/pages/index.vue`,
+      '<script lang="ts">{}</script>'
+    );
+
+    const result = await runNxCommandAsync(`lint ${appName}`, {
+      silenceError: true,
+    });
+    expect(result.stderr).toContain('Lint errors found in the listed files.');
 
     done();
   }, 300000);

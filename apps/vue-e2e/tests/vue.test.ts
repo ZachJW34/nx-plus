@@ -5,6 +5,7 @@ import {
   runNxCommandAsync,
   tmpProjPath,
   uniq,
+  updateFile,
 } from '@nrwl/nx-plugin/testing';
 import * as cp from 'child_process';
 
@@ -148,6 +149,24 @@ describe('vue e2e', () => {
           `dist/apps/${appName}/js/about.js.map`
         )
       ).not.toThrow();
+
+      done();
+    }, 300000);
+
+    it('should report lint error in App.vue', async (done) => {
+      const appName = uniq('app');
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+      await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
+
+      updateFile(
+        `apps/${appName}/src/App.vue`,
+        '<script lang="ts">{}</script>'
+      );
+
+      const result = await runNxCommandAsync(`lint ${appName}`, {
+        silenceError: true,
+      });
+      expect(result.stderr).toContain('Lint errors found in the listed files.');
 
       done();
     }, 300000);

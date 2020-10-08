@@ -30,9 +30,9 @@
     "@nrwl/workspace": "^10.0.0"
   },
   "dependencies": {
-    "@angular-devkit/architect": "0.1000.7",
-    "@angular-devkit/core": "10.0.7",
-    "@angular-devkit/schematics": "10.0.7",
+    "@angular-devkit/architect": "0.1001.4",
+    "@angular-devkit/core": "10.1.4",
+    "@angular-devkit/schematics": "10.1.4",
     "@nrwl/cypress": "^10.0.0",
     "@nrwl/jest": "^10.0.0",
     "@nrwl/linter": "^10.0.0",

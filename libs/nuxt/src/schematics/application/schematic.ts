@@ -92,6 +92,9 @@ function addEsLint(options: NormalizedSchema): Rule {
       'prettier',
       'prettier/@typescript-eslint',
     ],
+    parserOptions: {
+      extraFileExtensions: ['.vue'],
+    },
     rules: {},
   };
 
@@ -103,24 +106,27 @@ function addEsLint(options: NormalizedSchema): Rule {
         ...generateProjectLint(
           options.projectRoot,
           `${options.projectRoot}/tsconfig.json`,
-          Linter.EsLint
+          Linter.EsLint,
+          [`${options.projectRoot}/**/*.{ts,js,vue}`]
         ),
       });
     }),
     addLintFiles(options.projectRoot, Linter.EsLint, {
       localConfig: eslintConfig,
     }),
-    // Extending the root ESLint config should be the first value in the
-    // app's local ESLint config extends array.
-    updateJsonInTree(`${options.projectRoot}/.eslintrc`, (json) => {
+    updateJsonInTree(`${options.projectRoot}/.eslintrc.json`, (json) => {
+      // Extending the root ESLint config should be the first value in the
+      // app's local ESLint config extends array.
       json.extends.unshift(json.extends.pop());
+      json.ignorePatterns = [...(json.ignorePatterns || []), '.eslintrc.js'];
       return json;
     }),
     (tree: Tree) => {
-      const configPath = `${options.projectRoot}/.eslintrc`;
+      const configPath = `${options.projectRoot}/.eslintrc.json`;
       const content = tree.read(configPath).toString('utf-8').trim();
-      tree.rename(configPath, `${configPath}.js`);
-      tree.overwrite(`${configPath}.js`, `module.exports = ${content};`);
+      const newConfigPath = configPath.slice(0, -2);
+      tree.rename(configPath, newConfigPath);
+      tree.overwrite(newConfigPath, `module.exports = ${content};`);
     },
   ]);
 }
@@ -149,8 +155,8 @@ function addJest(options: NormalizedSchema): Rule {
     (tree: Tree) => {
       const content = tags.stripIndent`
         module.exports = {
-          name: '${options.projectName}',
-          preset: '${offsetFromRoot(options.projectRoot)}jest.config.js',
+          displayName: '${options.projectName}',
+          preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
           transform: {
             '.*\\.(vue)$': 'vue-jest',
             '^.+\\.ts$': 'ts-jest',

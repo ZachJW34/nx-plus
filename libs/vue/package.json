@@ -30,9 +30,9 @@
     "@nrwl/workspace": "^10.0.0"
   },
   "dependencies": {
-    "@angular-devkit/architect": "0.1000.7",
-    "@angular-devkit/core": "10.0.7",
-    "@angular-devkit/schematics": "10.0.7",
+    "@angular-devkit/architect": "0.1001.4",
+    "@angular-devkit/core": "10.1.4",
+    "@angular-devkit/schematics": "10.1.4",
     "@nrwl/cypress": "^10.0.0",
     "@nrwl/jest": "^10.0.0",
     "@nrwl/linter": "^10.0.0",
@@ -46,7 +46,7 @@
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "tsconfig-paths-webpack-plugin": "3.3.0",
-    "typescript": "3.9.7"
+    "typescript": "4.0.3"
   },
   "ng-update": {
     "migrations": "./migrations.json"

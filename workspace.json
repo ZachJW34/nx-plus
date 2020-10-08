@@ -8,14 +8,16 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "libs/docusaurus/tsconfig.lib.json",
-              "libs/docusaurus/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/docusaurus/**/*"]
+            "lintFilePatterns": [
+              "libs/docusaurus/**/*.ts",
+              "libs/docusaurus/**/*.spec.ts",
+              "libs/docusaurus/**/*.spec.tsx",
+              "libs/docusaurus/**/*.spec.js",
+              "libs/docusaurus/**/*.spec.jsx",
+              "libs/docusaurus/**/*.d.ts"
+            ]
           }
         },
         "test": {
@@ -71,8 +73,7 @@
             "target": "docusaurus:build",
             "npmPackageName": "@nx-plus/docusaurus",
             "pluginOutputPath": "dist/libs/docusaurus",
-            "jestConfig": "apps/docusaurus-e2e/jest.config.js",
-            "tsSpecConfig": "apps/docusaurus-e2e/tsconfig.spec.json"
+            "jestConfig": "apps/docusaurus-e2e/jest.config.js"
           }
         }
       }
@@ -84,14 +85,16 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "libs/vue/tsconfig.lib.json",
-              "libs/vue/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/vue/**/*"]
+            "lintFilePatterns": [
+              "libs/vue/**/*.ts",
+              "libs/vue/**/*.spec.ts",
+              "libs/vue/**/*.spec.tsx",
+              "libs/vue/**/*.spec.js",
+              "libs/vue/**/*.spec.jsx",
+              "libs/vue/**/*.d.ts"
+            ]
           }
         },
         "test": {
@@ -152,8 +155,7 @@
             "target": "vue:build",
             "npmPackageName": "@nx-plus/vue",
             "pluginOutputPath": "dist/libs/vue",
-            "jestConfig": "apps/vue-e2e/jest.config.js",
-            "tsSpecConfig": "apps/vue-e2e/tsconfig.spec.json"
+            "jestConfig": "apps/vue-e2e/jest.config.js"
           }
         }
       }
@@ -165,14 +167,16 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "libs/nuxt/tsconfig.lib.json",
-              "libs/nuxt/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/nuxt/**/*"]
+            "lintFilePatterns": [
+              "libs/nuxt/**/*.ts",
+              "libs/nuxt/**/*.spec.ts",
+              "libs/nuxt/**/*.spec.tsx",
+              "libs/nuxt/**/*.spec.js",
+              "libs/nuxt/**/*.spec.jsx",
+              "libs/nuxt/**/*.d.ts"
+            ]
           }
         },
         "test": {
@@ -223,8 +227,7 @@
             "target": "nuxt:build",
             "npmPackageName": "@nx-plus/nuxt",
             "pluginOutputPath": "dist/libs/nuxt",
-            "jestConfig": "apps/nuxt-e2e/jest.config.js",
-            "tsSpecConfig": "apps/nuxt-e2e/tsconfig.spec.json"
+            "jestConfig": "apps/nuxt-e2e/jest.config.js"
           }
         }
       }
