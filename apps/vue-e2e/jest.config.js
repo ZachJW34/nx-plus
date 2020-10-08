@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'vue-e2e',
-  preset: '../../jest.config.js',
+  displayName: 'vue-e2e',
+  preset: '../../jest.preset.js',
   coverageDirectory: '../../coverage/apps/vue-e2e',
 };

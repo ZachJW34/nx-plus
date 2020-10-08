@@ -16,8 +16,10 @@ export interface BrowserBuilderSchema extends JsonObject {
   productionSourceMap: boolean;
   css: {
     requireModuleExtension: boolean;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     extract: boolean | object;
     sourceMap: boolean;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     loaderOptions: object;
   };
   stdin: boolean;

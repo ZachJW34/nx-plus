@@ -60,7 +60,7 @@ describe('application schematic', () => {
     expect(serve.configurations.production).toEqual({
       browserTarget: 'my-app:build:production',
     });
-    expect(lint.builder).toBe('@nrwl/linter:lint');
+    expect(lint.builder).toBe('@nrwl/linter:eslint');
     expect(test.builder).toBe('@nrwl/jest:jest');
 
     expect(workspaceJson.projects['my-app-e2e']).toBeDefined();
@@ -94,7 +94,7 @@ describe('application schematic', () => {
 
     const eslintConfig = tree.readContent('apps/my-app/.eslintrc.js');
     expect(eslintConfig).toContain(`extends: [
-    '../../.eslintrc',
+    '../../.eslintrc.json',
     'plugin:vue/essential',
     '@vue/typescript/recommended',
     'prettier',
@@ -402,7 +402,7 @@ describe('application schematic', () => {
 
       const eslintConfig = tree.readContent('apps/subdir/my-app/.eslintrc.js');
       expect(eslintConfig).toContain(`extends: [
-    '../../../.eslintrc',
+    '../../../.eslintrc.json',
     'plugin:vue/essential',
     '@vue/typescript/recommended',
     'prettier',

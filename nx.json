@@ -9,7 +9,8 @@
     "tslint.json": "*",
     "nx.json": "*",
     "tsconfig.base.json": "*",
-    ".circleci/config.yml": "*"
+    ".circleci/config.yml": "*",
+    ".eslintrc.json": "*"
   },
   "tasksRunnerOptions": {
     "default": {

@@ -33,7 +33,7 @@ describe('library schematic', () => {
 
     expect(workspaceJson.projects['my-lib'].root).toBe('libs/my-lib');
     expect(workspaceJson.projects['my-lib'].sourceRoot).toBe('libs/my-lib/src');
-    expect(lint.builder).toBe('@nrwl/linter:lint');
+    expect(lint.builder).toBe('@nrwl/linter:eslint');
     expect(test.builder).toBe('@nrwl/jest:jest');
 
     const tsConfigBaseJson = readJsonInTree(tree, 'tsconfig.base.json');
@@ -68,7 +68,7 @@ describe('library schematic', () => {
 
     const eslintConfig = tree.readContent('libs/my-lib/.eslintrc.js');
     expect(eslintConfig).toContain(`extends: [
-    '../../.eslintrc',
+    '../../.eslintrc.json',
     'plugin:vue/essential',
     '@vue/typescript/recommended',
     'prettier',
@@ -208,7 +208,7 @@ describe('library schematic', () => {
 
       const eslintConfig = tree.readContent('libs/subdir/my-lib/.eslintrc.js');
       expect(eslintConfig).toContain(`extends: [
-    '../../../.eslintrc',
+    '../../../.eslintrc.json',
     'plugin:vue/essential',
     '@vue/typescript/recommended',
     'prettier',
