@@ -23,8 +23,6 @@ If you have not already, [create an Nx workspace](https://github.com/nrwl/nx#cre
 npx create-nx-workspace@^10.0.0
 ```
 
-When creating your Nx workspace you may be prompted to choose a preset, **we do not support the `oss` preset at this time**.
-
 ## Getting Started
 
 ### Install Plugin

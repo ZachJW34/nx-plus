@@ -1,3 +1,4 @@
+import { normalize } from '@angular-devkit/core';
 import {
   apply,
   applyTemplates,
@@ -15,12 +16,11 @@ import {
   insert,
   names,
   offsetFromRoot,
-  projectRootDir,
   ProjectType,
   toFileName,
   updateWorkspace,
 } from '@nrwl/workspace';
-import { InsertChange } from '@nrwl/workspace/src/utils/ast-utils';
+import { appsDir, InsertChange } from '@nrwl/workspace/src/utils/ast-utils';
 import { AppSchematicSchema } from './schema';
 
 /**
@@ -35,13 +35,16 @@ interface NormalizedSchema extends AppSchematicSchema {
   parsedTags: string[];
 }
 
-function normalizeOptions(options: AppSchematicSchema): NormalizedSchema {
+function normalizeOptions(
+  host: Tree,
+  options: AppSchematicSchema
+): NormalizedSchema {
   const name = toFileName(options.name);
   const projectDirectory = options.directory
     ? `${toFileName(options.directory)}/${name}`
     : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
-  const projectRoot = `${projectRootDir(projectType)}/${projectDirectory}`;
+  const projectRoot = normalize(`${appsDir(host)}/${projectDirectory}`);
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];
@@ -124,47 +127,49 @@ function updatePrettierIgnore(): Rule {
 }
 
 export default function (options: AppSchematicSchema): Rule {
-  const normalizedOptions = normalizeOptions(options);
-  return chain([
-    updateWorkspace((workspace) => {
-      const targets = workspace.projects.add({
-        name: normalizedOptions.projectName,
-        root: normalizedOptions.projectRoot,
-        sourceRoot: `${normalizedOptions.projectRoot}/src`,
-        projectType,
-      }).targets;
-      targets.add({
-        name: 'build',
-        builder: '@nx-plus/docusaurus:browser',
-        options: {
-          outputPath: `dist/${normalizedOptions.projectRoot}`,
+  return (host: Tree) => {
+    const normalizedOptions = normalizeOptions(host, options);
+    return chain([
+      updateWorkspace((workspace) => {
+        const targets = workspace.projects.add({
+          name: normalizedOptions.projectName,
+          root: normalizedOptions.projectRoot,
+          sourceRoot: `${normalizedOptions.projectRoot}/src`,
+          projectType,
+        }).targets;
+        targets.add({
+          name: 'build',
+          builder: '@nx-plus/docusaurus:browser',
+          options: {
+            outputPath: `dist/${normalizedOptions.projectRoot}`,
+          },
+        });
+        targets.add({
+          name: 'serve',
+          builder: '@nx-plus/docusaurus:dev-server',
+          options: {
+            port: 3000,
+          },
+        });
+      }),
+      addProjectToNxJsonInTree(normalizedOptions.projectName, {
+        tags: normalizedOptions.parsedTags,
+      }),
+      addFiles(normalizedOptions),
+      updateGitIgnore(),
+      updatePrettierIgnore(),
+      addDepsToPackageJson(
+        {
+          '@docusaurus/core': '^2.0.0-alpha.61',
+          '@docusaurus/preset-classic': '^2.0.0-alpha.61',
+          clsx: '^1.1.1',
+          react: '^16.8.4',
+          'react-dom': '^16.8.4',
         },
-      });
-      targets.add({
-        name: 'serve',
-        builder: '@nx-plus/docusaurus:dev-server',
-        options: {
-          port: 3000,
-        },
-      });
-    }),
-    addProjectToNxJsonInTree(normalizedOptions.projectName, {
-      tags: normalizedOptions.parsedTags,
-    }),
-    addFiles(normalizedOptions),
-    updateGitIgnore(),
-    updatePrettierIgnore(),
-    addDepsToPackageJson(
-      {
-        '@docusaurus/core': '^2.0.0-alpha.61',
-        '@docusaurus/preset-classic': '^2.0.0-alpha.61',
-        clsx: '^1.1.1',
-        react: '^16.8.4',
-        'react-dom': '^16.8.4',
-      },
-      {},
-      true
-    ),
-    formatFiles(options),
-  ]);
+        {},
+        true
+      ),
+      formatFiles(options),
+    ]);
+  };
 }
