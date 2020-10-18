@@ -1,4 +1,4 @@
-import { tags } from '@angular-devkit/core';
+import { normalize, tags } from '@angular-devkit/core';
 import {
   apply,
   applyTemplates,
@@ -22,12 +22,12 @@ import {
   Linter,
   names,
   offsetFromRoot,
-  projectRootDir,
   ProjectType,
   toFileName,
   updateJsonInTree,
   updateWorkspace,
 } from '@nrwl/workspace';
+import { appsDir } from '@nrwl/workspace/src/utils/ast-utils';
 import { ApplicationSchematicSchema } from './schema';
 
 /**
@@ -43,6 +43,7 @@ interface NormalizedSchema extends ApplicationSchematicSchema {
 }
 
 function normalizeOptions(
+  host: Tree,
   options: ApplicationSchematicSchema
 ): NormalizedSchema {
   const name = toFileName(options.name);
@@ -50,7 +51,7 @@ function normalizeOptions(
     ? `${toFileName(options.directory)}/${name}`
     : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
-  const projectRoot = `${projectRootDir(projectType)}/${projectDirectory}`;
+  const projectRoot = normalize(`${appsDir(host)}/${projectDirectory}`);
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];
@@ -260,73 +261,75 @@ function addPostInstall() {
 }
 
 export default function (options: ApplicationSchematicSchema): Rule {
-  const normalizedOptions = normalizeOptions(options);
-  return chain([
-    updateWorkspace((workspace) => {
-      const { targets } = workspace.projects.add({
-        name: normalizedOptions.projectName,
-        root: normalizedOptions.projectRoot,
-        sourceRoot: `${normalizedOptions.projectRoot}/src`,
-        projectType,
-      });
-      targets.add({
-        name: 'build',
-        builder: '@nx-plus/vue:browser',
-        options: {
-          dest: `dist/${normalizedOptions.projectRoot}`,
-          index: `${normalizedOptions.projectRoot}/public/index.html`,
-          main: `${normalizedOptions.projectRoot}/src/main.ts`,
-          tsConfig: `${normalizedOptions.projectRoot}/tsconfig.app.json`,
-        },
-        configurations: {
-          production: {
-            mode: 'production',
-            filenameHashing: true,
-            productionSourceMap: true,
-            css: {
-              extract: true,
-              sourceMap: false,
+  return (host: Tree) => {
+    const normalizedOptions = normalizeOptions(host, options);
+    return chain([
+      updateWorkspace((workspace) => {
+        const { targets } = workspace.projects.add({
+          name: normalizedOptions.projectName,
+          root: normalizedOptions.projectRoot,
+          sourceRoot: `${normalizedOptions.projectRoot}/src`,
+          projectType,
+        });
+        targets.add({
+          name: 'build',
+          builder: '@nx-plus/vue:browser',
+          options: {
+            dest: `dist/${normalizedOptions.projectRoot}`,
+            index: `${normalizedOptions.projectRoot}/public/index.html`,
+            main: `${normalizedOptions.projectRoot}/src/main.ts`,
+            tsConfig: `${normalizedOptions.projectRoot}/tsconfig.app.json`,
+          },
+          configurations: {
+            production: {
+              mode: 'production',
+              filenameHashing: true,
+              productionSourceMap: true,
+              css: {
+                extract: true,
+                sourceMap: false,
+              },
             },
           },
-        },
-      });
-      targets.add({
-        name: 'serve',
-        builder: '@nx-plus/vue:dev-server',
-        options: {
-          browserTarget: `${normalizedOptions.projectName}:build`,
-        },
-        configurations: {
-          production: {
-            browserTarget: `${normalizedOptions.projectName}:build:production`,
+        });
+        targets.add({
+          name: 'serve',
+          builder: '@nx-plus/vue:dev-server',
+          options: {
+            browserTarget: `${normalizedOptions.projectName}:build`,
           },
+          configurations: {
+            production: {
+              browserTarget: `${normalizedOptions.projectName}:build:production`,
+            },
+          },
+        });
+      }),
+      addProjectToNxJsonInTree(normalizedOptions.projectName, {
+        tags: normalizedOptions.parsedTags,
+      }),
+      addFiles(normalizedOptions),
+      addEsLint(normalizedOptions),
+      options.unitTestRunner === 'jest' ? addJest(normalizedOptions) : noop(),
+      options.e2eTestRunner === 'cypress'
+        ? addCypress(normalizedOptions)
+        : noop(),
+      addPostInstall(),
+      addDepsToPackageJson(
+        {
+          vue: '^2.6.11',
+          ...(options.routing ? { 'vue-router': '^3.2.0' } : {}),
         },
-      });
-    }),
-    addProjectToNxJsonInTree(normalizedOptions.projectName, {
-      tags: normalizedOptions.parsedTags,
-    }),
-    addFiles(normalizedOptions),
-    addEsLint(normalizedOptions),
-    options.unitTestRunner === 'jest' ? addJest(normalizedOptions) : noop(),
-    options.e2eTestRunner === 'cypress'
-      ? addCypress(normalizedOptions)
-      : noop(),
-    addPostInstall(),
-    addDepsToPackageJson(
-      {
-        vue: '^2.6.11',
-        ...(options.routing ? { 'vue-router': '^3.2.0' } : {}),
-      },
-      {
-        '@vue/cli-plugin-typescript': '~4.5.0',
-        '@vue/cli-service': '~4.5.0',
-        '@vue/eslint-config-typescript': '^5.0.2',
-        'eslint-plugin-vue': '^6.2.2',
-        'vue-template-compiler': '^2.6.11',
-      },
-      true
-    ),
-    formatFiles(options),
-  ]);
+        {
+          '@vue/cli-plugin-typescript': '~4.5.0',
+          '@vue/cli-service': '~4.5.0',
+          '@vue/eslint-config-typescript': '^5.0.2',
+          'eslint-plugin-vue': '^6.2.2',
+          'vue-template-compiler': '^2.6.11',
+        },
+        true
+      ),
+      formatFiles(options),
+    ]);
+  };
 }

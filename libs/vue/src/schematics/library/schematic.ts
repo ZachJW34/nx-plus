@@ -1,4 +1,4 @@
-import { tags } from '@angular-devkit/core';
+import { normalize, tags } from '@angular-devkit/core';
 import {
   apply,
   applyTemplates,
@@ -24,7 +24,6 @@ import {
   Linter,
   names,
   offsetFromRoot,
-  projectRootDir,
   ProjectType,
   toFileName,
   updateJsonInTree,
@@ -32,6 +31,7 @@ import {
   readJsonInTree,
   NxJson,
 } from '@nrwl/workspace';
+import { libsDir } from '@nrwl/workspace/src/utils/ast-utils';
 import { LibrarySchematicSchema } from './schema';
 
 /**
@@ -46,13 +46,16 @@ interface NormalizedSchema extends LibrarySchematicSchema {
   parsedTags: string[];
 }
 
-function normalizeOptions(options: LibrarySchematicSchema): NormalizedSchema {
+function normalizeOptions(
+  host: Tree,
+  options: LibrarySchematicSchema
+): NormalizedSchema {
   const name = toFileName(options.name);
   const projectDirectory = options.directory
     ? `${toFileName(options.directory)}/${name}`
     : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
-  const projectRoot = `${projectRootDir(projectType)}/${projectDirectory}`;
+  const projectRoot = normalize(`${libsDir(host)}/${projectDirectory}`);
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];
@@ -266,39 +269,41 @@ function updateTsConfig(options: NormalizedSchema): Rule {
 }
 
 export default function (options: LibrarySchematicSchema): Rule {
-  const normalizedOptions = normalizeOptions(options);
-  return chain([
-    updateWorkspace((workspace) => {
-      workspace.projects.add({
-        name: normalizedOptions.projectName,
-        root: normalizedOptions.projectRoot,
-        sourceRoot: `${normalizedOptions.projectRoot}/src`,
-        projectType,
-        architect: {},
-      });
-    }),
-    addProjectToNxJsonInTree(normalizedOptions.projectName, {
-      tags: normalizedOptions.parsedTags,
-    }),
-    !options.skipTsConfig ? updateTsConfig(normalizedOptions) : noop(),
-    addFiles(normalizedOptions),
-    addEsLint(normalizedOptions),
-    options.publishable ? addPublishable(normalizedOptions) : noop(),
-    options.unitTestRunner === 'jest' ? addJest(normalizedOptions) : noop(),
-    addPostInstall(),
-    addDepsToPackageJson(
-      {
-        vue: '^2.6.11',
-      },
-      {
-        '@vue/cli-plugin-typescript': '~4.5.0',
-        '@vue/cli-service': '~4.5.0',
-        '@vue/eslint-config-typescript': '^5.0.2',
-        'eslint-plugin-vue': '^6.2.2',
-        'vue-template-compiler': '^2.6.11',
-      },
-      true
-    ),
-    formatFiles(options),
-  ]);
+  return (host: Tree) => {
+    const normalizedOptions = normalizeOptions(host, options);
+    return chain([
+      updateWorkspace((workspace) => {
+        workspace.projects.add({
+          name: normalizedOptions.projectName,
+          root: normalizedOptions.projectRoot,
+          sourceRoot: `${normalizedOptions.projectRoot}/src`,
+          projectType,
+          architect: {},
+        });
+      }),
+      addProjectToNxJsonInTree(normalizedOptions.projectName, {
+        tags: normalizedOptions.parsedTags,
+      }),
+      !options.skipTsConfig ? updateTsConfig(normalizedOptions) : noop(),
+      addFiles(normalizedOptions),
+      addEsLint(normalizedOptions),
+      options.publishable ? addPublishable(normalizedOptions) : noop(),
+      options.unitTestRunner === 'jest' ? addJest(normalizedOptions) : noop(),
+      addPostInstall(),
+      addDepsToPackageJson(
+        {
+          vue: '^2.6.11',
+        },
+        {
+          '@vue/cli-plugin-typescript': '~4.5.0',
+          '@vue/cli-service': '~4.5.0',
+          '@vue/eslint-config-typescript': '^5.0.2',
+          'eslint-plugin-vue': '^6.2.2',
+          'vue-template-compiler': '^2.6.11',
+        },
+        true
+      ),
+      formatFiles(options),
+    ]);
+  };
 }

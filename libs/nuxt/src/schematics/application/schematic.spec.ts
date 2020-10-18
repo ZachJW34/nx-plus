@@ -179,4 +179,74 @@ describe('nuxt schematic', () => {
       ).toContain("'subdir-my-app'");
     });
   });
+
+  describe('workspaceLayout', () => {
+    beforeEach(() => {
+      const nxJson = JSON.parse(appTree.read('nx.json').toString());
+      const updateNxJson = {
+        ...nxJson,
+        workspaceLayout: { appsDir: 'custom-apps-dir' },
+      };
+      appTree.overwrite('nx.json', JSON.stringify(updateNxJson));
+    });
+
+    it('should update workspace.json', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', options, appTree)
+        .toPromise();
+      const workspaceJson = readJsonInTree(tree, 'workspace.json');
+      const { build, serve } = workspaceJson.projects['my-app'].architect;
+
+      expect(workspaceJson.projects['my-app'].root).toBe(
+        'custom-apps-dir/my-app'
+      );
+      expect(build.options).toEqual({
+        buildDir: 'dist/custom-apps-dir/my-app',
+      });
+      expect(serve.options).toEqual({
+        browserTarget: 'my-app:build',
+        dev: true,
+      });
+      expect(serve.configurations.production).toEqual({
+        browserTarget: 'my-app:build:production',
+        dev: false,
+      });
+    });
+
+    it('should generate files', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', options, appTree)
+        .toPromise();
+
+      [
+        'custom-apps-dir/my-app/tsconfig.spec.json',
+        'custom-apps-dir/my-app/tsconfig.json',
+        'custom-apps-dir/my-app/nuxt.config.js',
+        'custom-apps-dir/my-app/jest.config.js',
+        'custom-apps-dir/my-app/.eslintrc.js',
+        'custom-apps-dir/my-app/test/Logo.spec.js',
+        'custom-apps-dir/my-app/static/favicon.ico',
+        'custom-apps-dir/my-app/pages/index.vue',
+        'custom-apps-dir/my-app/layouts/default.vue',
+        'custom-apps-dir/my-app/components/Logo.vue',
+      ].forEach((path) => expect(tree.exists(path)).toBeTruthy());
+
+      const eslintConfig = tree.readContent(
+        'custom-apps-dir/my-app/.eslintrc.js'
+      );
+      expect(eslintConfig).toContain(`extends: [
+    '../../.eslintrc.json',
+    '@nuxtjs/eslint-config-typescript',
+    'plugin:nuxt/recommended',
+    'prettier',
+    'prettier/@typescript-eslint',
+  ]`);
+
+      expect(
+        tree.readContent(
+          'custom-apps-dir/my-app-e2e/src/integration/app.spec.ts'
+        )
+      ).toContain("'my-app'");
+    });
+  });
 });

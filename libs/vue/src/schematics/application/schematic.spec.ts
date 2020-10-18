@@ -430,4 +430,105 @@ describe('application schematic', () => {
       });
     });
   });
+
+  describe('workspaceLayout', () => {
+    beforeEach(() => {
+      const nxJson = JSON.parse(appTree.read('nx.json').toString());
+      const updateNxJson = {
+        ...nxJson,
+        workspaceLayout: { appsDir: 'custom-apps-dir' },
+      };
+      appTree.overwrite('nx.json', JSON.stringify(updateNxJson));
+    });
+
+    it('should update workspace.json', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', options, appTree)
+        .toPromise();
+      const workspaceJson = readJsonInTree(tree, 'workspace.json');
+      const { build, serve } = workspaceJson.projects['my-app'].architect;
+
+      expect(workspaceJson.projects['my-app'].root).toBe(
+        'custom-apps-dir/my-app'
+      );
+      expect(workspaceJson.projects['my-app'].sourceRoot).toBe(
+        'custom-apps-dir/my-app/src'
+      );
+      expect(build.options).toEqual({
+        dest: 'dist/custom-apps-dir/my-app',
+        index: 'custom-apps-dir/my-app/public/index.html',
+        main: 'custom-apps-dir/my-app/src/main.ts',
+        tsConfig: 'custom-apps-dir/my-app/tsconfig.app.json',
+      });
+      expect(serve.options).toEqual({
+        browserTarget: 'my-app:build',
+      });
+      expect(serve.configurations.production).toEqual({
+        browserTarget: 'my-app:build:production',
+      });
+    });
+
+    it('should generate files', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', options, appTree)
+        .toPromise();
+
+      [
+        'custom-apps-dir/my-app/tsconfig.spec.json',
+        'custom-apps-dir/my-app/tsconfig.json',
+        'custom-apps-dir/my-app/tsconfig.app.json',
+        'custom-apps-dir/my-app/jest.config.js',
+        'custom-apps-dir/my-app/.eslintrc.js',
+        'custom-apps-dir/my-app/tests/unit/example.spec.ts',
+        'custom-apps-dir/my-app/src/shims-vue.d.ts',
+        'custom-apps-dir/my-app/src/main.ts',
+        'custom-apps-dir/my-app/src/App.vue',
+        'custom-apps-dir/my-app/src/components/HelloWorld.vue',
+        'custom-apps-dir/my-app/src/assets/logo.png',
+        'custom-apps-dir/my-app/public/index.html',
+      ].forEach((path) => expect(tree.exists(path)).toBeTruthy());
+
+      const tsconfigAppJson = readJsonInTree(
+        tree,
+        'custom-apps-dir/my-app/tsconfig.app.json'
+      );
+      expect(tsconfigAppJson.exclude).toEqual([
+        '**/*.spec.ts',
+        '**/*.spec.tsx',
+      ]);
+
+      const eslintConfig = tree.readContent(
+        'custom-apps-dir/my-app/.eslintrc.js'
+      );
+      expect(eslintConfig).toContain(`extends: [
+    '../../.eslintrc.json',
+    'plugin:vue/essential',
+    '@vue/typescript/recommended',
+    'prettier',
+    'prettier/@typescript-eslint',
+  ]`);
+      expect(eslintConfig).toContain(`overrides: [
+    {
+      files: ['**/*.spec.{j,t}s?(x)'],
+      env: {
+        jest: true,
+      },
+    },
+  ]`);
+
+      expect(
+        tree.readContent(
+          'custom-apps-dir/my-app-e2e/src/integration/app.spec.ts'
+        )
+      ).toContain("'Welcome to Your Vue.js + TypeScript App'");
+
+      const tsConfigJson = readJsonInTree(
+        tree,
+        'custom-apps-dir/my-app/tsconfig.json'
+      );
+      expect(tsConfigJson.references[1]).toEqual({
+        path: './tsconfig.spec.json',
+      });
+    });
+  });
 });

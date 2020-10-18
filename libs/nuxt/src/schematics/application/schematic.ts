@@ -1,4 +1,4 @@
-import { tags } from '@angular-devkit/core';
+import { normalize, tags } from '@angular-devkit/core';
 import {
   apply,
   applyTemplates,
@@ -22,12 +22,12 @@ import {
   Linter,
   names,
   offsetFromRoot,
-  projectRootDir,
   ProjectType,
   toFileName,
   updateJsonInTree,
   updateWorkspace,
 } from '@nrwl/workspace';
+import { appsDir } from '@nrwl/workspace/src/utils/ast-utils';
 import { ApplicationSchematicSchema } from './schema';
 
 /**
@@ -43,6 +43,7 @@ interface NormalizedSchema extends ApplicationSchematicSchema {
 }
 
 function normalizeOptions(
+  host: Tree,
   options: ApplicationSchematicSchema
 ): NormalizedSchema {
   const name = toFileName(options.name);
@@ -50,7 +51,7 @@ function normalizeOptions(
     ? `${toFileName(options.directory)}/${name}`
     : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
-  const projectRoot = `${projectRootDir(projectType)}/${projectDirectory}`;
+  const projectRoot = normalize(`${appsDir(host)}/${projectDirectory}`);
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];
@@ -220,63 +221,65 @@ function addCypress(options: NormalizedSchema): Rule {
 }
 
 export default function (options: ApplicationSchematicSchema): Rule {
-  const normalizedOptions = normalizeOptions(options);
-  return chain([
-    updateWorkspace((workspace) => {
-      const { targets } = workspace.projects.add({
-        name: normalizedOptions.projectName,
-        root: normalizedOptions.projectRoot,
-        projectType,
-      });
-      targets.add({
-        name: 'build',
-        builder: '@nx-plus/nuxt:browser',
-        options: {
-          buildDir: `dist/${normalizedOptions.projectRoot}`,
-        },
-        configurations: {
-          production: {},
-        },
-      });
-      targets.add({
-        name: 'serve',
-        builder: '@nx-plus/nuxt:server',
-        options: {
-          browserTarget: `${normalizedOptions.projectName}:build`,
-          dev: true,
-        },
-        configurations: {
-          production: {
-            browserTarget: `${normalizedOptions.projectName}:build:production`,
-            dev: false,
+  return (host: Tree) => {
+    const normalizedOptions = normalizeOptions(host, options);
+    return chain([
+      updateWorkspace((workspace) => {
+        const { targets } = workspace.projects.add({
+          name: normalizedOptions.projectName,
+          root: normalizedOptions.projectRoot,
+          projectType,
+        });
+        targets.add({
+          name: 'build',
+          builder: '@nx-plus/nuxt:browser',
+          options: {
+            buildDir: `dist/${normalizedOptions.projectRoot}`,
           },
+          configurations: {
+            production: {},
+          },
+        });
+        targets.add({
+          name: 'serve',
+          builder: '@nx-plus/nuxt:server',
+          options: {
+            browserTarget: `${normalizedOptions.projectName}:build`,
+            dev: true,
+          },
+          configurations: {
+            production: {
+              browserTarget: `${normalizedOptions.projectName}:build:production`,
+              dev: false,
+            },
+          },
+        });
+      }),
+      addProjectToNxJsonInTree(normalizedOptions.projectName, {
+        tags: normalizedOptions.parsedTags,
+      }),
+      addFiles(normalizedOptions),
+      addEsLint(normalizedOptions),
+      options.unitTestRunner === 'jest' ? addJest(normalizedOptions) : noop(),
+      options.e2eTestRunner === 'cypress'
+        ? addCypress(normalizedOptions)
+        : noop(),
+      addDepsToPackageJson(
+        {
+          '@nuxt/typescript-runtime': '^1.0.0',
+          nuxt: '^2.14.0',
         },
-      });
-    }),
-    addProjectToNxJsonInTree(normalizedOptions.projectName, {
-      tags: normalizedOptions.parsedTags,
-    }),
-    addFiles(normalizedOptions),
-    addEsLint(normalizedOptions),
-    options.unitTestRunner === 'jest' ? addJest(normalizedOptions) : noop(),
-    options.e2eTestRunner === 'cypress'
-      ? addCypress(normalizedOptions)
-      : noop(),
-    addDepsToPackageJson(
-      {
-        '@nuxt/typescript-runtime': '^1.0.0',
-        nuxt: '^2.14.0',
-      },
-      {
-        '@nuxtjs/eslint-config': '^3.1.0',
-        '@nuxtjs/eslint-config-typescript': '^3.0.0',
-        '@nuxt/types': '^2.14.0',
-        '@nuxt/typescript-build': '^2.0.2',
-        'eslint-plugin-nuxt': '^1.0.0',
-        'fork-ts-checker-webpack-plugin': '^5.0.11',
-      },
-      true
-    ),
-    formatFiles(options),
-  ]);
+        {
+          '@nuxtjs/eslint-config': '^3.1.0',
+          '@nuxtjs/eslint-config-typescript': '^3.0.0',
+          '@nuxt/types': '^2.14.0',
+          '@nuxt/typescript-build': '^2.0.2',
+          'eslint-plugin-nuxt': '^1.0.0',
+          'fork-ts-checker-webpack-plugin': '^5.0.11',
+        },
+        true
+      ),
+      formatFiles(options),
+    ]);
+  };
 }

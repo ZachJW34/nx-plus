@@ -239,4 +239,102 @@ describe('library schematic', () => {
       });
     });
   });
+
+  describe('workspaceLayout', () => {
+    beforeEach(() => {
+      const nxJson = JSON.parse(appTree.read('nx.json').toString());
+      const updateNxJson = {
+        ...nxJson,
+        workspaceLayout: { libsDir: 'custom-libs-dir' },
+      };
+      appTree.overwrite('nx.json', JSON.stringify(updateNxJson));
+    });
+
+    it('should update workspace.json and tsconfig.base.json', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('lib', { ...options, publishable: true }, appTree)
+        .toPromise();
+      const workspaceJson = readJsonInTree(tree, 'workspace.json');
+      const { build } = workspaceJson.projects['my-lib'].architect;
+      expect(build.options).toEqual({
+        dest: `dist/custom-libs-dir/my-lib`,
+        entry: `custom-libs-dir/my-lib/src/index.ts`,
+        tsConfig: `custom-libs-dir/my-lib/tsconfig.lib.json`,
+      });
+
+      expect(workspaceJson.projects['my-lib'].root).toBe(
+        'custom-libs-dir/my-lib'
+      );
+      expect(workspaceJson.projects['my-lib'].sourceRoot).toBe(
+        'custom-libs-dir/my-lib/src'
+      );
+
+      const tsConfigBaseJson = readJsonInTree(tree, 'tsconfig.base.json');
+      expect(tsConfigBaseJson.compilerOptions.paths['@proj/my-lib']).toEqual([
+        'custom-libs-dir/my-lib/src/index.ts',
+      ]);
+    });
+
+    it('should generate files', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('lib', { ...options, publishable: true }, appTree)
+        .toPromise();
+
+      [
+        'custom-libs-dir/my-lib/tsconfig.spec.json',
+        'custom-libs-dir/my-lib/tsconfig.json',
+        'custom-libs-dir/my-lib/tsconfig.lib.json',
+        'custom-libs-dir/my-lib/jest.config.js',
+        'custom-libs-dir/my-lib/.eslintrc.js',
+        'custom-libs-dir/my-lib/tests/unit/example.spec.ts',
+        'custom-libs-dir/my-lib/src/shims-tsx.d.ts',
+        'custom-libs-dir/my-lib/src/shims-vue.d.ts',
+        'custom-libs-dir/my-lib/src/index.ts',
+        'custom-libs-dir/my-lib/src/lib/HelloWorld.vue',
+      ].forEach((path) => expect(tree.exists(path)).toBeTruthy());
+
+      const tsconfigLibJson = readJsonInTree(
+        tree,
+        'custom-libs-dir/my-lib/tsconfig.lib.json'
+      );
+      expect(tsconfigLibJson.exclude).toEqual([
+        '**/*.spec.ts',
+        '**/*.spec.tsx',
+      ]);
+
+      const eslintConfig = tree.readContent(
+        'custom-libs-dir/my-lib/.eslintrc.js'
+      );
+      expect(eslintConfig).toContain(`extends: [
+    '../../.eslintrc.json',
+    'plugin:vue/essential',
+    '@vue/typescript/recommended',
+    'prettier',
+    'prettier/@typescript-eslint',
+  ]`);
+      expect(eslintConfig).toContain(`overrides: [
+    {
+      files: ['**/*.spec.{j,t}s?(x)'],
+      env: {
+        jest: true,
+      },
+    },
+  ]`);
+
+      expect(
+        JSON.parse(tree.readContent('custom-libs-dir/my-lib/package.json'))
+      ).toEqual({
+        name: '@proj/my-lib',
+        version: '0.0.0',
+      });
+
+      const tsConfigJson = readJsonInTree(
+        tree,
+        'custom-libs-dir/my-lib/tsconfig.json'
+      );
+      expect(tsConfigJson.references[1]).toEqual({
+        path: './tsconfig.spec.json',
+      });
+    });
+  });
 });
