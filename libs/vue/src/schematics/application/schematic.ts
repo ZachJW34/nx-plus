@@ -40,6 +40,7 @@ interface NormalizedSchema extends ApplicationSchematicSchema {
   projectRoot: string;
   projectDirectory: string;
   parsedTags: string[];
+  isVue3: boolean;
 }
 
 function normalizeOptions(
@@ -55,6 +56,7 @@ function normalizeOptions(
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];
+  const isVue3 = options.vueVersion === 3;
 
   return {
     ...options,
@@ -62,6 +64,7 @@ function normalizeOptions(
     projectRoot,
     projectDirectory,
     parsedTags,
+    isVue3,
   };
 }
 
@@ -89,6 +92,9 @@ function addFiles(options: NormalizedSchema): Rule {
                 '/src/views/Home.vue',
               ].includes(file)
           ),
+      options.isVue3
+        ? filter((file) => file !== '/src/shims-tsx.d.ts')
+        : noop(),
       move(options.projectRoot),
     ])
   );
@@ -98,7 +104,7 @@ function getEslintConfig(options: NormalizedSchema) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const eslintConfig: any = {
     extends: [
-      'plugin:vue/essential',
+      `plugin:vue/${options.isVue3 ? 'vue3-' : ''}essential`,
       '@vue/typescript/recommended',
       'prettier',
       'prettier/@typescript-eslint',
@@ -204,11 +210,11 @@ function addJest(options: NormalizedSchema): Rule {
     addDepsToPackageJson(
       {},
       {
-        '@vue/test-utils': '^1.0.3',
+        '@vue/test-utils': options.isVue3 ? '^2.0.0-0' : '^1.0.3',
         'babel-core': '^7.0.0-bridge.0',
         'jest-serializer-vue': '^2.0.2',
         'jest-transform-stub': '^2.0.0',
-        'vue-jest': '^3.0.5',
+        'vue-jest': options.isVue3 ? '^5.0.0-0' : '^3.0.5',
       },
       true
     ),
@@ -317,15 +323,22 @@ export default function (options: ApplicationSchematicSchema): Rule {
       addPostInstall(),
       addDepsToPackageJson(
         {
-          vue: '^2.6.11',
-          ...(options.routing ? { 'vue-router': '^3.2.0' } : {}),
+          vue: normalizedOptions.isVue3 ? '^3.0.0' : '^2.6.11',
+          ...(options.routing
+            ? { 'vue-router': normalizedOptions.isVue3 ? '^4.0.0-0' : '^3.2.0' }
+            : {}),
         },
         {
           '@vue/cli-plugin-typescript': '~4.5.0',
           '@vue/cli-service': '~4.5.0',
+          ...(normalizedOptions.isVue3
+            ? { '@vue/compiler-sfc': '^3.0.0' }
+            : {}),
           '@vue/eslint-config-typescript': '^5.0.2',
-          'eslint-plugin-vue': '^6.2.2',
-          'vue-template-compiler': '^2.6.11',
+          'eslint-plugin-vue': normalizedOptions.isVue3 ? '^7.0.0-0' : '^6.2.2',
+          ...(!normalizedOptions.isVue3
+            ? { 'vue-template-compiler': '^2.6.11' }
+            : {}),
         },
         true
       ),

@@ -3,6 +3,9 @@ import { getSystemPath, join, normalize, Path } from '@angular-devkit/core';
 import { BrowserBuilderSchema } from './builders/browser/schema';
 import { LibraryBuilderSchema } from './builders/library/schema';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { semver, loadModule } = require('@vue/cli-shared-utils');
+
 export function modifyIndexHtmlPath(
   config,
   options: BrowserBuilderSchema,
@@ -35,6 +38,8 @@ export function modifyTsConfigPaths(
   const tsConfigPath = getSystemPath(
     join(normalize(context.workspaceRoot), options.tsConfig)
   );
+  const vue = loadModule('vue', context.workspaceRoot);
+  const isVue3 = semver.major(vue.version) === 3;
 
   config.module
     .rule('ts')
@@ -51,7 +56,11 @@ export function modifyTsConfigPaths(
       return loaderOptions;
     });
   config.plugin('fork-ts-checker').tap((args) => {
-    args[0].tsconfig = tsConfigPath;
+    if (isVue3) {
+      args[0].typescript.configFile = tsConfigPath;
+    } else {
+      args[0].tsconfig = tsConfigPath;
+    }
     return args;
   });
 }

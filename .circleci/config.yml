@@ -14,7 +14,7 @@ jobs:
       - run: yarn affected:test --all
       - run:
           command: yarn affected:e2e --all
-          no_output_timeout: 30m
+          no_output_timeout: 40m
   affected:
     docker:
       - image: cypress/base:12
@@ -27,7 +27,7 @@ jobs:
       - run: yarn affected:test --base origin/master --head HEAD
       - run:
           command: yarn affected:e2e --base origin/master --head HEAD
-          no_output_timeout: 30m
+          no_output_timeout: 40m
 
 workflows:
   version: 2
@@ -36,10 +36,10 @@ workflows:
       - all:
           filters:
             branches:
-              only: 
+              only:
                 - master
       - affected:
           filters:
             branches:
-              ignore: 
+              ignore:
                 - master

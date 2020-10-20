@@ -7,6 +7,7 @@ import {
   getProjectConfig,
   insert,
 } from '@nrwl/workspace';
+import { appRootPath } from '@nrwl/workspace/src/utils/app-root';
 import {
   InsertChange,
   insertImport,
@@ -14,10 +15,13 @@ import {
 import * as ts from 'typescript';
 import { VuexSchematicSchema } from './schema';
 
-function addStoreConfig(options: VuexSchematicSchema): Rule {
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { semver, loadModule } = require('@vue/cli-shared-utils');
+
+function addStoreConfig(options: VuexSchematicSchema, isVue3: boolean): Rule {
   return (tree: Tree) => {
     const { sourceRoot } = getProjectConfig(tree, options.project);
-    const content = tags.stripIndent`
+    const vue2Content = tags.stripIndent`
       import Vue from 'vue';
       import Vuex from 'vuex';
 
@@ -30,7 +34,20 @@ function addStoreConfig(options: VuexSchematicSchema): Rule {
         modules: {}
       });
     `;
-    tree.create(join(normalize(sourceRoot), 'store/index.ts'), content);
+    const vue3Content = tags.stripIndent`
+      import { createStore } from 'vuex';
+
+      export default createStore({
+        state: {},
+        mutations: {},
+        actions: {},
+        modules: {}
+      });
+    `;
+    tree.create(
+      join(normalize(sourceRoot), 'store/index.ts'),
+      isVue3 ? vue3Content : vue2Content
+    );
     return tree;
   };
 }
@@ -56,7 +73,20 @@ function getNewVueExpression(
   return null;
 }
 
-function addStoreToMain(options: VuexSchematicSchema): Rule {
+function getCreateAppCallExpression(
+  sourceFile: ts.SourceFile
+): ts.CallExpression {
+  const callExpressions = findNodes(
+    sourceFile,
+    ts.SyntaxKind.CallExpression
+  ) as ts.CallExpression[];
+
+  return callExpressions.find(
+    (callExpr) => callExpr.expression.getText() === 'createApp'
+  );
+}
+
+function addStoreToMain(options: VuexSchematicSchema, isVue3: boolean): Rule {
   return (tree: Tree) => {
     const { sourceRoot } = getProjectConfig(tree, options.project);
     const mainPath = join(normalize(sourceRoot), 'main.ts');
@@ -71,21 +101,35 @@ function addStoreToMain(options: VuexSchematicSchema): Rule {
       ts.ScriptTarget.Latest,
       true
     );
-    const newVueExpression = getNewVueExpression(mainSourceFile);
 
-    if (!newVueExpression) {
-      throw new Error(`Could not find Vue instantiation in ${mainPath}.`);
+    let position: number;
+    let content: string;
+
+    if (isVue3) {
+      const createAppCallExpression = getCreateAppCallExpression(
+        mainSourceFile
+      );
+
+      if (!createAppCallExpression) {
+        throw new Error(`Could not find 'createApp' call in ${mainPath}.`);
+      }
+
+      position = createAppCallExpression.end;
+      content = '.use(store)';
+    } else {
+      const newVueExpression = getNewVueExpression(mainSourceFile);
+
+      if (!newVueExpression) {
+        throw new Error(`Could not find Vue instantiation in ${mainPath}.`);
+      }
+
+      position = newVueExpression.arguments[0].getStart() + 1;
+      content = '\n  store,';
     }
-
-    const newVueOptionsObject = newVueExpression.arguments[0];
 
     insert(tree, mainPath, [
       insertImport(mainSourceFile, mainPath, 'store', './store', true),
-      new InsertChange(
-        mainPath,
-        newVueOptionsObject.getStart() + 1,
-        '\n  store,'
-      ),
+      new InsertChange(mainPath, position, content),
     ]);
 
     return tree;
@@ -93,10 +137,13 @@ function addStoreToMain(options: VuexSchematicSchema): Rule {
 }
 
 export default function (options: VuexSchematicSchema): Rule {
+  const vue = loadModule('vue', appRootPath);
+  const isVue3 = semver.major(vue.version) === 3;
+
   return chain([
-    addStoreConfig(options),
-    addStoreToMain(options),
-    addDepsToPackageJson({ vuex: '^3.4.0' }, {}, true),
+    addStoreConfig(options, isVue3),
+    addStoreToMain(options, isVue3),
+    addDepsToPackageJson({ vuex: isVue3 ? '^4.0.0-0' : '^3.4.0' }, {}, true),
     formatFiles(options),
   ]);
 }
