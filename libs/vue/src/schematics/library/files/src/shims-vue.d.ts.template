@@ -1,4 +1,8 @@
-declare module '*.vue' {
+declare module '*.vue' {<% if (isVue3) { %>
+  import type { DefineComponent } from 'vue';
+  // eslint-disable-next-line
+  const component: DefineComponent<{}, {}, any>;
+  export default component;<% } else { %>
   import Vue from 'vue';
-  export default Vue;
+  export default Vue;<% } %>
 }

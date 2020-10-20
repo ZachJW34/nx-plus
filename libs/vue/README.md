@@ -68,15 +68,16 @@ nx serve my-app
 | --------- | --------------------- |
 | `<name>`  | The name of your app. |
 
-| Options            | Default   | Description                                    |
-| ------------------ | --------- | ---------------------------------------------- |
-| `--tags`           | -         | Tags to use for linting (comma-delimited).     |
-| `--directory`      | `apps`    | A directory where the project is placed.       |
-| `--style`          | `css`     | The file extension to be used for style files. |
-| `--unitTestRunner` | `jest`    | Test runner to use for unit tests.             |
-| `--e2eTestRunner`  | `cypress` | Test runner to use for end to end (e2e) tests. |
-| `--routing`        | `false`   | Generate routing configuration.                |
-| `--skipFormat`     | `false`   | Skip formatting files.                         |
+| Options            | Default   | Description                                                    |
+| ------------------ | --------- | -------------------------------------------------------------- |
+| `--tags`           | -         | Tags to use for linting (comma-delimited).                     |
+| `--directory`      | `apps`    | A directory where the project is placed.                       |
+| `--style`          | `css`     | The file extension to be used for style files.                 |
+| `--unitTestRunner` | `jest`    | Test runner to use for unit tests.                             |
+| `--e2eTestRunner`  | `cypress` | Test runner to use for end to end (e2e) tests.                 |
+| `--routing`        | `false`   | Generate routing configuration.                                |
+| `--vueVersion`     | `2`       | The version of Vue.js that you want to start the project with. |
+| `--skipFormat`     | `false`   | Skip formatting files.                                         |
 
 ### Vuex
 
@@ -98,14 +99,15 @@ nx serve my-app
 | --------- | ------------------------- |
 | `<name>`  | The name of your library. |
 
-| Options            | Default | Description                                             |
-| ------------------ | ------- | ------------------------------------------------------- |
-| `--tags`           | -       | Tags to use for linting (comma-delimited).              |
-| `--directory`      | `libs`  | A directory where the project is placed.                |
-| `--unitTestRunner` | `jest`  | Test runner to use for unit tests.                      |
-| `--skipFormat`     | `false` | Skip formatting files.                                  |
-| `--skipTsConfig`   | `false` | Do not update tsconfig.json for development experience. |
-| `--publishable`    | `false` | Create a buildable library.                             |
+| Options            | Default | Description                                                    |
+| ------------------ | ------- | -------------------------------------------------------------- |
+| `--tags`           | -       | Tags to use for linting (comma-delimited).                     |
+| `--directory`      | `libs`  | A directory where the project is placed.                       |
+| `--unitTestRunner` | `jest`  | Test runner to use for unit tests.                             |
+| `--skipFormat`     | `false` | Skip formatting files.                                         |
+| `--skipTsConfig`   | `false` | Do not update tsconfig.json for development experience.        |
+| `--vueVersion`     | `2`     | The version of Vue.js that you want to start the project with. |
+| `--publishable`    | `false` | Create a buildable library.                                    |
 
 ## Builders (i.e. task runners)
 

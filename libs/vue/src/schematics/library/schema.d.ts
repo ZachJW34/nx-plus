@@ -6,4 +6,5 @@ export interface LibrarySchematicSchema {
   tags?: string;
   unitTestRunner: 'jest' | 'none';
   publishable: boolean;
+  vueVersion: number;
 }

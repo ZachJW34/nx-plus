@@ -12,6 +12,7 @@ describe('library schematic', () => {
     unitTestRunner: 'jest',
     skipFormat: false,
     publishable: false,
+    vueVersion: 2,
     skipTsConfig: false,
   };
 

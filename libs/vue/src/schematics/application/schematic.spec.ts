@@ -14,6 +14,7 @@ describe('application schematic', () => {
     e2eTestRunner: 'cypress',
     routing: false,
     style: 'css',
+    vueVersion: 2,
     skipFormat: false,
   };
 
