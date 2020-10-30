@@ -64,6 +64,7 @@ function normalizeOptions(
 
   return {
     ...options,
+    name,
     projectName,
     projectRoot,
     projectDirectory,
