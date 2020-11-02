@@ -9,11 +9,13 @@ import {
 } from '@angular-devkit/architect';
 import {
   checkUnsupportedConfig,
+  getBabelConfig,
   getProjectRoot,
   modifyChalkOutput,
   resolveConfigureWebpack,
 } from '../../utils';
 import {
+  modifyBabelLoader,
   modifyCachePaths,
   modifyCopyAssets,
   modifyTsConfigPaths,
@@ -34,6 +36,7 @@ export function runBuilder(
     inlineOptions;
   }> {
     const projectRoot = await getProjectRoot(context);
+    const babelConfig = getBabelConfig(projectRoot);
 
     const inlineOptions = {
       chainWebpack: (config) => {
@@ -41,6 +44,9 @@ export function runBuilder(
         modifyCachePaths(config, context);
         modifyTypescriptAliases(config, options, context);
         modifyCopyAssets(config, options, context, projectRoot);
+        if (babelConfig) {
+          modifyBabelLoader(config, babelConfig, context);
+        }
       },
       css: options.css,
       configureWebpack: resolveConfigureWebpack(projectRoot),

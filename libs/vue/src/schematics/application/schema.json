@@ -82,6 +82,12 @@
       "type": "boolean",
       "description": "Skip formatting files",
       "default": false
+    },
+    "babel": {
+      "type": "boolean",
+      "description": "Add Babel support.",
+      "default": false,
+      "x-prompt": "Use Babel alongside TypeScript?"
     }
   },
   "required": ["name"]

@@ -9,11 +9,13 @@ import { map, switchMap } from 'rxjs/operators';
 import { BrowserBuilderSchema } from './schema';
 import {
   checkUnsupportedConfig,
+  getBabelConfig,
   getProjectRoot,
   modifyChalkOutput,
   resolveConfigureWebpack,
 } from '../../utils';
 import {
+  modifyBabelLoader,
   modifyCachePaths,
   modifyEntryPoint,
   modifyIndexHtmlPath,
@@ -35,6 +37,7 @@ export function runBuilder(
     inlineOptions;
   }> {
     const projectRoot = await getProjectRoot(context);
+    const babelConfig = getBabelConfig(projectRoot);
 
     const inlineOptions = {
       chainWebpack: (config) => {
@@ -43,6 +46,9 @@ export function runBuilder(
         modifyTsConfigPaths(config, options, context);
         modifyCachePaths(config, context);
         modifyTypescriptAliases(config, options, context);
+        if (babelConfig) {
+          modifyBabelLoader(config, babelConfig, context);
+        }
       },
       publicPath: options.publicPath,
       filenameHashing: options.filenameHashing,

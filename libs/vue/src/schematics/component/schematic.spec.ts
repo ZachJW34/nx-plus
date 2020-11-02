@@ -22,6 +22,7 @@ describe('component schematic', () => {
         style: 'css',
         vueVersion: 3,
         skipFormat: false,
+        babel: false,
       };
       const appTestRunner = new SchematicTestRunner(
         '@nx-plus/vue',

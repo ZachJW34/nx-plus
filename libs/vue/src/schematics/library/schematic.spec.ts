@@ -1,3 +1,4 @@
+import { tags } from '@angular-devkit/core';
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { readJsonInTree } from '@nrwl/workspace';
@@ -14,6 +15,7 @@ describe('library schematic', () => {
     publishable: false,
     vueVersion: 2,
     skipTsConfig: false,
+    babel: false,
   };
 
   const testRunner = new SchematicTestRunner(
@@ -143,6 +145,44 @@ describe('library schematic', () => {
 
       const tsConfigJson = readJsonInTree(tree, 'libs/my-lib/tsconfig.json');
       expect(tsConfigJson.references[1]).toBeUndefined();
+    });
+  });
+
+  describe('--babel', () => {
+    it('--should generate files with --vueVersion=2', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('lib', { ...options, babel: true }, appTree)
+        .toPromise();
+
+      expect(tree.exists('libs/my-lib/babel.config.js')).toBeTruthy();
+
+      const jestConfig = tree.readContent('libs/my-lib/jest.config.js');
+      expect(jestConfig).toContain(tags.indentBy(4)`
+        'vue-jest': {
+          tsConfig: ${'`${__dirname}/tsconfig.spec.json`'},
+          babelConfig: ${'`${__dirname}/babel.config.js`'},
+        },
+      `);
+    });
+
+    it('--should generate files with --vueVersion=3', async () => {
+      const tree = await testRunner
+        .runSchematicAsync(
+          'lib',
+          { ...options, babel: true, vueVersion: 3 },
+          appTree
+        )
+        .toPromise();
+
+      expect(tree.exists('libs/my-lib/babel.config.js')).toBeTruthy();
+
+      const jestConfig = tree.readContent('libs/my-lib/jest.config.js');
+      expect(jestConfig).toContain(tags.indentBy(4)`
+        'vue-jest': {
+          tsConfig: '<rootDir>/tsconfig.spec.json',
+          babelConfig: '<rootDir>/babel.config.js',
+        },
+      `);
     });
   });
 

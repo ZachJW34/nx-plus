@@ -54,6 +54,12 @@
           { "value": 3, "label": "3.x" }
         ]
       }
+    },
+    "babel": {
+      "type": "boolean",
+      "description": "Add Babel support.",
+      "default": false,
+      "x-prompt": "Use Babel alongside TypeScript?"
     }
   },
   "required": ["name"],

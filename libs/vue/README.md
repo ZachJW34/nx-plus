@@ -92,6 +92,7 @@ nx serve my-app
 | `--routing`        | `false`   | Generate routing configuration.                                |
 | `--vueVersion`     | `2`       | The version of Vue.js that you want to start the project with. |
 | `--skipFormat`     | `false`   | Skip formatting files.                                         |
+| `--babel`          | `false`   | Add Babel support.                                             |
 
 ### Vuex
 
@@ -122,6 +123,7 @@ nx serve my-app
 | `--skipTsConfig`   | `false` | Do not update tsconfig.json for development experience.        |
 | `--vueVersion`     | `2`     | The version of Vue.js that you want to start the project with. |
 | `--publishable`    | `false` | Create a buildable library.                                    |
+| `--babel`          | `false` | Add Babel support.                                             |
 
 ### Component
 
