@@ -150,3 +150,30 @@ export function modifyCopyAssets(
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     .use(require('copy-webpack-plugin'), [transformedAssetPatterns]);
 }
+
+export function modifyBabelLoader(
+  config,
+  babelConfig: string,
+  context: BuilderContext
+) {
+  ['js', 'ts', 'tsx'].forEach((ext) =>
+    config.module
+      .rule(ext)
+      .use('babel-loader')
+      .tap((options) => ({
+        ...options,
+        configFile: babelConfig,
+      }))
+  );
+
+  const babelLoaderCachePath = getSystemPath(
+    join(normalize(context.workspaceRoot), 'node_modules/.cache/babel-loader')
+  );
+  config.module
+    .rule('js')
+    .use('cache-loader')
+    .tap((options) => {
+      options.cacheDirectory = babelLoaderCachePath;
+      return options;
+    });
+}

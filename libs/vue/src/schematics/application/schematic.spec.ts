@@ -16,6 +16,7 @@ describe('application schematic', () => {
     style: 'css',
     vueVersion: 2,
     skipFormat: false,
+    babel: false,
   };
 
   const testRunner = new SchematicTestRunner(
@@ -339,6 +340,44 @@ describe('application schematic', () => {
           }
           </style>
         `);
+    });
+  });
+
+  describe('--babel', () => {
+    it('--should generate files with --vueVersion=2', async () => {
+      const tree = await testRunner
+        .runSchematicAsync('app', { ...options, babel: true }, appTree)
+        .toPromise();
+
+      expect(tree.exists('apps/my-app/babel.config.js')).toBeTruthy();
+
+      const jestConfig = tree.readContent('apps/my-app/jest.config.js');
+      expect(jestConfig).toContain(tags.indentBy(4)`
+        'vue-jest': {
+          tsConfig: ${'`${__dirname}/tsconfig.spec.json`'},
+          babelConfig: ${'`${__dirname}/babel.config.js`'},
+        },
+      `);
+    });
+
+    it('--should generate files with --vueVersion=3', async () => {
+      const tree = await testRunner
+        .runSchematicAsync(
+          'app',
+          { ...options, babel: true, vueVersion: 3 },
+          appTree
+        )
+        .toPromise();
+
+      expect(tree.exists('apps/my-app/babel.config.js')).toBeTruthy();
+
+      const jestConfig = tree.readContent('apps/my-app/jest.config.js');
+      expect(jestConfig).toContain(tags.indentBy(4)`
+        'vue-jest': {
+          tsConfig: '<rootDir>/tsconfig.spec.json',
+          babelConfig: '<rootDir>/babel.config.js',
+        },
+      `);
     });
   });
 

@@ -12,11 +12,13 @@ import { DevServerBuilderSchema } from './schema';
 import { BrowserBuilderSchema } from '../browser/schema';
 import {
   checkUnsupportedConfig,
+  getBabelConfig,
   getProjectRoot,
   modifyChalkOutput,
   resolveConfigureWebpack,
 } from '../../utils';
 import {
+  modifyBabelLoader,
   modifyCachePaths,
   modifyEntryPoint,
   modifyIndexHtmlPath,
@@ -76,6 +78,7 @@ export function runBuilder(
     >({ ...rawBrowserOptions, ...overrides }, browserName);
 
     const projectRoot = await getProjectRoot(context);
+    const babelConfig = getBabelConfig(projectRoot);
 
     const inlineOptions = {
       chainWebpack: (config) => {
@@ -84,6 +87,9 @@ export function runBuilder(
         modifyTsConfigPaths(config, browserOptions, context);
         modifyCachePaths(config, context);
         modifyTypescriptAliases(config, browserOptions, context);
+        if (babelConfig) {
+          modifyBabelLoader(config, babelConfig, context);
+        }
 
         if (!options.watch) {
           // There is no option to disable file watching in `webpack-dev-server`,

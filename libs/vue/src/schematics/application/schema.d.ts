@@ -8,4 +8,5 @@ export interface ApplicationSchematicSchema {
   routing: boolean;
   vueVersion: number;
   skipFormat: boolean;
+  babel: boolean;
 }
