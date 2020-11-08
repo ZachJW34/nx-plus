@@ -199,7 +199,7 @@ nx serve my-app
 
 `nx lint <name> [options]`
 
-We use `@nrwl/linter` for linting, so the options are as documented [here](https://github.com/nrwl/nx/blob/master/docs/angular/api-linter/builders/lint.md#lint).
+We use `@nrwl/linter` for linting, so the options are as documented [here](https://github.com/nrwl/nx/blob/master/docs/angular/api-linter/builders/eslint.md#eslint).
 
 ### Unit Testing
 
