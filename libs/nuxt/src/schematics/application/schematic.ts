@@ -9,6 +9,7 @@ import {
   move,
   noop,
   Rule,
+  SchematicContext,
   Tree,
   url,
 } from '@angular-devkit/schematics';
@@ -28,7 +29,10 @@ import {
   updateWorkspace,
 } from '@nrwl/workspace';
 import { appsDir } from '@nrwl/workspace/src/utils/ast-utils';
+import * as semver from 'semver';
 import { ApplicationSchematicSchema } from './schema';
+import { appRootPath } from '../../app-root';
+import { loadModule } from '../../utils';
 
 /**
  * Depending on your needs, you can change this to either `Library` or `Application`
@@ -80,6 +84,39 @@ function addFiles(options: NormalizedSchema): Rule {
       move(options.projectRoot),
     ])
   );
+}
+
+function checkPeerDeps(
+  context: SchematicContext,
+  options: ApplicationSchematicSchema
+): void {
+  const expectedVersion = '^10.3.0';
+  const unmetPeerDeps = [
+    ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
+    ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),
+    '@nrwl/linter',
+    '@nrwl/workspace',
+  ].filter((dep) => {
+    try {
+      const { version } = loadModule(`${dep}/package.json`, appRootPath, true);
+      return !semver.satisfies(version, expectedVersion);
+    } catch (err) {
+      return true;
+    }
+  });
+
+  if (unmetPeerDeps.length) {
+    context.logger.warn(`
+You have the following unmet peer dependencies:
+
+${unmetPeerDeps
+  .map((dep) => `${dep}@${expectedVersion}\n`)
+  .join()
+  .split(',')
+  .join('')}
+@nx-plus/nuxt may not work as expected.
+    `);
+  }
 }
 
 function addEsLint(options: NormalizedSchema): Rule {
@@ -222,7 +259,8 @@ function addCypress(options: NormalizedSchema): Rule {
 }
 
 export default function (options: ApplicationSchematicSchema): Rule {
-  return (host: Tree) => {
+  return (host: Tree, context: SchematicContext) => {
+    checkPeerDeps(context, options);
     const normalizedOptions = normalizeOptions(host, options);
     return chain([
       updateWorkspace((workspace) => {
