@@ -9,6 +9,7 @@ import {
   move,
   noop,
   Rule,
+  SchematicContext,
   Tree,
   url,
 } from '@angular-devkit/schematics';
@@ -29,6 +30,7 @@ import {
 } from '@nrwl/workspace';
 import { appsDir } from '@nrwl/workspace/src/utils/ast-utils';
 import { ApplicationSchematicSchema } from './schema';
+import { checkPeerDeps } from '../../utils';
 
 /**
  * Depending on your needs, you can change this to either `Library` or `Application`
@@ -268,7 +270,8 @@ function addPostInstall() {
 }
 
 export default function (options: ApplicationSchematicSchema): Rule {
-  return (host: Tree) => {
+  return (host: Tree, context: SchematicContext) => {
+    checkPeerDeps(context, options);
     const normalizedOptions = normalizeOptions(host, options);
     return chain([
       updateWorkspace((workspace) => {

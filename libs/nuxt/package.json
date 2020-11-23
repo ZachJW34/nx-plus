@@ -27,16 +27,18 @@
   },
   "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/nuxt#readme",
   "peerDependencies": {
-    "@nrwl/workspace": "^10.0.0"
+    "@nrwl/cypress": "^10.3.0",
+    "@nrwl/jest": "^10.3.0",
+    "@nrwl/linter": "^10.3.0",
+    "@nrwl/workspace": "^10.3.0"
   },
   "dependencies": {
     "@angular-devkit/architect": "0.1001.4",
     "@angular-devkit/core": "10.1.4",
     "@angular-devkit/schematics": "10.1.4",
-    "@nrwl/cypress": "^10.0.0",
-    "@nrwl/jest": "^10.0.0",
-    "@nrwl/linter": "^10.0.0",
+    "fs-extra": "^9.0.1",
     "rxjs": "6.5.5",
+    "semver": "^7.3.2",
     "tsconfig-paths-webpack-plugin": "3.2.0"
   }
 }

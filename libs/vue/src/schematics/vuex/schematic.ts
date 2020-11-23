@@ -7,16 +7,15 @@ import {
   getProjectConfig,
   insert,
 } from '@nrwl/workspace';
-import { appRootPath } from '@nrwl/workspace/src/utils/app-root';
 import {
   InsertChange,
   insertImport,
 } from '@nrwl/workspace/src/utils/ast-utils';
+import * as semver from 'semver';
 import * as ts from 'typescript';
 import { VuexSchematicSchema } from './schema';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { semver, loadModule } = require('@vue/cli-shared-utils');
+import { appRootPath } from '../../app-root';
+import { loadModule } from '../../utils';
 
 function addStoreConfig(options: VuexSchematicSchema, isVue3: boolean): Rule {
   return (tree: Tree) => {

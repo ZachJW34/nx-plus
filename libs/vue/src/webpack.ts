@@ -1,10 +1,9 @@
 import { BuilderContext } from '@angular-devkit/architect';
 import { getSystemPath, join, normalize, Path } from '@angular-devkit/core';
+import * as semver from 'semver';
 import { BrowserBuilderSchema } from './builders/browser/schema';
 import { LibraryBuilderSchema } from './builders/library/schema';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { semver, loadModule } = require('@vue/cli-shared-utils');
+import { loadModule } from './utils';
 
 export function modifyIndexHtmlPath(
   config,

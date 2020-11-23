@@ -18,10 +18,24 @@
 
 ## Prerequisite
 
+### Nx Workspace
+
 If you have not already, [create an Nx workspace](https://github.com/nrwl/nx#creating-an-nx-workspace) with the following:
 
 ```
-npx create-nx-workspace@^10.0.0
+npx create-nx-workspace@^10.3.0
+```
+
+### Peer Dependencies
+
+If you have not already, install peer dependencies with the following:
+
+```
+# npm
+npm install @nrwl/cypress@^10.3.0 @nrwl/jest@^10.3.0 @nrwl/linter@^10.3.0 --save-dev
+
+# yarn
+yarn add @nrwl/cypress@^10.3.0 @nrwl/jest@^10.3.0 @nrwl/linter@^10.3.0 --dev
 ```
 
 ## Getting Started

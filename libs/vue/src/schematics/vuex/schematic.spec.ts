@@ -6,9 +6,7 @@ import { createEmptyWorkspace } from '@nrwl/workspace/testing';
 import { join } from 'path';
 
 import { VuexSchematicSchema } from './schema';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const sharedUtils = require('@vue/cli-shared-utils');
+import * as utils from '../../utils';
 
 describe('vuex schematic', () => {
   let appTree: Tree;
@@ -23,10 +21,8 @@ describe('vuex schematic', () => {
     appTree = createEmptyWorkspace(Tree.empty());
   });
 
-  sharedUtils.loadModule = jest.fn();
-
   it('should generate Vuex configuration for Vue 2', async () => {
-    sharedUtils.loadModule.mockReturnValue({ version: '2.0.0' });
+    jest.spyOn(utils, 'loadModule').mockReturnValue({ version: '2.0.0' });
 
     appTree = await testRunner
       .runSchematicAsync('app', { name: 'my-app' }, appTree)
@@ -52,7 +48,7 @@ describe('vuex schematic', () => {
   });
 
   it('should generate Vuex configuration for Vue 3', async () => {
-    sharedUtils.loadModule.mockReturnValue({ version: '3.0.0' });
+    jest.spyOn(utils, 'loadModule').mockReturnValue({ version: '3.0.0' });
 
     appTree = await testRunner
       .runSchematicAsync('app', { name: 'my-app', vueVersion: 3 }, appTree)
