@@ -19,6 +19,12 @@
       "schema": "./src/schematics/library/schema.json",
       "description": "library schematic",
       "aliases": ["lib"]
+    },
+    "component": {
+      "factory": "./src/schematics/component/schematic",
+      "schema": "./src/schematics/component/schema.json",
+      "description": "Create a component",
+      "aliases": ["c"]
     }
   }
 }
