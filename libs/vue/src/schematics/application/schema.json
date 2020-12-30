@@ -34,15 +34,15 @@
           { "value": "css", "label": "CSS" },
           {
             "value": "scss",
-            "label": "SCSS       [ https://sass-lang.com/documentation/syntax#scss   ]"
+            "label": "SCSS   [ https://sass-lang.com/documentation/syntax#scss ]"
           },
           {
             "value": "stylus",
-            "label": "Stylus     [ https://stylus-lang.com                           ]"
+            "label": "Stylus [ https://stylus-lang.com                         ]"
           },
           {
             "value": "less",
-            "label": "LESS       [ http://lesscss.org                               ]"
+            "label": "LESS   [ http://lesscss.org                              ]"
           }
         ]
       }
