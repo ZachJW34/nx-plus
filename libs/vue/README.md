@@ -109,6 +109,20 @@ nx serve my-app
 | `--vueVersion`     | `2`     | The version of Vue.js that you want to start the project with. |
 | `--publishable`    | `false` | Create a buildable library.                                    |
 
+### Component
+
+`nx g @nx-plus/vue:component <name> [options]`
+
+| Arguments | Description                 |
+| --------- | --------------------------- |
+| `<name>`  | The name of your component. |
+
+| Options       | Default | Description                                    |
+| ------------- | ------- | ---------------------------------------------- |
+| `--project`   | -       | Tags to use for linting (comma-delimited).     |
+| `--directory` | -       | A directory where the component is placed.     |
+| `--style`     | `css`   | The file extension to be used for style files. |
+
 ## Builders (i.e. task runners)
 
 ### Dev Server

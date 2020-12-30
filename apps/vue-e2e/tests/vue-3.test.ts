@@ -200,4 +200,46 @@ describe('vue 3 e2e', () => {
       done();
     }, 300000);
   });
+
+  describe('component', () => {
+    describe('inside an app', () => {
+      it('should generate component', async (done) => {
+        const appName = uniq('app');
+        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+        await runNxCommandAsync(
+          `generate @nx-plus/vue:app ${appName} --vueVersion 3`
+        );
+
+        await runNxCommandAsync(
+          `generate @nx-plus/vue:component my-component --project ${appName}`
+        );
+
+        expect(() =>
+          checkFilesExist(`apps/${appName}/src/MyComponent.vue`)
+        ).not.toThrow();
+
+        done();
+      }, 300000);
+    });
+
+    describe('inside a library', () => {
+      it('should generate component', async (done) => {
+        const libName = uniq('lib');
+        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+        await runNxCommandAsync(
+          `generate @nx-plus/vue:lib ${libName} --vueVersion 3`
+        );
+
+        await runNxCommandAsync(
+          `generate @nx-plus/vue:component my-component --project ${libName}`
+        );
+
+        expect(() =>
+          checkFilesExist(`libs/${libName}/src/lib/MyComponent.vue`)
+        ).not.toThrow();
+
+        done();
+      }, 300000);
+    });
+  });
 });
