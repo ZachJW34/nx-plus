@@ -13,6 +13,7 @@
 - [Schematics (i.e. code generation)](#schematics-ie-code-generation)
 - [Builders (i.e. task runners)](#builders-ie-task-runners)
 - [Updating Nx Plus Docusaurus](#updating-nx-plus-docusaurus)
+- [Troubleshooting](#troubleshooting)
 
 ## Prerequisite
 
@@ -128,3 +129,28 @@ Now, you can inspect `package.json` to see if the changes make sense and install
 ```
 nx migrate --run-migrations=migrations.json
 ```
+
+## Troubleshooting
+
+If you encounter this error while building a Docusaurus app, then you may need to add a `terser` resolution to your `package.json`. Note: this only works with Yarn and not npm.
+
+**Error:**
+
+```
+Docusaurus user: you probably have this known error due to using a monorepo/workspace.
+We have a workaround for you, check https://github.com/facebook/docusaurus/issues/3515
+```
+
+**package.json:**
+
+```
+{
+  // ...
+  "resolutions": {
+    "terser": "^4.0.0"
+  }
+  // ...
+}
+```
+
+Once this has been updated, you should be able to run `yarn install` and then build your Docusaurus application.
