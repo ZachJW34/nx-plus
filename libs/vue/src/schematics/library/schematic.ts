@@ -164,7 +164,7 @@ function addJest(options: NormalizedSchema): Rule {
         'babel-core': '^7.0.0-bridge.0',
         'jest-serializer-vue': '^2.0.2',
         'jest-transform-stub': '^2.0.0',
-        'vue-jest': options.isVue3 ? '^5.0.0-0' : '^3.0.5',
+        'vue-jest': options.isVue3 ? '5.0.0-alpha.7' : '^3.0.5',
       },
       true
     ),
