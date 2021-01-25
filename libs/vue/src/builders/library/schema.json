@@ -90,6 +90,11 @@
         }
       },
       "additionalProperties": false
+    },
+    "transpileDependencies": {
+      "type": "array",
+      "description": "By default babel-loader ignores all files inside node_modules. If you want to explicitly transpile a dependency with Babel, you can list it in this option.",
+      "default": []
     }
   },
   "required": ["dest", "entry", "tsConfig"],

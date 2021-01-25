@@ -23,4 +23,5 @@ export interface BrowserBuilderSchema extends JsonObject {
     loaderOptions: object;
   };
   stdin: boolean;
+  transpileDependencies: string[];
 }

@@ -98,6 +98,7 @@ export function runBuilder(
         formats: options.formats,
         name: options.name || context.target.project,
         filename: options.filename,
+        transpileDependencies: options.transpileDependencies,
       };
 
       return options.watch
