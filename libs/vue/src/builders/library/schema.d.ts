@@ -21,4 +21,5 @@ export interface LibraryBuilderSchema extends JsonObject {
   formats: string;
   name?: string;
   filename?: string;
+  transpileDependencies: string[];
 }

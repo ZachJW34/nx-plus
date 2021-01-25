@@ -109,6 +109,7 @@ export function runBuilder(
       css: browserOptions.css,
       configureWebpack: resolveConfigureWebpack(projectRoot),
       devServer: options.devServer,
+      transpileDependencies: options.transpileDependencies,
     };
 
     return {
@@ -155,6 +156,7 @@ export function runBuilder(
               port: options.port,
               https: options.https,
               public: options.public,
+              transpileDependencies: options.transpileDependencies,
               'skip-plugins': browserOptions.skipPlugins,
             },
             ['serve']

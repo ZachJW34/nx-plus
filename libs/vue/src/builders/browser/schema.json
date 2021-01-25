@@ -64,6 +64,11 @@
       "description": "Setting this to false can speed up production builds if you don't need source maps for production.",
       "default": false
     },
+    "transpileDependencies": {
+      "type": "array",
+      "description": "By default babel-loader ignores all files inside node_modules. If you want to explicitly transpile a dependency with Babel, you can list it in this option.",
+      "default": []
+    },
     "css": {
       "type": "object",
       "properties": {

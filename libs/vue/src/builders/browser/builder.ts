@@ -55,6 +55,7 @@ export function runBuilder(
       productionSourceMap: options.productionSourceMap,
       css: options.css,
       configureWebpack: resolveConfigureWebpack(projectRoot),
+      transpileDependencies: options.transpileDependencies,
     };
 
     return {
@@ -98,6 +99,7 @@ export function runBuilder(
         'skip-plugins': options.skipPlugins,
         watch: options.watch,
         stdin: options.stdin,
+        transpileDependencies: options.transpileDependencies,
       };
 
       if (options.watch) {

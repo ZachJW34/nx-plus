@@ -23,4 +23,5 @@ export interface DevServerBuilderSchema extends JsonObject {
   };
   // eslint-disable-next-line @typescript-eslint/ban-types
   devServer: object;
+  transpileDependencies: string[];
 }
