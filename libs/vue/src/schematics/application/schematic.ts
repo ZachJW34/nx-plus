@@ -207,7 +207,7 @@ function addJest(options: NormalizedSchema): Rule {
       }',
           snapshotSerializers: ['jest-serializer-vue'],
           globals: {
-            'ts-jest': { 
+            'ts-jest': {
               tsConfig: '<rootDir>/tsconfig.spec.json',
               ${
                 options.babel ? `babelConfig: '<rootDir>/babel.config.js',` : ''
@@ -230,11 +230,11 @@ function addJest(options: NormalizedSchema): Rule {
     addDepsToPackageJson(
       {},
       {
-        '@vue/test-utils': options.isVue3 ? '^2.0.0-0' : '^1.0.3',
-        'babel-core': '^7.0.0-bridge.0',
-        'jest-serializer-vue': '^2.0.2',
-        'jest-transform-stub': '^2.0.0',
-        'vue-jest': options.isVue3 ? '5.0.0-alpha.7' : '^3.0.5',
+        '@vue/test-utils': options.isVue3 ? '2.0.0-rc.0' : '1.1.3',
+        'babel-core': '7.0.0-bridge.0',
+        'jest-serializer-vue': '2.0.2',
+        'jest-transform-stub': '2.0.0',
+        'vue-jest': options.isVue3 ? '5.0.0-alpha.7' : '3.0.7',
       },
       true
     ),
@@ -298,8 +298,8 @@ function addBabel(options: NormalizedSchema) {
           };`
       ),
     addDepsToPackageJson(
-      { 'core-js': '^3.6.5' },
-      { '@vue/cli-plugin-babel': '~4.5.0' }
+      { 'core-js': '3.8.3' },
+      { '@vue/cli-plugin-babel': '4.5.11' }
     ),
   ]);
 }
@@ -363,21 +363,19 @@ export default function (options: ApplicationSchematicSchema): Rule {
       addPostInstall(),
       addDepsToPackageJson(
         {
-          vue: normalizedOptions.isVue3 ? '^3.0.0' : '^2.6.11',
+          vue: normalizedOptions.isVue3 ? '3.0.5' : '2.6.12',
           ...(options.routing
-            ? { 'vue-router': normalizedOptions.isVue3 ? '^4.0.0-0' : '^3.2.0' }
+            ? { 'vue-router': normalizedOptions.isVue3 ? '4.0.3' : '3.5.1' }
             : {}),
         },
         {
-          '@vue/cli-plugin-typescript': '~4.5.0',
-          '@vue/cli-service': '~4.5.0',
-          ...(normalizedOptions.isVue3
-            ? { '@vue/compiler-sfc': '^3.0.0' }
-            : {}),
-          '@vue/eslint-config-typescript': '^5.0.2',
-          'eslint-plugin-vue': normalizedOptions.isVue3 ? '^7.0.0-0' : '^6.2.2',
+          '@vue/cli-plugin-typescript': '4.5.11',
+          '@vue/cli-service': '4.5.11',
+          ...(normalizedOptions.isVue3 ? { '@vue/compiler-sfc': '3.0.5' } : {}),
+          '@vue/eslint-config-typescript': '5.1.0',
+          'eslint-plugin-vue': normalizedOptions.isVue3 ? '7.5.0' : '6.2.2',
           ...(!normalizedOptions.isVue3
-            ? { 'vue-template-compiler': '^2.6.11' }
+            ? { 'vue-template-compiler': '2.6.12' }
             : {}),
         },
         true

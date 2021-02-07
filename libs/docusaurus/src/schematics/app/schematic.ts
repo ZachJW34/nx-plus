@@ -161,11 +161,11 @@ export default function (options: AppSchematicSchema): Rule {
       updatePrettierIgnore(),
       addDepsToPackageJson(
         {
-          '@docusaurus/core': '^2.0.0-alpha.61',
-          '@docusaurus/preset-classic': '^2.0.0-alpha.61',
-          clsx: '^1.1.1',
-          react: '^16.8.4',
-          'react-dom': '^16.8.4',
+          '@docusaurus/core': '2.0.0-alpha.70',
+          '@docusaurus/preset-classic': '2.0.0-alpha.70',
+          clsx: '1.1.1',
+          react: '16.14.0',
+          'react-dom': '16.14.0',
         },
         {},
         true

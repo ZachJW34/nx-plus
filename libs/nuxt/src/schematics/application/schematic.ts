@@ -225,9 +225,9 @@ function addJest(options: NormalizedSchema): Rule {
     addDepsToPackageJson(
       {},
       {
-        '@vue/test-utils': '^1.0.3',
-        'babel-core': '^7.0.0-bridge.0',
-        'vue-jest': '^3.0.5',
+        '@vue/test-utils': '1.1.3',
+        'babel-core': '7.0.0-bridge.0',
+        'vue-jest': '3.0.7',
       },
       true
     ),
@@ -305,16 +305,16 @@ export default function (options: ApplicationSchematicSchema): Rule {
         : noop(),
       addDepsToPackageJson(
         {
-          '@nuxt/typescript-runtime': '^1.0.0',
-          nuxt: '^2.14.0',
+          '@nuxt/typescript-runtime': '1.0.0',
+          nuxt: '2.14.12',
         },
         {
-          '@nuxtjs/eslint-config': '^3.1.0',
-          '@nuxtjs/eslint-config-typescript': '^3.0.0',
-          '@nuxt/types': '^2.14.0',
-          '@nuxt/typescript-build': '^2.0.2',
-          'eslint-plugin-nuxt': '^1.0.0',
-          'fork-ts-checker-webpack-plugin': '^5.0.11',
+          '@nuxtjs/eslint-config': '3.1.0',
+          '@nuxtjs/eslint-config-typescript': '3.0.0',
+          '@nuxt/types': '2.14.12',
+          '@nuxt/typescript-build': '2.0.4',
+          'eslint-plugin-nuxt': '1.0.0',
+          'fork-ts-checker-webpack-plugin': '5.2.1',
         },
         true
       ),

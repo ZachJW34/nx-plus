@@ -142,7 +142,7 @@ export default function (options: VuexSchematicSchema): Rule {
   return chain([
     addStoreConfig(options, isVue3),
     addStoreToMain(options, isVue3),
-    addDepsToPackageJson({ vuex: isVue3 ? '^4.0.0-0' : '^3.4.0' }, {}, true),
+    addDepsToPackageJson({ vuex: isVue3 ? '4.0.0' : '3.6.2' }, {}, true),
     formatFiles(options),
   ]);
 }
