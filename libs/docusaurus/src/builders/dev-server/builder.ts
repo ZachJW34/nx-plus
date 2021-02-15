@@ -17,7 +17,7 @@ export function runBuilder(
   return from(getProjectRoot(context)).pipe(
     switchMap(
       (projectRoot) =>
-        new Observable<any>((obs) => {
+        new Observable((obs) => {
           start(getSystemPath(projectRoot), {
             port: options.port.toString(),
             host: options.host,
