@@ -6,7 +6,6 @@ import {
   mergeWith,
   move,
   Rule,
-  SchematicContext,
   Tree,
   url,
 } from '@angular-devkit/schematics';
@@ -26,8 +25,7 @@ interface NormalizedSchema extends ComponentSchematicSchema {
 
 function normalizeOptions(
   host,
-  options: ComponentSchematicSchema,
-  _: SchematicContext
+  options: ComponentSchematicSchema
 ): NormalizedSchema {
   const name = toClassName(options.name);
   const { projectType, sourceRoot } = getProjectConfig(host, options.project);
@@ -58,8 +56,8 @@ function createComponent(options: NormalizedSchema): Rule {
 }
 
 export default function (schema: ComponentSchematicSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    const options = normalizeOptions(host, schema, context);
+  return (host: Tree) => {
+    const options = normalizeOptions(host, schema);
     return chain([
       createComponent(options),
       formatFiles({ skipFormat: false }),
