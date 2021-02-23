@@ -25,7 +25,8 @@
           "options": {
             "jestConfig": "libs/docusaurus/jest.config.js",
             "passWithNoTests": true
-          }
+          },
+          "outputs": ["coverage/libs/docusaurus"]
         },
         "build": {
           "builder": "@nrwl/node:package",
@@ -58,7 +59,8 @@
               }
             ],
             "srcRootForCompilationRoot": "libs/docusaurus"
-          }
+          },
+          "outputs": ["{options.outputPath}"]
         }
       }
     },
@@ -102,7 +104,8 @@
           "options": {
             "jestConfig": "libs/vue/jest.config.js",
             "passWithNoTests": true
-          }
+          },
+          "outputs": ["coverage/libs/vue"]
         },
         "build": {
           "builder": "@nrwl/node:package",
@@ -140,7 +143,8 @@
               }
             ],
             "srcRootForCompilationRoot": "libs/vue"
-          }
+          },
+          "outputs": ["{options.outputPath}"]
         }
       }
     },
@@ -184,7 +188,8 @@
           "options": {
             "jestConfig": "libs/nuxt/jest.config.js",
             "passWithNoTests": true
-          }
+          },
+          "outputs": ["coverage/libs/nuxt"]
         },
         "build": {
           "builder": "@nrwl/node:package",
@@ -212,7 +217,8 @@
               }
             ],
             "srcRootForCompilationRoot": "libs/nuxt"
-          }
+          },
+          "outputs": ["{options.outputPath}"]
         }
       }
     },

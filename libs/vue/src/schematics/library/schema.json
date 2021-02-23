@@ -50,8 +50,14 @@
         "message": "Which version of Vue.js would you like to use?",
         "type": "list",
         "items": [
-          { "value": 2, "label": "2.x" },
-          { "value": 3, "label": "3.x" }
+          {
+            "value": 2,
+            "label": "2.x"
+          },
+          {
+            "value": 3,
+            "label": "3.x"
+          }
         ]
       }
     },
