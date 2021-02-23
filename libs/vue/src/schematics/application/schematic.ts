@@ -108,9 +108,10 @@ function getEslintConfig(options: NormalizedSchema) {
   const eslintConfig: any = {
     extends: [
       `plugin:vue/${options.isVue3 ? 'vue3-' : ''}essential`,
+      'eslint:recommended',
       '@vue/typescript/recommended',
-      'prettier',
-      'prettier/@typescript-eslint',
+      '@vue/prettier',
+      '@vue/prettier/@typescript-eslint',
     ],
     rules: {},
     env: {
@@ -374,7 +375,9 @@ export default function (options: ApplicationSchematicSchema): Rule {
           ...(normalizedOptions.isVue3
             ? { '@vue/compiler-sfc': '^3.0.0' }
             : {}),
+          '@vue/eslint-config-prettier': '6.0.0',
           '@vue/eslint-config-typescript': '^5.0.2',
+          'eslint-plugin-prettier': '^3.1.3',
           'eslint-plugin-vue': normalizedOptions.isVue3 ? '^7.0.0-0' : '^6.2.2',
           ...(!normalizedOptions.isVue3
             ? { 'vue-template-compiler': '^2.6.11' }

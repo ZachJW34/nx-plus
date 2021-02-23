@@ -25,14 +25,14 @@ function updateJestConfig(projectRoot: string) {
 
     if (!hasGlobals) {
       return addPropertyToJestConfig(
-        tree,
+        tree as any,
         `${projectRoot}/${jestConfig}`,
         'globals',
         { 'vue-jest': vueJestConfig }
       );
     } else {
       return addPropertyToJestConfig(
-        tree,
+        tree as any,
         `${projectRoot}/${jestConfig}`,
         'globals.vue-jest',
         vueJestConfig

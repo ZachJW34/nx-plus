@@ -90,7 +90,7 @@ function checkPeerDeps(
   context: SchematicContext,
   options: ApplicationSchematicSchema
 ): void {
-  const expectedVersion = '^10.3.0';
+  const expectedVersion = '^11.3.0';
   const unmetPeerDeps = [
     ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
     ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),
@@ -127,9 +127,10 @@ function addEsLint(options: NormalizedSchema): Rule {
     },
     extends: [
       '@nuxtjs/eslint-config-typescript',
-      'plugin:nuxt/recommended',
       'prettier',
-      'prettier/@typescript-eslint',
+      'prettier/vue',
+      'plugin:prettier/recommended',
+      'plugin:nuxt/recommended',
     ],
     parserOptions: {
       extraFileExtensions: ['.vue'],
@@ -305,16 +306,18 @@ export default function (options: ApplicationSchematicSchema): Rule {
         : noop(),
       addDepsToPackageJson(
         {
-          '@nuxt/typescript-runtime': '^1.0.0',
-          nuxt: '^2.14.0',
+          '@nuxt/typescript-runtime': '^2.0.1',
+          nuxt: '^2.14.12',
         },
         {
-          '@nuxtjs/eslint-config': '^3.1.0',
-          '@nuxtjs/eslint-config-typescript': '^3.0.0',
-          '@nuxt/types': '^2.14.0',
-          '@nuxt/typescript-build': '^2.0.2',
-          'eslint-plugin-nuxt': '^1.0.0',
-          'fork-ts-checker-webpack-plugin': '^5.0.11',
+          '@nuxtjs/eslint-config': '^5.0.0',
+          '@nuxtjs/eslint-config-typescript': '^5.0.0',
+          '@nuxt/types': '^2.14.12',
+          '@nuxt/typescript-build': '^2.0.4',
+          'eslint-plugin-vue': '^7.5.0',
+          'eslint-plugin-prettier': '^3.3.1',
+          'eslint-plugin-nuxt': '^2.0.0',
+          'fork-ts-checker-webpack-plugin': '^6.1.0',
         },
         true
       ),
