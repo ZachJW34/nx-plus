@@ -5,9 +5,9 @@ function getPublishableLibNames(workspaceJson = readWorkspaceJson()) {
   return Object.keys(projects).filter(
     (key) =>
       projects[key].projectType === 'library' &&
-      projects[key].architect &&
-      projects[key].architect.build &&
-      projects[key].architect.build.builder === '@nrwl/node:package'
+      projects[key].targets &&
+      projects[key].targets.build &&
+      projects[key].targets.build.executor === '@nrwl/node:package'
   );
 }
 

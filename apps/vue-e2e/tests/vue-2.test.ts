@@ -159,7 +159,7 @@ describe('vue 2 e2e', () => {
 
       updateFile(
         `apps/${appName}/src/App.vue`,
-        '<script lang="ts">{}</script>'
+        '<script lang="ts">let myVar: {}</script>'
       );
 
       const result = await runNxCommandAsync(`lint ${appName}`, {

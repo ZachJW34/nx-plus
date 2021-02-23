@@ -178,7 +178,6 @@ function getEslintConfig(options: NormalizedSchema) {
       `plugin:vue/${options.isVue3 ? 'vue3-' : ''}essential`,
       '@vue/typescript/recommended',
       'prettier',
-      'prettier/@typescript-eslint',
     ],
     rules: {},
     env: {

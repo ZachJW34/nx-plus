@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "http://json-schema.org/schema",
   "id": "Application",
   "title": "Vue Application Options Schema",
   "type": "object",
@@ -31,7 +31,10 @@
         "message": "Which style format would you like to use?",
         "type": "list",
         "items": [
-          { "value": "css", "label": "CSS" },
+          {
+            "value": "css",
+            "label": "CSS"
+          },
           {
             "value": "scss",
             "label": "SCSS   [ https://sass-lang.com/documentation/syntax#scss ]"
@@ -73,8 +76,14 @@
         "message": "Which version of Vue.js would you like to use?",
         "type": "list",
         "items": [
-          { "value": 2, "label": "2.x" },
-          { "value": 3, "label": "3.x" }
+          {
+            "value": 2,
+            "label": "2.x"
+          },
+          {
+            "value": 3,
+            "label": "3.x"
+          }
         ]
       }
     },

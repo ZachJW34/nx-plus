@@ -1,0 +1,37 @@
+{
+  "schematics": {
+    "update-11.0.0": {
+      "version": "11.0.0",
+      "description": "update nuxt dependencies and .eslintrc.js",
+      "factory": "./src/migrations/update-11.0.0/update-11.0.0"
+    }
+  },
+  "packageJsonUpdates": {
+    "11.0.0": {
+      "version": "11.0.0",
+      "packages": {
+        "@nuxt/typescript-runtime": {
+          "version": "^2.0.1",
+          "alwaysAddToPackageJson": false
+        },
+        "nuxt": { "version": "^2.14.12", "alwaysAddToPackageJson": false },
+        "eslint-plugin-nuxt": {
+          "version": "^2.0.0",
+          "alwaysAddToPackageJson": false
+        },
+        "@nuxtjs/eslint-config-typescript": {
+          "version": "^5.0.0",
+          "alwaysAddToPackageJson": false
+        },
+        "@nuxt/types": {
+          "version": "^2.14.12",
+          "alwaysAddToPackageJson": false
+        },
+        "@nuxt/typescript-build": {
+          "version": "^2.0.4",
+          "alwaysAddToPackageJson": false
+        }
+      }
+    }
+  }
+}

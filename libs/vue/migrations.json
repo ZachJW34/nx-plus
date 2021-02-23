@@ -9,6 +9,11 @@
       "version": "10.0.0",
       "description": "update dependencies",
       "factory": "./src/migrations/update-10.0.0/update-10.0.0"
+    },
+    "update-11.0.0": {
+      "version": "11.0.0",
+      "description": "update vue dependencies and .eslintrc.js",
+      "factory": "./src/migrations/update-11.0.0/update-11.0.0"
     }
   },
   "packageJsonUpdates": {

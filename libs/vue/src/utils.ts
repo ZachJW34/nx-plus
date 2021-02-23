@@ -125,7 +125,7 @@ function clearRequireCache(id, map = new Map()) {
 }
 
 export function checkPeerDeps(context: SchematicContext, options): void {
-  const expectedVersion = '^10.3.0';
+  const expectedVersion = '^11.0.0';
   const unmetPeerDeps = [
     ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
     ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),

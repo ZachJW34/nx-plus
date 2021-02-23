@@ -20,7 +20,7 @@
 If you have not already, [create an Nx workspace](https://github.com/nrwl/nx#creating-an-nx-workspace) with the following:
 
 ```
-npx create-nx-workspace@^10.0.0
+npx create-nx-workspace@^11.0.0
 ```
 
 ## Getting Started
