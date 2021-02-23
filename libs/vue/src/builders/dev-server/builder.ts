@@ -5,7 +5,6 @@ import {
   targetFromTargetString,
 } from '@angular-devkit/architect';
 import { getSystemPath, JsonObject, Path } from '@angular-devkit/core';
-import { cliCommand } from '@nrwl/workspace/src/core/file-utils';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { DevServerBuilderSchema } from './schema';
@@ -128,7 +127,7 @@ export function runBuilder(
     if (buildRegex.test(arg)) {
       return arg.replace(
         buildRegex,
-        `${cliCommand()} build ${context.target.project} --prod`
+        `nx build ${context.target.project} --prod`
       );
     }
     return arg;

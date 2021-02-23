@@ -21,16 +21,14 @@ ensureDirSync(tmpProjPath());
 removeSync(tmpProjPath());
 
 execSync(
-  `node ${require.resolve(
-    '@nrwl/tao'
-  )} new proj --no-interactive --skip-install --collection=@nrwl/workspace --npmScope=proj --preset=empty`,
+  'yarn create nx-workspace proj --no-interactive --skip-install --preset=empty --cli=nx --no-nx-cloud --package-manager=yarn',
   { cwd: './tmp/nx-playground' }
 );
 
 publishableLibNames.forEach((pubLibName) => {
   const { outputPath, packageJson } = workspaceJson.projects[
     pubLibName
-  ].architect.build.options;
+  ].targets.build.options;
   const p = JSON.parse(readFileSync(tmpProjPath('package.json')).toString());
   p.devDependencies[
     require(`${appRootPath}/${packageJson}`).name

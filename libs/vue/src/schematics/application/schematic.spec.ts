@@ -100,7 +100,6 @@ describe('application schematic', () => {
     'plugin:vue/essential',
     '@vue/typescript/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
   ]`);
     expect(eslintConfig).toContain(`overrides: [
     {
@@ -446,7 +445,6 @@ describe('application schematic', () => {
     'plugin:vue/essential',
     '@vue/typescript/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
   ]`);
       expect(eslintConfig).toContain(`overrides: [
     {
@@ -545,7 +543,6 @@ describe('application schematic', () => {
     'plugin:vue/essential',
     '@vue/typescript/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
   ]`);
       expect(eslintConfig).toContain(`overrides: [
     {

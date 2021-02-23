@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "http://json-schema.org/schema",
   "id": "Component",
   "title": "Create a Vue Component",
   "type": "object",
@@ -42,7 +42,10 @@
         "message": "Which style format would you like to use?",
         "type": "list",
         "items": [
-          { "value": "css", "label": "CSS" },
+          {
+            "value": "css",
+            "label": "CSS"
+          },
           {
             "value": "scss",
             "label": "SCSS   [ https://sass-lang.com/documentation/syntax#scss ]"

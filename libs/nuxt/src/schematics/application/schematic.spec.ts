@@ -75,7 +75,6 @@ describe('nuxt schematic', () => {
     '@nuxtjs/eslint-config-typescript',
     'plugin:nuxt/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
   ]`);
 
     expect(
@@ -171,7 +170,6 @@ describe('nuxt schematic', () => {
     '@nuxtjs/eslint-config-typescript',
     'plugin:nuxt/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
   ]`);
 
       expect(
@@ -239,7 +237,6 @@ describe('nuxt schematic', () => {
     '@nuxtjs/eslint-config-typescript',
     'plugin:nuxt/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
   ]`);
 
       expect(
