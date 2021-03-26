@@ -374,7 +374,7 @@ export default function (options: ApplicationSchematicSchema): Rule {
             ? { '@vue/compiler-sfc': '^3.0.0' }
             : {}),
           '@vue/eslint-config-typescript': '^5.0.2',
-          'eslint-plugin-vue': normalizedOptions.isVue3 ? '^7.0.0-0' : '^6.2.2',
+          'eslint-plugin-vue': '^7.8.0',
           ...(!normalizedOptions.isVue3
             ? { 'vue-template-compiler': '^2.6.11' }
             : {}),

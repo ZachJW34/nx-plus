@@ -33,6 +33,15 @@
           "alwaysAddToPackageJson": false
         }
       }
+    },
+    "11.0.0": {
+      "version": "11.0.0",
+      "packages": {
+        "eslint-plugin-vue": {
+          "version": "^7.8.0",
+          "alwaysAddToPackageJson": false
+        }
+      }
     }
   }
 }
