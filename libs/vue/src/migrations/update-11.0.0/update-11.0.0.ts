@@ -1,5 +1,9 @@
 import { chain, Rule } from '@angular-devkit/schematics';
-import { addDepsToPackageJson, readWorkspace } from '@nrwl/workspace';
+import {
+  addDepsToPackageJson,
+  readWorkspace,
+  updatePackagesInPackageJson,
+} from '@nrwl/workspace';
 import * as path from 'path';
 
 function deleteExtendInEslintConfig(): Rule {
@@ -28,6 +32,10 @@ function deleteExtendInEslintConfig(): Rule {
 
 export default function update(): Rule {
   return chain([
+    updatePackagesInPackageJson(
+      path.join(__dirname, '../../../', 'migrations.json'),
+      '11.0.0'
+    ),
     addDepsToPackageJson({}, { 'eslint-config-prettier': '8.1.0' }),
     deleteExtendInEslintConfig(),
   ]);
