@@ -64,6 +64,7 @@
     "husky": "^4.2.5",
     "jest": "26.2.2",
     "lint-staged": "^10.2.11",
+    "merge-options": "^3.0.4",
     "nuxt": "^2.14.0",
     "prettier": "2.2.1",
     "rxjs": "6.5.5",

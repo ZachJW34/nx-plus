@@ -6,8 +6,7 @@
   "properties": {
     "open": {
       "type": "boolean",
-      "description": "Open browser on server start.",
-      "default": false
+      "description": "Open browser on server start."
     },
     "copy": {
       "type": "boolean",
@@ -24,18 +23,15 @@
     },
     "host": {
       "type": "string",
-      "description": "Specify host (default: 0.0.0.0).",
-      "default": "0.0.0.0"
+      "description": "Specify host (default: 0.0.0.0)."
     },
     "port": {
       "type": "number",
-      "description": "Specify port (default: 8080).",
-      "default": 8080
+      "description": "Specify port (default: 8080)."
     },
     "https": {
       "type": "boolean",
-      "description": "Use https (default: false).",
-      "default": false
+      "description": "Use https (default: false)."
     },
     "public": {
       "type": "string",
@@ -90,13 +86,11 @@
     },
     "devServer": {
       "type": "object",
-      "description": "All options for webpack-dev-server are supported.",
-      "default": {}
+      "description": "All options for webpack-dev-server are supported."
     },
     "transpileDependencies": {
       "type": "array",
-      "description": "By default babel-loader ignores all files inside node_modules. If you want to explicitly transpile a dependency with Babel, you can list it in this option.",
-      "default": []
+      "description": "By default babel-loader ignores all files inside node_modules. If you want to explicitly transpile a dependency with Babel, you can list it in this option."
     }
   },
   "required": ["browserTarget"],

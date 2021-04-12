@@ -28,6 +28,35 @@ describe('vue 3 e2e', () => {
       done();
     }, 300000);
 
+    it('should support specifying options in "vue-nx.config.js"', async (done) => {
+      const appName = uniq('app');
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+      await runNxCommandAsync(
+        `generate @nx-plus/vue:app ${appName} -vueVersion 3`
+      );
+
+      updateFile('workspace.json', (rawJson) => {
+        const json = JSON.parse(rawJson);
+        delete json.projects[appName].targets.build.configurations.production
+          .css.extract;
+        return JSON.stringify(json);
+      });
+      updateFile(
+        `apps/${appName}/vue-nx.config.js`,
+        `module.exports = { css: {extract: true} }`
+      );
+
+      await testGeneratedApp(appName, {
+        lint: false,
+        test: false,
+        e2e: false,
+        build: false,
+        buildProd: true,
+      });
+
+      done();
+    }, 300000);
+
     describe('--routing', () => {
       it('should generate app with routing', async (done) => {
         const appName = uniq('app');

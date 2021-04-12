@@ -246,17 +246,13 @@ We use `@nrwl/jest` for unit testing, so the options are as documented [here](ht
 
 We use `@nrwl/cypress` for e2e testing, so the options are as documented [here](https://github.com/nrwl/nx/blob/master/docs/angular/api-cypress/builders/cypress.md#cypress).
 
-## Modify the Webpack Configuration
+## Vue Config
 
-Modify the webpack config by exporting an Object or Function from your project's `configure-webpack.js` file.
+You can optionally specify Vue config options inside of your project's `vue-nx.config.js` (functionally equivalent to Vue CLI's `vue.config.js`). These options will be merged with the options specified in your project's `workspace.json` config. Options specified in `workspace.json` take precedence over options inside of `vue-nx.config.js`.
 
-> If your project does not have a `configure-webpack.js` file, then simply add it at the root of your project.
+> If your project does not have a `vue-nx.config.js` file, then simply add it at the root of your project.
 
-If the value is an Object, it will be merged into the final config using [`webpack-merge`](https://github.com/survivejs/webpack-merge).
-
-If the value is a function, it will receive the resolved config as the argument. The function can either mutate the config and return nothing, OR return a cloned or merged version of the config.
-
-For more information see the [Vue CLI documentation](https://cli.vuejs.org/config/#configurewebpack).
+For more information see the [Vue CLI documentation](https://cli.vuejs.org/config/#vue-config-js).
 
 ## Updating Nx Plus Vue
 
