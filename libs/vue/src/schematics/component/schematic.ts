@@ -16,6 +16,7 @@ import {
   toClassName,
   toFileName,
 } from '@nrwl/workspace';
+import { wrapAngularDevkitSchematic } from '@nrwl/devkit/ngcli-adapter';
 import { ComponentSchematicSchema } from './schema';
 
 interface NormalizedSchema extends ComponentSchematicSchema {
@@ -55,7 +56,7 @@ function createComponent(options: NormalizedSchema): Rule {
   );
 }
 
-export default function (schema: ComponentSchematicSchema): Rule {
+export function componentSchematic(schema: ComponentSchematicSchema): Rule {
   return (host: Tree) => {
     const options = normalizeOptions(host, schema);
     return chain([
@@ -64,3 +65,9 @@ export default function (schema: ComponentSchematicSchema): Rule {
     ]);
   };
 }
+
+export default componentSchematic;
+export const componentGenerator = wrapAngularDevkitSchematic(
+  '@nx-plus/vue',
+  'component'
+);

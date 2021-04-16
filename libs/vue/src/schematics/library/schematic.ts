@@ -31,6 +31,7 @@ import {
   readJsonInTree,
   NxJson,
 } from '@nrwl/workspace';
+import { wrapAngularDevkitSchematic } from '@nrwl/devkit/ngcli-adapter';
 import { libsDir } from '@nrwl/workspace/src/utils/ast-utils';
 import { LibrarySchematicSchema } from './schema';
 
@@ -309,7 +310,7 @@ function updateTsConfig(options: NormalizedSchema): Rule {
   ]);
 }
 
-export default function (options: LibrarySchematicSchema): Rule {
+export function librarySchematic(options: LibrarySchematicSchema): Rule {
   return (host: Tree) => {
     const normalizedOptions = normalizeOptions(host, options);
     return chain([
@@ -354,3 +355,9 @@ export default function (options: LibrarySchematicSchema): Rule {
     ]);
   };
 }
+
+export default librarySchematic;
+export const libraryGenerator = wrapAngularDevkitSchematic(
+  '@nx-plus/vue',
+  'library'
+);
