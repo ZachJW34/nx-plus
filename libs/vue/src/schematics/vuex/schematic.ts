@@ -11,6 +11,7 @@ import {
   InsertChange,
   insertImport,
 } from '@nrwl/workspace/src/utils/ast-utils';
+import { wrapAngularDevkitSchematic } from '@nrwl/devkit/ngcli-adapter';
 import * as semver from 'semver';
 import * as ts from 'typescript';
 import { VuexSchematicSchema } from './schema';
@@ -135,7 +136,7 @@ function addStoreToMain(options: VuexSchematicSchema, isVue3: boolean): Rule {
   };
 }
 
-export default function (options: VuexSchematicSchema): Rule {
+export function vuexSchematic(options: VuexSchematicSchema): Rule {
   const vue = loadModule('vue', appRootPath);
   const isVue3 = semver.major(vue.version) === 3;
 
@@ -146,3 +147,6 @@ export default function (options: VuexSchematicSchema): Rule {
     formatFiles(options),
   ]);
 }
+
+export default vuexSchematic;
+export const vuexGenerator = wrapAngularDevkitSchematic('@nx-plus/vue', 'vuex');

@@ -29,6 +29,7 @@ import {
   updateWorkspace,
 } from '@nrwl/workspace';
 import { appsDir } from '@nrwl/workspace/src/utils/ast-utils';
+import { wrapAngularDevkitSchematic } from '@nrwl/devkit/ngcli-adapter';
 import { ApplicationSchematicSchema } from './schema';
 import { checkPeerDeps } from '../../utils';
 
@@ -303,7 +304,9 @@ function addBabel(options: NormalizedSchema) {
   ]);
 }
 
-export default function (options: ApplicationSchematicSchema): Rule {
+export function applicationSchematic(
+  options: ApplicationSchematicSchema
+): Rule {
   return (host: Tree, context: SchematicContext) => {
     checkPeerDeps(context, options);
     const normalizedOptions = normalizeOptions(host, options);
@@ -385,3 +388,9 @@ export default function (options: ApplicationSchematicSchema): Rule {
     ]);
   };
 }
+
+export default applicationSchematic;
+export const applicationGenerator = wrapAngularDevkitSchematic(
+  '@nx-plus/vue',
+  'application'
+);
