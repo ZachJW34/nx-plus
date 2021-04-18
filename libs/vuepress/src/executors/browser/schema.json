@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "title": "Browser executor",
+  "description": "Build your source files as a static site",
+  "type": "object",
+  "properties": {
+    "dest": {
+      "type": "string",
+      "description": "Specify build output dir."
+    },
+    "debug": {
+      "type": "boolean",
+      "description": "Build in development mode for debugging.",
+      "default": false
+    }
+  },
+  "required": ["dest"],
+  "additionalProperties": false
+}

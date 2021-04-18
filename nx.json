@@ -41,6 +41,13 @@
     "nuxt-e2e": {
       "tags": [],
       "implicitDependencies": ["nuxt"]
+    },
+    "vuepress": {
+      "tags": []
+    },
+    "vuepress-e2e": {
+      "tags": [],
+      "implicitDependencies": ["vuepress"]
     }
   },
   "affected": {

@@ -242,6 +242,71 @@
           }
         }
       }
+    },
+    "vuepress": {
+      "root": "libs/vuepress",
+      "sourceRoot": "libs/vuepress/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/vuepress/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/vuepress"],
+          "options": {
+            "jestConfig": "libs/vuepress/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "builder": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/vuepress",
+            "tsConfig": "libs/vuepress/tsconfig.lib.json",
+            "packageJson": "libs/vuepress/package.json",
+            "main": "libs/vuepress/src/index.ts",
+            "assets": [
+              "libs/vuepress/*.md",
+              {
+                "input": "./libs/vuepress/src",
+                "glob": "**/*.!(ts)",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/vuepress",
+                "glob": "generators.json",
+                "output": "."
+              },
+              {
+                "input": "./libs/vuepress",
+                "glob": "executors.json",
+                "output": "."
+              }
+            ]
+          }
+        }
+      }
+    },
+    "vuepress-e2e": {
+      "projectType": "application",
+      "root": "apps/vuepress-e2e",
+      "sourceRoot": "apps/vuepress-e2e/src",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/nx-plugin:e2e",
+          "options": {
+            "target": "vuepress:build",
+            "npmPackageName": "@nx-plus/vuepress",
+            "pluginOutputPath": "dist/libs/vuepress",
+            "jestConfig": "apps/vuepress-e2e/jest.config.js"
+          }
+        }
+      }
     }
   },
   "cli": {
