@@ -3,10 +3,6 @@ import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function modifyTypescriptAliases(config: any, projectRoot: Path): void {
-  ['~~', '@@', '~', '@', 'assets', 'static'].forEach(
-    (key) => delete config.resolve.alias[key]
-  );
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const options: any = {
     configFile: getSystemPath(join(projectRoot, 'tsconfig.json')),
