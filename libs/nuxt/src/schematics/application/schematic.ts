@@ -306,11 +306,11 @@ export default function (options: ApplicationSchematicSchema): Rule {
         {
           '@nuxt/typescript-runtime': '^2.0.1',
           'core-js': '^3.8.3',
-          nuxt: '^2.14.12',
+          nuxt: '2.14.12',
         },
         {
           '@nuxtjs/eslint-config-typescript': '^5.0.0',
-          '@nuxt/types': '^2.14.12',
+          '@nuxt/types': '2.14.12',
           '@nuxt/typescript-build': '^2.0.4',
           'eslint-plugin-nuxt': '^2.0.0',
         },
