@@ -15,6 +15,7 @@ import {
   getProjectRoot,
   modifyChalkOutput,
   resolveConfigureWebpack,
+  resolveVueConfig,
 } from '../../utils';
 import {
   modifyBabelLoader,
@@ -29,6 +30,8 @@ import {
 const Service = require('@vue/cli-service/lib/Service');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { resolvePkg } = require('@vue/cli-shared-utils/lib/pkg');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const mergeOptions = require('merge-options');
 
 const devServerBuilderOverriddenKeys = [
   'mode',
@@ -78,38 +81,64 @@ export function runBuilder(
 
     const projectRoot = await getProjectRoot(context);
     const babelConfig = getBabelConfig(projectRoot);
+    const vueConfig = resolveVueConfig(projectRoot) || {};
 
-    const inlineOptions = {
-      chainWebpack: (config) => {
-        modifyIndexHtmlPath(config, browserOptions, context);
-        modifyEntryPoint(config, browserOptions, context);
-        modifyTsConfigPaths(config, browserOptions, context);
-        modifyCachePaths(config, context);
-        modifyTypescriptAliases(config, browserOptions, context);
-        if (babelConfig) {
-          modifyBabelLoader(config, babelConfig, context);
-        }
-
-        if (!options.watch) {
-          // There is no option to disable file watching in `webpack-dev-server`,
-          // but webpack's file watcher can be overriden.
-          config.plugin('vue-cli').use({
-            apply: (compiler) => {
-              compiler.hooks.afterEnvironment.tap('vue-cli', () => {
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                compiler.watchFileSystem = { watch: () => {} };
-              });
-            },
-          });
-        }
+    const defaults = {
+      publicPath: '/',
+      transpileDependencies: [],
+      css: {
+        requireModuleExtension: true,
+        extract: false,
+        sourceMap: false,
+        loaderOptions: {},
       },
-      publicPath: browserOptions.publicPath,
-      filenameHashing: browserOptions.filenameHashing,
-      css: browserOptions.css,
-      configureWebpack: resolveConfigureWebpack(projectRoot),
-      devServer: options.devServer,
-      transpileDependencies: options.transpileDependencies,
+      devServer: {},
     };
+
+    const inlineOptions = mergeOptions.call(
+      { ignoreUndefined: true },
+      defaults,
+      vueConfig,
+      {
+        chainWebpack: (config) => {
+          modifyIndexHtmlPath(config, browserOptions, context);
+          modifyEntryPoint(config, browserOptions, context);
+          modifyTsConfigPaths(config, browserOptions, context);
+          modifyCachePaths(config, context);
+          modifyTypescriptAliases(config, browserOptions, context);
+          if (babelConfig) {
+            modifyBabelLoader(config, babelConfig, context);
+          }
+
+          if (!options.watch) {
+            // There is no option to disable file watching in `webpack-dev-server`,
+            // but webpack's file watcher can be overriden.
+            config.plugin('vue-cli').use({
+              apply: (compiler) => {
+                compiler.hooks.afterEnvironment.tap('vue-cli', () => {
+                  // eslint-disable-next-line @typescript-eslint/no-empty-function
+                  compiler.watchFileSystem = { watch: () => {} };
+                });
+              },
+            });
+          }
+
+          vueConfig.chainWebpack && vueConfig.chainWebpack(config);
+        },
+        publicPath: browserOptions.publicPath,
+        filenameHashing: browserOptions.filenameHashing,
+        css: browserOptions.css,
+        devServer: options.devServer,
+        transpileDependencies: options.transpileDependencies,
+      }
+    );
+    const configureWebpack = resolveConfigureWebpack(projectRoot);
+    if (configureWebpack) {
+      context.logger.warn(
+        `"configure-webpack.js" has been deprecated. Please move this function to the "vue-nx.config.js" file.`
+      );
+      inlineOptions['configureWebpack'] = configureWebpack;
+    }
 
     return {
       projectRoot,
@@ -147,15 +176,14 @@ export function runBuilder(
           .run(
             'serve',
             {
-              open: options.open,
+              open: options.open || inlineOptions.devServer?.open,
               copy: options.copy,
               stdin: options.stdin,
               mode: browserOptions.mode,
-              host: options.host,
-              port: options.port,
-              https: options.https,
-              public: options.public,
-              transpileDependencies: options.transpileDependencies,
+              host: options.host || inlineOptions.devServer?.host,
+              port: options.port || inlineOptions.devServer?.port,
+              https: options.https || inlineOptions.devServer?.https,
+              public: options.public || inlineOptions.devServer?.public,
               'skip-plugins': browserOptions.skipPlugins,
             },
             ['serve']

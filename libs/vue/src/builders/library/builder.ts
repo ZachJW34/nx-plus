@@ -13,6 +13,7 @@ import {
   getProjectRoot,
   modifyChalkOutput,
   resolveConfigureWebpack,
+  resolveVueConfig,
 } from '../../utils';
 import {
   modifyBabelLoader,
@@ -26,6 +27,8 @@ import {
 const Service = require('@vue/cli-service/lib/Service');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { resolvePkg } = require('@vue/cli-shared-utils/lib/pkg');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const mergeOptions = require('merge-options');
 
 export function runBuilder(
   options: LibraryBuilderSchema,
@@ -37,20 +40,45 @@ export function runBuilder(
   }> {
     const projectRoot = await getProjectRoot(context);
     const babelConfig = getBabelConfig(projectRoot);
+    const vueConfig = resolveVueConfig(projectRoot) || {};
 
-    const inlineOptions = {
-      chainWebpack: (config) => {
-        modifyTsConfigPaths(config, options, context);
-        modifyCachePaths(config, context);
-        modifyTypescriptAliases(config, options, context);
-        modifyCopyAssets(config, options, context, projectRoot);
-        if (babelConfig) {
-          modifyBabelLoader(config, babelConfig, context);
-        }
+    const defaults = {
+      transpileDependencies: [],
+      css: {
+        requireModuleExtension: true,
+        extract: false,
+        sourceMap: false,
+        loaderOptions: {},
       },
-      css: options.css,
-      configureWebpack: resolveConfigureWebpack(projectRoot),
     };
+
+    const inlineOptions = mergeOptions.call(
+      { ignoreUndefined: true },
+      defaults,
+      vueConfig,
+      {
+        chainWebpack: (config) => {
+          modifyTsConfigPaths(config, options, context);
+          modifyCachePaths(config, context);
+          modifyTypescriptAliases(config, options, context);
+          modifyCopyAssets(config, options, context, projectRoot);
+          if (babelConfig) {
+            modifyBabelLoader(config, babelConfig, context);
+          }
+
+          vueConfig.chainWebpack && vueConfig.chainWebpack(config);
+        },
+        css: options.css,
+        transpileDependencies: options.transpileDependencies,
+      }
+    );
+    const configureWebpack = resolveConfigureWebpack(projectRoot);
+    if (configureWebpack) {
+      context.logger.warn(
+        `"configure-webpack.js" has been deprecated. Please move this function to the "vue-nx.config.js" file.`
+      );
+      inlineOptions['configureWebpack'] = configureWebpack;
+    }
 
     return {
       projectRoot,
@@ -98,7 +126,6 @@ export function runBuilder(
         formats: options.formats,
         name: options.name || context.target.project,
         filename: options.filename,
-        transpileDependencies: options.transpileDependencies,
       };
 
       return options.watch

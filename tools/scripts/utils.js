@@ -1,4 +1,6 @@
 const { readWorkspaceJson } = require('@nrwl/workspace');
+const { readPackageJson } = require('@nrwl/workspace/src/core/file-utils');
+const semver = require('semver');
 
 function getPublishableLibNames(workspaceJson = readWorkspaceJson()) {
   const { projects } = workspaceJson;
@@ -20,3 +22,9 @@ function tmpProjPath(path) {
 }
 
 module.exports.tmpProjPath = tmpProjPath;
+
+function getNxVersion() {
+  return semver.major(readPackageJson().devDependencies['@nrwl/workspace']);
+}
+
+module.exports.getNxVersion = getNxVersion;

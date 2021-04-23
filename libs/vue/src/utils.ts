@@ -61,10 +61,11 @@ export function checkUnsupportedConfig(
   )
     ? 'workspace.json'
     : 'angular.json';
+  const vueNxConfigFileName = join(projectRoot, 'vue-nx.config.json');
 
   if (packageJson.vue || vueConfigExists) {
     throw new Error(
-      `You must specify vue-cli config options in '${workspaceFileName}'.`
+      `You must specify vue-cli config options in '${workspaceFileName}' or '${vueNxConfigFileName}'.`
     );
   }
 }
@@ -79,6 +80,13 @@ export function resolveConfigureWebpack(projectRoot: string) {
   return host.exists(configureWebpackPath)
     ? require(getSystemPath(configureWebpackPath))
     : undefined;
+}
+
+export function resolveVueConfig(projectRoot: string) {
+  const vueConfig = join(normalize(projectRoot), 'vue-nx.config.js');
+  const host = new virtualFs.SyncDelegateHost(new NodeJsSyncHost());
+
+  return host.exists(vueConfig) ? require(getSystemPath(vueConfig)) : undefined;
 }
 
 export function loadModule(request, context, force = false) {

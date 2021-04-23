@@ -1,0 +1,4 @@
+// Equivalent to "vue.config.js". The name change to "vue-nx.config.js" is
+// required to allow Vue CLI and nx to work together.
+// see: https://cli.vuejs.org/config/#vue-config-js
+module.exports = {}
