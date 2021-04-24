@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "title": "DevServer executor",
+  "description": "Start a development server",
+  "type": "object",
+  "properties": {
+    "port": {
+      "type": "number",
+      "description": "Use specified port.",
+      "default": 8080
+    },
+    "host": {
+      "type": "string",
+      "description": "Use specified host.",
+      "default": "0.0.0.0"
+    },
+    "debug": {
+      "type": "boolean",
+      "description": "Start development server in debug mode.",
+      "default": false
+    },
+    "open": {
+      "type": "boolean",
+      "description": "Open browser when ready.",
+      "default": false
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

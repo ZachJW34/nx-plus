@@ -1,0 +1,11 @@
+/**
+ * Client app enhancement file.
+ */
+
+export default ({
+  app, // Vuepress app
+  router, // the router instance for the app
+  siteData // site metadata
+}) => {
+  // ...apply enhancements for the site.
+}

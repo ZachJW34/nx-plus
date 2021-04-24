@@ -1,0 +1,64 @@
+module.exports = {
+  title: 'Vuepress Docs Boilerplate',
+  description: 'The tagline of my site',
+
+  /**
+   * Extra tags to be injected to the page HTML `<head>`
+   */
+  head: [
+    ['meta', { name: 'theme-color', content: '#3eaf7c' }],
+    ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
+    ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }]
+  ],
+
+  theme: '@vuepress/theme-default',
+
+  /**
+   * Theme configuration, here is the default theme configuration for VuePress.
+   */
+  themeConfig: {
+    repo: '',
+    <% if (isVuepress2) { %>editLink:<% } else { %>editLinks:<% } %> false,
+    docsDir: '',
+    editLinkText: '',
+    lastUpdated: false,
+    <% if (isVuepress2) { %>navbar:<% } else { %>nav:<% } %> [
+      {
+        text: 'Guide',
+        link: '/guide/',
+      },
+      {
+        text: 'Config',
+        link: '/config/'
+      },
+      {
+        text: 'VuePress',
+        link: <% if (isVuepress2) { %>'https://vuepress2.netlify.app'<% } else { %>'https://v1.vuepress.vuejs.org'<% } %>
+      }
+    ],
+    sidebar: {
+      '/guide/': [
+        <% if (isVuepress2) { %>{
+          isGroup: true,
+          text: 'Guide',
+          children: [
+            '/guide/README.md',
+            '/guide/using-vue.md',
+          ]
+        }<% } else { %>{
+          title: 'Guide',
+          collapsable: false,
+          children: [
+            '',
+            'using-vue',
+          ]
+        }<% } %>
+      ],
+    }
+  },
+
+  /**
+   * Apply plugins
+   */
+  plugins: []
+}
