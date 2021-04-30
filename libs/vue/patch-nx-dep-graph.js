@@ -7,7 +7,7 @@ const path = require('path');
  */
 function patchNxDepGraph() {
   const filePath = path.join(
-    process.env.INIT_CWD,
+    process.env.INIT_CWD || '',
     'node_modules/@nrwl/workspace/src/core/project-graph/build-dependencies/typescript-import-locator.js'
   );
   try {
