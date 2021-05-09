@@ -7,6 +7,7 @@ const {
   removeSync,
   writeFileSync,
 } = require('fs-extra');
+const { dirname } = require('path');
 const { getPublishableLibNames, tmpProjPath } = require('./utils');
 
 console.log('\nCreating playground. This may take a few minutes.');
@@ -21,8 +22,10 @@ ensureDirSync(tmpProjPath());
 removeSync(tmpProjPath());
 
 execSync(
-  'yarn create nx-workspace proj --no-interactive --skip-install --preset=empty --cli=nx --no-nx-cloud --package-manager=yarn',
-  { cwd: './tmp/nx-playground' }
+  `node ${require.resolve('@nrwl/tao')} new proj --nx-workspace-root=${dirname(
+    tmpProjPath()
+  )} --no-interactive --skip-install --collection=@nrwl/workspace --npmScope=proj --preset=empty --package-manager=yarn`,
+  { cwd: dirname(tmpProjPath()) }
 );
 
 publishableLibNames.forEach((pubLibName) => {
