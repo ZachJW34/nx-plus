@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "Component",
+  "$id": "Component",
   "title": "Create a Vue Component",
   "type": "object",
   "examples": [
