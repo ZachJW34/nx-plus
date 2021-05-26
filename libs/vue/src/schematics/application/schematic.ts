@@ -207,8 +207,8 @@ function addJest(options: NormalizedSchema): Rule {
       }',
           snapshotSerializers: ['jest-serializer-vue'],
           globals: {
-            'ts-jest': { 
-              tsConfig: '<rootDir>/tsconfig.spec.json',
+            'ts-jest': {
+              tsconfig: '<rootDir>/tsconfig.spec.json',
               ${
                 options.babel ? `babelConfig: '<rootDir>/babel.config.js',` : ''
               }

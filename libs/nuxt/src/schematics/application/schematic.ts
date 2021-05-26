@@ -90,7 +90,7 @@ function checkPeerDeps(
   context: SchematicContext,
   options: ApplicationSchematicSchema
 ): void {
-  const expectedVersion = '^11.0.0';
+  const expectedVersion = '^12.0.0';
   const unmetPeerDeps = [
     ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
     ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),
@@ -211,7 +211,7 @@ function addJest(options: NormalizedSchema): Rule {
             '^vue$': 'vue/dist/vue.common.js',
           },
           globals: {
-            'ts-jest': { tsConfig: '<rootDir>/tsconfig.spec.json' },
+            'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' },
             'vue-jest': { tsConfig: '${
               options.projectRoot
             }/tsconfig.spec.json' },
