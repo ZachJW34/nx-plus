@@ -28,25 +28,30 @@ describe('nuxt e2e', () => {
     await runNxCommandAsync(`build ${appName}`);
     expect(() =>
       checkFilesExist(
-        `dist/apps/${appName}/utils.js`,
-        `dist/apps/${appName}/server.js`,
-        `dist/apps/${appName}/routes.json`,
-        `dist/apps/${appName}/router.scrollBehavior.js`,
-        `dist/apps/${appName}/router.js`,
-        `dist/apps/${appName}/middleware.js`,
-        `dist/apps/${appName}/loading.html`,
-        `dist/apps/${appName}/jsonp.js`,
-        `dist/apps/${appName}/index.js`,
-        `dist/apps/${appName}/empty.js`,
-        `dist/apps/${appName}/client.js`,
-        `dist/apps/${appName}/App.js`,
-        `dist/apps/${appName}/views`,
-        `dist/apps/${appName}/vetur`,
-        `dist/apps/${appName}/mixins`,
-        `dist/apps/${appName}/dist`,
-        `dist/apps/${appName}/components`
+        `dist/apps/${appName}/.nuxt/utils.js`,
+        `dist/apps/${appName}/.nuxt/server.js`,
+        `dist/apps/${appName}/.nuxt/routes.json`,
+        `dist/apps/${appName}/.nuxt/router.scrollBehavior.js`,
+        `dist/apps/${appName}/.nuxt/router.js`,
+        `dist/apps/${appName}/.nuxt/middleware.js`,
+        `dist/apps/${appName}/.nuxt/loading.html`,
+        `dist/apps/${appName}/.nuxt/jsonp.js`,
+        `dist/apps/${appName}/.nuxt/index.js`,
+        `dist/apps/${appName}/.nuxt/empty.js`,
+        `dist/apps/${appName}/.nuxt/client.js`,
+        `dist/apps/${appName}/.nuxt/App.js`,
+        `dist/apps/${appName}/.nuxt/views`,
+        `dist/apps/${appName}/.nuxt/vetur`,
+        `dist/apps/${appName}/.nuxt/mixins`,
+        `dist/apps/${appName}/.nuxt/dist`,
+        `dist/apps/${appName}/.nuxt/components`
       )
     ).not.toThrow();
+
+    const prodE2eResult = await runNxCommandAsync(
+      `e2e ${appName}-e2e --prod --headless`
+    );
+    expect(prodE2eResult.stdout).toContain('All specs passed!');
 
     done();
   }, 300000);
@@ -69,6 +74,26 @@ describe('nuxt e2e', () => {
     done();
   }, 300000);
 
+  it('should generate static app', async (done) => {
+    const appName = uniq('app');
+    ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
+    await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
+
+    await runNxCommandAsync(`static ${appName}`);
+    expect(() =>
+      checkFilesExist(
+        `dist/apps/${appName}/dist/_nuxt`,
+        `dist/apps/${appName}/dist/.nojekyll`,
+        `dist/apps/${appName}/dist/200.html`,
+        `dist/apps/${appName}/dist/favicon.ico`,
+        `dist/apps/${appName}/dist/index.html`,
+        `dist/apps/${appName}/dist/README.md`
+      )
+    ).not.toThrow();
+
+    done();
+  }, 300000);
+
   describe('--directory subdir', () => {
     it('should generate app', async (done) => {
       const appName = uniq('app');
@@ -80,23 +105,45 @@ describe('nuxt e2e', () => {
       await runNxCommandAsync(`build subdir-${appName}`);
       expect(() =>
         checkFilesExist(
-          `dist/apps/subdir/${appName}/utils.js`,
-          `dist/apps/subdir/${appName}/server.js`,
-          `dist/apps/subdir/${appName}/routes.json`,
-          `dist/apps/subdir/${appName}/router.scrollBehavior.js`,
-          `dist/apps/subdir/${appName}/router.js`,
-          `dist/apps/subdir/${appName}/middleware.js`,
-          `dist/apps/subdir/${appName}/loading.html`,
-          `dist/apps/subdir/${appName}/jsonp.js`,
-          `dist/apps/subdir/${appName}/index.js`,
-          `dist/apps/subdir/${appName}/empty.js`,
-          `dist/apps/subdir/${appName}/client.js`,
-          `dist/apps/subdir/${appName}/App.js`,
-          `dist/apps/subdir/${appName}/views`,
-          `dist/apps/subdir/${appName}/vetur`,
-          `dist/apps/subdir/${appName}/mixins`,
-          `dist/apps/subdir/${appName}/dist`,
-          `dist/apps/subdir/${appName}/components`
+          `dist/apps/subdir/${appName}/.nuxt/utils.js`,
+          `dist/apps/subdir/${appName}/.nuxt/server.js`,
+          `dist/apps/subdir/${appName}/.nuxt/routes.json`,
+          `dist/apps/subdir/${appName}/.nuxt/router.scrollBehavior.js`,
+          `dist/apps/subdir/${appName}/.nuxt/router.js`,
+          `dist/apps/subdir/${appName}/.nuxt/middleware.js`,
+          `dist/apps/subdir/${appName}/.nuxt/loading.html`,
+          `dist/apps/subdir/${appName}/.nuxt/jsonp.js`,
+          `dist/apps/subdir/${appName}/.nuxt/index.js`,
+          `dist/apps/subdir/${appName}/.nuxt/empty.js`,
+          `dist/apps/subdir/${appName}/.nuxt/client.js`,
+          `dist/apps/subdir/${appName}/.nuxt/App.js`,
+          `dist/apps/subdir/${appName}/.nuxt/views`,
+          `dist/apps/subdir/${appName}/.nuxt/vetur`,
+          `dist/apps/subdir/${appName}/.nuxt/mixins`,
+          `dist/apps/subdir/${appName}/.nuxt/dist`,
+          `dist/apps/subdir/${appName}/.nuxt/components`
+        )
+      ).not.toThrow();
+
+      done();
+    }, 300000);
+
+    it('should generate static app', async (done) => {
+      const appName = uniq('app');
+      ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
+      await runNxCommandAsync(
+        `generate @nx-plus/nuxt:app ${appName} --directory subdir`
+      );
+
+      await runNxCommandAsync(`static subdir-${appName}`);
+      expect(() =>
+        checkFilesExist(
+          `dist/apps/subdir/${appName}/dist/_nuxt`,
+          `dist/apps/subdir/${appName}/dist/.nojekyll`,
+          `dist/apps/subdir/${appName}/dist/200.html`,
+          `dist/apps/subdir/${appName}/dist/favicon.ico`,
+          `dist/apps/subdir/${appName}/dist/index.html`,
+          `dist/apps/subdir/${appName}/dist/README.md`
         )
       ).not.toThrow();
 
