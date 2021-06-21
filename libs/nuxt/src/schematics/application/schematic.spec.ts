@@ -28,9 +28,13 @@ describe('nuxt schematic', () => {
       .runSchematicAsync('app', options, appTree)
       .toPromise();
     const workspaceJson = readJsonInTree(tree, 'workspace.json');
-    const { build, serve, lint, test } = workspaceJson.projects[
-      'my-app'
-    ].architect;
+    const {
+      build,
+      serve,
+      static: staticGenerate,
+      lint,
+      test,
+    } = workspaceJson.projects['my-app'].architect;
 
     expect(workspaceJson.projects['my-app'].root).toBe('apps/my-app');
     expect(build.builder).toBe('@nx-plus/nuxt:browser');
@@ -44,6 +48,10 @@ describe('nuxt schematic', () => {
     expect(serve.configurations.production).toEqual({
       browserTarget: 'my-app:build:production',
       dev: false,
+    });
+    expect(staticGenerate.builder).toBe('@nx-plus/nuxt:static');
+    expect(staticGenerate.options).toEqual({
+      browserTarget: 'my-app:build:production',
     });
     expect(lint.builder).toBe('@nrwl/linter:eslint');
     expect(test.builder).toBe('@nrwl/jest:jest');

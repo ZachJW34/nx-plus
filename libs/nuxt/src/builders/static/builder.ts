@@ -2,6 +2,7 @@ import {
   BuilderContext,
   BuilderOutput,
   createBuilder,
+  scheduleTargetAndForget,
   targetFromTargetString,
 } from '@angular-devkit/architect';
 import {
@@ -10,22 +11,21 @@ import {
   JsonObject,
   normalize,
 } from '@angular-devkit/core';
-import { build, loadNuxt } from 'nuxt';
-import { concat, from, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { ServerBuilderSchema } from './schema';
-import { BrowserBuilderSchema } from '../browser/schema';
+import { Nuxt, Builder, Generator, loadNuxtConfig } from 'nuxt';
+import { concat, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { StaticBuilderSchema } from './schema';
 import { getProjectRoot } from '../../utils';
 import { modifyTypescriptAliases } from '../../webpack';
+import { BrowserBuilderSchema } from '../browser/schema';
 
 const serverBuilderOverriddenKeys = [];
 
 export function runBuilder(
-  options: ServerBuilderSchema,
+  options: StaticBuilderSchema,
   context: BuilderContext
 ): Observable<BuilderOutput> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async function setup(): Promise<any> {
+  const run = async () => {
     const browserTarget = targetFromTargetString(options.browserTarget);
     const rawBrowserOptions = await context.getTargetOptions(browserTarget);
     const overrides = Object.keys(options)
@@ -42,10 +42,10 @@ export function runBuilder(
 
     const projectRoot = await getProjectRoot(context);
 
-    const nuxt = await loadNuxt({
-      for: options.dev ? 'dev' : 'start',
+    const config = await loadNuxtConfig({
       rootDir: getSystemPath(projectRoot),
       configOverrides: {
+        dev: false,
         buildDir: getSystemPath(
           join(
             normalize(context.workspaceRoot),
@@ -53,6 +53,15 @@ export function runBuilder(
             '.nuxt'
           )
         ),
+        generate: {
+          dir: getSystemPath(
+            join(
+              normalize(context.workspaceRoot),
+              browserOptions.buildDir,
+              'dist'
+            )
+          ),
+        },
         build: {
           extend(config, ctx) {
             modifyTypescriptAliases(config, projectRoot);
@@ -70,41 +79,25 @@ export function runBuilder(
       },
     });
 
-    return nuxt;
-  }
+    const nuxt = new Nuxt(config);
+    await nuxt.ready();
+    const builder = new Builder(nuxt);
+    const generator = new Generator(nuxt, builder);
 
-  return from(setup()).pipe(
-    switchMap((nuxt) =>
-      options.dev
-        ? concat(
-            new Observable((obs) => {
-              build(nuxt)
-                .then((success) => obs.next(success))
-                .catch((err) => obs.error(err));
-            }),
-            from(nuxt.listen(nuxt.options.server.port))
-          )
-        : new Observable((obs) => {
-            nuxt
-              .listen(nuxt.options.server.port)
-              .then((success) => obs.next(success))
-              .catch((err) => obs.error(err));
-          })
+    await generator.generate({ build: false });
+  };
+
+  return concat(
+    scheduleTargetAndForget(
+      context,
+      targetFromTargetString(options.browserTarget)
     ),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    map((result: any) => {
-      const baseUrl = options.dev
-        ? result.nuxt.server.listeners[0].url
-        : result.url;
-
-      context.logger.info(`\nListening on: ${baseUrl}\n`);
-
-      return {
-        success: true,
-        baseUrl,
-      };
+    new Observable((obs) => {
+      run()
+        .then((success) => obs.next(success))
+        .catch((err) => obs.error(err));
     })
-  );
+  ).pipe(map(() => ({ success: true })));
 }
 
 export default createBuilder(runBuilder);

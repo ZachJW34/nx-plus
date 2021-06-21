@@ -106,6 +106,18 @@ nx serve my-app
 | ------------ | ------- | ------------------------------------------------------- |
 | `--buildDir` | -       | Define the dist directory for your Nuxt.js application. |
 
+### Static
+
+`nx static <name> [options]`
+
+| Arguments | Description           |
+| --------- | --------------------- |
+| `<name>`  | The name of your app. |
+
+| Options           | Default | Description         |
+| ----------------- | ------- | ------------------- |
+| `--browserTarget` | -       | Target to generate. |
+
 ### Configuring Nuxt.js
 
 By default, Nuxt.js is configured to cover most use cases. This default configuration can be overwritten with the `nuxt.config.js` file. For more information see the [NuxtJS documentation](https://nuxtjs.org/guides/directory-structure/nuxt-config#nuxtconfigjs).
