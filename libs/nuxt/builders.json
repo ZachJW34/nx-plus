@@ -10,6 +10,11 @@
       "implementation": "./src/builders/server/builder",
       "schema": "./src/builders/server/schema.json",
       "description": "server builder"
+    },
+    "static": {
+      "implementation": "./src/builders/static/builder",
+      "schema": "./src/builders/static/schema.json",
+      "description": "static builder"
     }
   }
 }
