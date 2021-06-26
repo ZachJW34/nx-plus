@@ -12,8 +12,8 @@ import {
   normalize,
 } from '@angular-devkit/core';
 import { Nuxt, Builder, Generator, loadNuxtConfig } from 'nuxt';
-import { concat, from, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { concat, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { StaticBuilderSchema } from './schema';
 import { getProjectRoot } from '../../utils';
 import { modifyTypescriptAliases } from '../../webpack';
@@ -47,14 +47,18 @@ export function runBuilder(
       configOverrides: {
         dev: false,
         buildDir: getSystemPath(
-          join(normalize(context.workspaceRoot), browserOptions.buildDir)
+          join(
+            normalize(context.workspaceRoot),
+            browserOptions.buildDir,
+            '.nuxt'
+          )
         ),
         generate: {
           dir: getSystemPath(
             join(
               normalize(context.workspaceRoot),
               browserOptions.buildDir,
-              '/test'
+              'dist'
             )
           ),
         },
@@ -87,12 +91,13 @@ export function runBuilder(
     scheduleTargetAndForget(
       context,
       targetFromTargetString(options.browserTarget)
-    )
-  ).pipe(
-    switchMap(() => {
-      return from(run()).pipe(map(() => ({ success: true })));
+    ),
+    new Observable((obs) => {
+      run()
+        .then((success) => obs.next(success))
+        .catch((err) => obs.error(err));
     })
-  );
+  ).pipe(map(() => ({ success: true })));
 }
 
 export default createBuilder(runBuilder);

@@ -6,7 +6,8 @@
   "properties": {
     "browserTarget": {
       "type": "string",
-      "description": "Define the dist directory for your Nuxt.js application."
+      "description": "Target to generate.",
+      "pattern": "^[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
     }
   },
   "required": ["browserTarget"],
