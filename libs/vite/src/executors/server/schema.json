@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "title": "Server executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "string",
+      "description": "use specified config file"
+    },
+    "root": {
+      "type": "string",
+      "description": "use specified root directory"
+    },
+    "base": { "type": "string", "description": "public base path" },
+    "logLevel": {
+      "type": "string",
+      "description": "silent | error | warn | all"
+    },
+    "clearScreen": {
+      "type": "boolean",
+      "description": "allow/disable clear screen when logging"
+    },
+    "debug": {
+      "type": ["string", "boolean"],
+      "description": "show debug logs"
+    },
+    "filter": { "type": "string", "description": "filter debug log" },
+    "host": {
+      "type": "string",
+      "description": "specify hostname"
+    },
+    "port": {
+      "type": "number",
+      "description": "specify port"
+    },
+    "https": {
+      "type": "boolean",
+      "description": "use TLS + HTTP/2"
+    },
+    "open": {
+      "type": ["string", "boolean"],
+      "description": "open browser on startup"
+    },
+    "cors": {
+      "type": "boolean",
+      "description": "enable cors"
+    },
+    "strictPort": {
+      "type": "boolean",
+      "description": "exit if specified port is already in use"
+    },
+    "mode": {
+      "type": "string",
+      "description": "set env mode"
+    },
+    "force": {
+      "type": "boolean",
+      "description": "force the optimizer to ignore the cache and re-bundle"
+    }
+  },
+  "required": ["config"]
+}
