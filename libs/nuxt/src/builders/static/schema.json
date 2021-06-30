@@ -4,11 +4,12 @@
   "description": "",
   "type": "object",
   "properties": {
-    "buildDir": {
+    "browserTarget": {
       "type": "string",
-      "description": "Define the dist directory for your Nuxt.js application."
+      "description": "Target to generate static files for.",
+      "pattern": "^[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
     }
   },
-  "required": ["buildDir"],
+  "required": ["browserTarget"],
   "additionalProperties": false
 }
