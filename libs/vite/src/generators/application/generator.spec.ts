@@ -44,8 +44,8 @@ describe('application generator', () => {
 
     [
       'apps/my-app/index.html',
-      'apps/my-app/README.md',
       'apps/my-app/tsconfig.json',
+      'apps/my-app/tsconfig.app.json',
       'apps/my-app/vite.config.ts',
       'apps/my-app/public/favicon.ico',
       'apps/my-app/src/assets/logo.png',

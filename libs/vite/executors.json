@@ -11,5 +11,17 @@
       "schema": "./src/executors/server/schema.json",
       "description": "serve executor"
     }
+  },
+  "builders": {
+    "build": {
+      "implementation": "./src/executors/browser/compat",
+      "schema": "./src/executors/browser/schema.json",
+      "description": "browser builder"
+    },
+    "server": {
+      "implementation": "./src/executors/server/compat",
+      "schema": "./src/executors/server/schema.json",
+      "description": "server builder"
+    }
   }
 }

@@ -11,11 +11,9 @@ import {
   convertNxGenerator,
   logger,
 } from '@nrwl/devkit';
-import { lintProjectGenerator, Linter } from '@nrwl/linter';
-import { jestProjectGenerator, jestInitGenerator } from '@nrwl/jest';
-import { cypressProjectGenerator, cypressInitGenerator } from '@nrwl/cypress';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 import * as path from 'path';
+import { checkPeerDeps } from '../../utils';
 import { ApplicationGeneratorSchema } from './schema';
 
 interface NormalizedSchema extends ApplicationGeneratorSchema {
@@ -100,6 +98,7 @@ function getEslintConfig(options: NormalizedSchema) {
 }
 
 async function addEsLint(tree: Tree, options: NormalizedSchema) {
+  const { lintProjectGenerator, Linter } = await import('@nrwl/linter');
   const lintTask = await lintProjectGenerator(tree, {
     linter: Linter.EsLint,
     project: options.projectName,
@@ -133,6 +132,10 @@ async function addEsLint(tree: Tree, options: NormalizedSchema) {
 }
 
 async function addCypress(tree: Tree, options: NormalizedSchema) {
+  const { cypressInitGenerator, cypressProjectGenerator } = await import(
+    '@nrwl/cypress'
+  );
+  const { Linter } = await import('@nrwl/linter');
   const cypressInitTask = await cypressInitGenerator(tree);
   const cypressTask = await cypressProjectGenerator(tree, {
     project: options.projectName,
@@ -158,6 +161,9 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
 }
 
 async function addJest(tree: Tree, options: NormalizedSchema) {
+  const { jestProjectGenerator, jestInitGenerator } = await import(
+    '@nrwl/jest'
+  );
   const jestInitTask = await jestInitGenerator(tree, { babelJest: false });
   const jestTask = await jestProjectGenerator(tree, {
     project: options.projectName,
@@ -238,6 +244,7 @@ export async function applicationGenerator(
   host: Tree,
   options: ApplicationGeneratorSchema
 ) {
+  checkPeerDeps(host, options);
   const normalizedOptions = normalizeOptions(host, options);
   addProjectConfiguration(host, normalizedOptions.projectName, {
     root: normalizedOptions.projectRoot,

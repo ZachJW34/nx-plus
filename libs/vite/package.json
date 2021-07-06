@@ -1,7 +1,37 @@
 {
   "name": "@nx-plus/vite",
-  "version": "0.0.1",
+  "version": "12.0.0",
   "main": "src/index.js",
   "generators": "./generators.json",
-  "executors": "./executors.json"
+  "executors": "./executors.json",
+  "description": "Vite plugin for Nx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZachJW34/nx-plus.git"
+  },
+  "keywords": [
+    "nx",
+    "vite",
+    "documentation",
+    "website"
+  ],
+  "author": "Zachary Williams <zachjw34@gmail.com> (https://github.com/ZachJW34/)",
+  "contributors": [
+    "Bucky Maler <maler.bucky@gmail.com> (http://buckymaler.com/)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ZachJW34/nx-plus/issues"
+  },
+  "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/vite#readme",
+  "peerDependencies": {
+    "@nrwl/cypress": "^12.0.0",
+    "@nrwl/jest": "^12.0.0",
+    "@nrwl/linter": "^12.0.0",
+    "@nrwl/workspace": "^12.0.0"
+  },
+  "dependencies": {
+    "@nrwl/devkit": "11.5.1",
+    "semver": "^7.3.2"
+  }
 }
