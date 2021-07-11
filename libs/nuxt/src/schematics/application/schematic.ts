@@ -292,6 +292,13 @@ export default function (options: ApplicationSchematicSchema): Rule {
             },
           },
         });
+        targets.add({
+          name: 'static',
+          builder: '@nx-plus/nuxt:static',
+          options: {
+            browserTarget: `${normalizedOptions.projectName}:build:production`,
+          },
+        });
       }),
       addProjectToNxJsonInTree(normalizedOptions.projectName, {
         tags: normalizedOptions.parsedTags,

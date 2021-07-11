@@ -23,7 +23,7 @@ export function runBuilder(
       rootDir: getSystemPath(projectRoot),
       configOverrides: {
         buildDir: getSystemPath(
-          join(normalize(context.workspaceRoot), options.buildDir)
+          join(normalize(context.workspaceRoot), options.buildDir, '.nuxt')
         ),
         build: {
           extend(config, ctx) {
