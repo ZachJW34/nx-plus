@@ -242,6 +242,81 @@
           }
         }
       }
+    },
+    "vite": {
+      "root": "libs/vite",
+      "sourceRoot": "libs/vite/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/vite/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/vite"],
+          "options": {
+            "jestConfig": "libs/vite/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "builder": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/vite",
+            "tsConfig": "libs/vite/tsconfig.lib.json",
+            "packageJson": "libs/vite/package.json",
+            "main": "libs/vite/src/index.ts",
+            "assets": [
+              "libs/vite/*.md",
+              {
+                "input": "./libs/vite/src",
+                "glob": "**/!(*.ts)",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/vite/src",
+                "glob": "**/*.d.ts",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/vite",
+                "glob": "generators.json",
+                "output": "."
+              },
+              {
+                "input": "./libs/vite",
+                "glob": "executors.json",
+                "output": "."
+              },
+              {
+                "input": "./libs/vite",
+                "glob": "patch-nx-dep-graph.js",
+                "output": "."
+              }
+            ]
+          }
+        }
+      }
+    },
+    "vite-e2e": {
+      "projectType": "application",
+      "root": "apps/vite-e2e",
+      "sourceRoot": "apps/vite-e2e/src",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/nx-plugin:e2e",
+          "options": {
+            "target": "vite:build",
+            "npmPackageName": "@nx-plus/vite",
+            "pluginOutputPath": "dist/libs/vite",
+            "jestConfig": "apps/vite-e2e/jest.config.js"
+          }
+        }
+      }
     }
   },
   "cli": {
