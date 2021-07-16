@@ -4,7 +4,7 @@ export interface ViteServerExecutorSchema {
   base?: string;
   logLevel?: LogLevel;
   clearScreen?: boolean;
-  debug?: string | boolean;
+  debug?: boolean;
   filter?: string;
   host?: string;
   port?: number;

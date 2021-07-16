@@ -23,7 +23,7 @@
       "description": "allow/disable clear screen when logging"
     },
     "debug": {
-      "type": ["string", "boolean"],
+      "type": "boolean",
       "description": "show debug logs"
     },
     "filter": { "type": "string", "description": "filter debug log" },
@@ -40,7 +40,7 @@
       "description": "use TLS + HTTP/2"
     },
     "open": {
-      "type": ["string", "boolean"],
+      "type": "boolean",
       "description": "open browser on startup"
     },
     "cors": {
