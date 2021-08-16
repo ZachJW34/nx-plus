@@ -189,14 +189,12 @@ function addJest(options: NormalizedSchema): Rule {
       return json;
     }),
     (tree: Tree) => {
-      const getVueJestPath = (file: string) =>
-        options.isVue3 ? `'<rootDir>/${file}'` : `\`\${__dirname}/${file}\``;
       const content = tags.stripIndent`
         module.exports = {
           displayName: '${options.projectName}',
           preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
           transform: {
-            '^.+\\.vue$': 'vue-jest',
+            '^.+\\.vue$': '${options.isVue3 ? 'vue3-jest' : '@vue/vue2-jest'}',
             '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':
               'jest-transform-stub',
             '^.+\\.tsx?$': 'ts-jest',
@@ -214,10 +212,10 @@ function addJest(options: NormalizedSchema): Rule {
               }
             },
             'vue-jest': {
-              tsConfig: ${getVueJestPath('tsconfig.spec.json')},
+              tsConfig: '${options.projectRoot}/tsconfig.spec.json',
               ${
                 options.babel
-                  ? `babelConfig: ${getVueJestPath('babel.config.js')},`
+                  ? `babelConfig: '${options.projectRoot}/babel.config.js',`
                   : ''
               }
             }
@@ -234,7 +232,9 @@ function addJest(options: NormalizedSchema): Rule {
         'babel-core': '^7.0.0-bridge.0',
         'jest-serializer-vue': '^2.0.2',
         'jest-transform-stub': '^2.0.0',
-        'vue-jest': options.isVue3 ? '5.0.0-alpha.7' : '^3.0.5',
+        ...(options.isVue3
+          ? { 'vue3-jest': '^27.0.0-alpha.1' }
+          : { '@vue/vue2-jest': '^27.0.0-alpha.1' }),
       },
       true
     ),

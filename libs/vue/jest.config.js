@@ -8,4 +8,5 @@ module.exports = {
   globals: { 'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' } },
   displayName: 'vue',
   testTimeout: 10000,
+  testEnvironment: 'node',
 };

@@ -28,22 +28,30 @@
       "tags": [],
       "implicitDependencies": ["docusaurus"]
     },
-    "vue": {
-      "tags": []
-    },
-    "vue-e2e": {
-      "tags": [],
-      "implicitDependencies": ["vue"]
-    },
     "nuxt": {
       "tags": []
     },
     "nuxt-e2e": {
       "tags": [],
       "implicitDependencies": ["nuxt"]
+    },
+    "vue": {
+      "tags": []
+    },
+    "vue-e2e": {
+      "tags": [],
+      "implicitDependencies": ["vue"]
     }
   },
   "affected": {
     "defaultBase": "master"
+  },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
   }
 }

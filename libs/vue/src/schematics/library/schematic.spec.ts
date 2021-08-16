@@ -158,8 +158,8 @@ describe('library schematic', () => {
       const jestConfig = tree.readContent('libs/my-lib/jest.config.js');
       expect(jestConfig).toContain(tags.indentBy(4)`
         'vue-jest': {
-          tsConfig: ${'`${__dirname}/tsconfig.spec.json`'},
-          babelConfig: ${'`${__dirname}/babel.config.js`'},
+          tsConfig: 'libs/my-lib/tsconfig.spec.json',
+          babelConfig: 'libs/my-lib/babel.config.js',
         },
       `);
     });
@@ -178,8 +178,8 @@ describe('library schematic', () => {
       const jestConfig = tree.readContent('libs/my-lib/jest.config.js');
       expect(jestConfig).toContain(tags.indentBy(4)`
         'vue-jest': {
-          tsConfig: '<rootDir>/tsconfig.spec.json',
-          babelConfig: '<rootDir>/babel.config.js',
+          tsConfig: 'libs/my-lib/tsconfig.spec.json',
+          babelConfig: 'libs/my-lib/babel.config.js',
         },
       `);
     });

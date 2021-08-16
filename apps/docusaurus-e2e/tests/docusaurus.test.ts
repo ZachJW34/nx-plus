@@ -5,7 +5,7 @@ import {
 } from '@nrwl/nx-plugin/testing';
 
 describe('docusaurus e2e', () => {
-  it('should create and build docusaurus', async (done) => {
+  it('should create and build docusaurus', async () => {
     const appName = uniq('docusaurus');
     ensureNxProject('@nx-plus/docusaurus', 'dist/libs/docusaurus');
     await runNxCommandAsync(`generate @nx-plus/docusaurus:app ${appName}`);
@@ -14,7 +14,5 @@ describe('docusaurus e2e', () => {
     expect(result.stdout).toContain(
       `Success! Generated static files in "dist/apps/${appName}".`
     );
-
-    done();
   }, 100000);
 });

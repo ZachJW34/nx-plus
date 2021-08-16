@@ -10,7 +10,7 @@ import { runNxProdCommandAsync, testGeneratedApp } from './utils';
 
 describe('vue 3 e2e', () => {
   describe('app', () => {
-    it('should generate app', async (done) => {
+    it('should generate app', async () => {
       const appName = uniq('app');
       ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
@@ -24,12 +24,10 @@ describe('vue 3 e2e', () => {
         build: true,
         buildProd: true,
       });
-
-      done();
     }, 300000);
 
     describe('--routing', () => {
-      it('should generate app with routing', async (done) => {
+      it('should generate app with routing', async () => {
         const appName = uniq('app');
         ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
@@ -50,13 +48,11 @@ describe('vue 3 e2e', () => {
             `dist/apps/${appName}/js/about.js.map`
           )
         ).not.toThrow();
-
-        done();
       }, 300000);
     });
 
     describe('vuex', () => {
-      it('should generate app and add vuex', async (done) => {
+      it('should generate app and add vuex', async () => {
         const appName = uniq('app');
         ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
@@ -71,12 +67,10 @@ describe('vue 3 e2e', () => {
           build: true,
           buildProd: true,
         });
-
-        done();
       }, 300000);
     });
 
-    it('should generate app with routing and add vuex', async (done) => {
+    it('should generate app with routing and add vuex', async () => {
       const appName = uniq('app');
       ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
@@ -98,11 +92,9 @@ describe('vue 3 e2e', () => {
           `dist/apps/${appName}/js/about.js.map`
         )
       ).not.toThrow();
-
-      done();
     }, 300000);
 
-    it('should report lint error in App.vue', async (done) => {
+    it('should report lint error in App.vue', async () => {
       const appName = uniq('app');
       ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
@@ -118,13 +110,11 @@ describe('vue 3 e2e', () => {
         silenceError: true,
       });
       expect(result.stderr).toContain('Lint errors found in the listed files.');
-
-      done();
     }, 300000);
   });
 
   describe('library', () => {
-    it('should generate lib', async (done) => {
+    it('should generate lib', async () => {
       const lib = uniq('lib');
       ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
@@ -140,11 +130,9 @@ describe('vue 3 e2e', () => {
       Tests:       1 passed, 1 total
       Snapshots:   0 total
     `);
-
-      done();
     }, 300000);
 
-    it('should generate publishable lib', async (done) => {
+    it('should generate publishable lib', async () => {
       const lib = uniq('lib');
       ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
@@ -196,14 +184,12 @@ describe('vue 3 e2e', () => {
           `dist/libs/${lib}/${lib}.umd.min.js.map`
         )
       ).toThrow();
-
-      done();
     }, 300000);
   });
 
   describe('component', () => {
     describe('inside an app', () => {
-      it('should generate component', async (done) => {
+      it('should generate component', async () => {
         const appName = uniq('app');
         ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
@@ -217,13 +203,11 @@ describe('vue 3 e2e', () => {
         expect(() =>
           checkFilesExist(`apps/${appName}/src/MyComponent.vue`)
         ).not.toThrow();
-
-        done();
       }, 300000);
     });
 
     describe('inside a library', () => {
-      it('should generate component', async (done) => {
+      it('should generate component', async () => {
         const libName = uniq('lib');
         ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
@@ -237,8 +221,6 @@ describe('vue 3 e2e', () => {
         expect(() =>
           checkFilesExist(`libs/${libName}/src/lib/MyComponent.vue`)
         ).not.toThrow();
-
-        done();
       }, 300000);
     });
   });

@@ -1,7 +1,3 @@
-module.exports = {
-  projects: [
-    '<rootDir>/libs/docusaurus',
-    '<rootDir>/libs/vue',
-    '<rootDir>/libs/nuxt',
-  ],
-};
+const { getJestProjects } = require('@nrwl/jest');
+
+module.exports = { projects: getJestProjects() };
