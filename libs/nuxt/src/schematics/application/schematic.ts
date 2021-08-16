@@ -90,7 +90,7 @@ function checkPeerDeps(
   context: SchematicContext,
   options: ApplicationSchematicSchema
 ): void {
-  const expectedVersion = '^12.0.0';
+  const expectedVersion = '^12.6.0';
   const unmetPeerDeps = [
     ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
     ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),
@@ -196,7 +196,7 @@ function addJest(options: NormalizedSchema): Rule {
           displayName: '${options.projectName}',
           preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
           transform: {
-            '.*\\.(vue)$': 'vue-jest',
+            '.*\\.(vue)$': '@vue/vue2-jest',
             '^.+\\.ts$': 'ts-jest',
           },
           moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
@@ -226,7 +226,7 @@ function addJest(options: NormalizedSchema): Rule {
       {
         '@vue/test-utils': '^1.0.3',
         'babel-core': '^7.0.0-bridge.0',
-        'vue-jest': '^3.0.5',
+        '@vue/vue2-jest': '^27.0.0-alpha.1',
       },
       true
     ),

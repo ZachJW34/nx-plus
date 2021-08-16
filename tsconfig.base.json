@@ -17,8 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@nx-plus/docusaurus": ["libs/docusaurus/src/index.ts"],
-      "@nx-plus/vue": ["libs/vue/src/index.ts"],
-      "@nx-plus/nuxt": ["libs/nuxt/src/index.ts"]
+      "@nx-plus/nuxt": ["libs/nuxt/src/index.ts"],
+      "@nx-plus/vue": ["libs/vue/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

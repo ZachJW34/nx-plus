@@ -14,6 +14,11 @@
       "version": "11.0.0",
       "description": "update vue dependencies and .eslintrc.js",
       "factory": "./src/migrations/update-11.0.0/update-11.0.0"
+    },
+    "update-12.2.0": {
+      "version": "12.2.0",
+      "description": "update vue test dependencies for Jest v27",
+      "factory": "./src/migrations/update-12.2.0/update-12.2.0"
     }
   },
   "packageJsonUpdates": {

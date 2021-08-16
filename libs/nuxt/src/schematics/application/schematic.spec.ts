@@ -136,9 +136,8 @@ describe('nuxt schematic', () => {
         .runSchematicAsync('app', { ...options, directory: 'subdir' }, appTree)
         .toPromise();
       const workspaceJson = readJsonInTree(tree, 'workspace.json');
-      const { build, serve } = workspaceJson.projects[
-        'subdir-my-app'
-      ].architect;
+      const { build, serve } =
+        workspaceJson.projects['subdir-my-app'].architect;
 
       expect(workspaceJson.projects['subdir-my-app'].root).toBe(
         'apps/subdir/my-app'

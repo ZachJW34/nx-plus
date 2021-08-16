@@ -73,9 +73,84 @@
           "builder": "@nrwl/nx-plugin:e2e",
           "options": {
             "target": "docusaurus:build",
-            "npmPackageName": "@nx-plus/docusaurus",
-            "pluginOutputPath": "dist/libs/docusaurus",
             "jestConfig": "apps/docusaurus-e2e/jest.config.js"
+          }
+        }
+      }
+    },
+    "nuxt": {
+      "root": "libs/nuxt",
+      "sourceRoot": "libs/nuxt/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/nuxt/**/*.ts",
+              "libs/nuxt/**/*.spec.ts",
+              "libs/nuxt/**/*.spec.tsx",
+              "libs/nuxt/**/*.spec.js",
+              "libs/nuxt/**/*.spec.jsx",
+              "libs/nuxt/**/*.d.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/nuxt/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/nuxt"]
+        },
+        "build": {
+          "builder": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/libs/nuxt",
+            "tsConfig": "libs/nuxt/tsconfig.lib.json",
+            "packageJson": "libs/nuxt/package.json",
+            "main": "libs/nuxt/src/index.ts",
+            "assets": [
+              "libs/nuxt/*.md",
+              {
+                "input": "./libs/nuxt/src",
+                "glob": "**/*.!(ts)",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/nuxt",
+                "glob": "collection.json",
+                "output": "."
+              },
+              {
+                "input": "./libs/nuxt",
+                "glob": "builders.json",
+                "output": "."
+              },
+              {
+                "input": "./libs/nuxt",
+                "glob": "migrations.json",
+                "output": "."
+              }
+            ],
+            "srcRootForCompilationRoot": "libs/nuxt"
+          },
+          "outputs": ["{options.outputPath}"]
+        }
+      }
+    },
+    "nuxt-e2e": {
+      "projectType": "application",
+      "root": "apps/nuxt-e2e",
+      "sourceRoot": "apps/nuxt-e2e/src",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/nx-plugin:e2e",
+          "options": {
+            "target": "nuxt:build",
+            "jestConfig": "apps/nuxt-e2e/jest.config.js"
           }
         }
       }
@@ -157,88 +232,7 @@
           "builder": "@nrwl/nx-plugin:e2e",
           "options": {
             "target": "vue:build",
-            "npmPackageName": "@nx-plus/vue",
-            "pluginOutputPath": "dist/libs/vue",
             "jestConfig": "apps/vue-e2e/jest.config.js"
-          }
-        }
-      }
-    },
-    "nuxt": {
-      "root": "libs/nuxt",
-      "sourceRoot": "libs/nuxt/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/nuxt/**/*.ts",
-              "libs/nuxt/**/*.spec.ts",
-              "libs/nuxt/**/*.spec.tsx",
-              "libs/nuxt/**/*.spec.js",
-              "libs/nuxt/**/*.spec.jsx",
-              "libs/nuxt/**/*.d.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/nuxt/jest.config.js",
-            "passWithNoTests": true
-          },
-          "outputs": ["coverage/libs/nuxt"]
-        },
-        "build": {
-          "builder": "@nrwl/node:package",
-          "options": {
-            "outputPath": "dist/libs/nuxt",
-            "tsConfig": "libs/nuxt/tsconfig.lib.json",
-            "packageJson": "libs/nuxt/package.json",
-            "main": "libs/nuxt/src/index.ts",
-            "assets": [
-              "libs/nuxt/*.md",
-              {
-                "input": "./libs/nuxt/src",
-                "glob": "**/*.!(ts)",
-                "output": "./src"
-              },
-              {
-                "input": "./libs/nuxt",
-                "glob": "collection.json",
-                "output": "."
-              },
-              {
-                "input": "./libs/nuxt",
-                "glob": "builders.json",
-                "output": "."
-              },
-              {
-                "input": "./libs/nuxt",
-                "glob": "migrations.json",
-                "output": "."
-              }
-            ],
-            "srcRootForCompilationRoot": "libs/nuxt"
-          },
-          "outputs": ["{options.outputPath}"]
-        }
-      }
-    },
-    "nuxt-e2e": {
-      "projectType": "application",
-      "root": "apps/nuxt-e2e",
-      "sourceRoot": "apps/nuxt-e2e/src",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/nx-plugin:e2e",
-          "options": {
-            "target": "nuxt:build",
-            "npmPackageName": "@nx-plus/nuxt",
-            "pluginOutputPath": "dist/libs/nuxt",
-            "jestConfig": "apps/nuxt-e2e/jest.config.js"
           }
         }
       }

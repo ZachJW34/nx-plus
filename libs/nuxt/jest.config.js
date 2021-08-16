@@ -7,4 +7,5 @@ module.exports = {
   coverageDirectory: '../../coverage/libs/nuxt',
   globals: { 'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' } },
   displayName: 'nuxt',
+  testEnvironment: 'node',
 };

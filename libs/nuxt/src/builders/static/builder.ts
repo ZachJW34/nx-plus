@@ -94,7 +94,10 @@ export function runBuilder(
     ),
     new Observable((obs) => {
       run()
-        .then((success) => obs.next(success))
+        .then((success) => {
+          obs.next(success);
+          obs.complete();
+        })
         .catch((err) => obs.error(err));
     })
   ).pipe(map(() => ({ success: true })));

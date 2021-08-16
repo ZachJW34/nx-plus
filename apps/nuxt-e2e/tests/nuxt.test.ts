@@ -6,8 +6,9 @@ import {
   uniq,
   updateFile,
 } from '@nrwl/nx-plugin/testing';
+
 describe('nuxt e2e', () => {
-  it('should generate app', async (done) => {
+  it('should generate app', async () => {
     const appName = uniq('app');
     ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
     await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
@@ -52,11 +53,9 @@ describe('nuxt e2e', () => {
       `e2e ${appName}-e2e --prod --headless`
     );
     expect(prodE2eResult.stdout).toContain('All specs passed!');
-
-    done();
   }, 300000);
 
-  it('should report lint error in index.vue', async (done) => {
+  it('should report lint error in index.vue', async () => {
     const appName = uniq('app');
     ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
     await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
@@ -70,11 +69,9 @@ describe('nuxt e2e', () => {
       silenceError: true,
     });
     expect(result.stderr).toContain('Lint errors found in the listed files.');
-
-    done();
   }, 300000);
 
-  it('should generate static app', async (done) => {
+  it('should generate static app', async () => {
     const appName = uniq('app');
     ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
     await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
@@ -90,12 +87,10 @@ describe('nuxt e2e', () => {
         `dist/apps/${appName}/dist/README.md`
       )
     ).not.toThrow();
-
-    done();
   }, 300000);
 
   describe('--directory subdir', () => {
-    it('should generate app', async (done) => {
+    it('should generate app', async () => {
       const appName = uniq('app');
       ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
       await runNxCommandAsync(
@@ -124,11 +119,9 @@ describe('nuxt e2e', () => {
           `dist/apps/subdir/${appName}/.nuxt/components`
         )
       ).not.toThrow();
-
-      done();
     }, 300000);
 
-    it('should generate static app', async (done) => {
+    it('should generate static app', async () => {
       const appName = uniq('app');
       ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
       await runNxCommandAsync(
@@ -146,8 +139,6 @@ describe('nuxt e2e', () => {
           `dist/apps/subdir/${appName}/dist/README.md`
         )
       ).not.toThrow();
-
-      done();
     }, 300000);
   });
 });

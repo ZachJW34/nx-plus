@@ -7,4 +7,5 @@ module.exports = {
   coverageDirectory: '../../coverage/libs/docusaurus',
   globals: { 'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' } },
   displayName: 'docusaurus',
+  testEnvironment: 'node',
 };

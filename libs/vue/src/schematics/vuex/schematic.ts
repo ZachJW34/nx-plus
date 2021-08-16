@@ -106,9 +106,8 @@ function addStoreToMain(options: VuexSchematicSchema, isVue3: boolean): Rule {
     let content: string;
 
     if (isVue3) {
-      const createAppCallExpression = getCreateAppCallExpression(
-        mainSourceFile
-      );
+      const createAppCallExpression =
+        getCreateAppCallExpression(mainSourceFile);
 
       if (!createAppCallExpression) {
         throw new Error(`Could not find 'createApp' call in ${mainPath}.`);

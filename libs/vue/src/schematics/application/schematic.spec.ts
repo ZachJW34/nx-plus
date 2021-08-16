@@ -33,9 +33,8 @@ describe('application schematic', () => {
       .runSchematicAsync('app', options, appTree)
       .toPromise();
     const workspaceJson = readJsonInTree(tree, 'workspace.json');
-    const { build, serve, lint, test } = workspaceJson.projects[
-      'my-app'
-    ].architect;
+    const { build, serve, lint, test } =
+      workspaceJson.projects['my-app'].architect;
 
     expect(workspaceJson.projects['my-app'].root).toBe('apps/my-app');
     expect(workspaceJson.projects['my-app'].sourceRoot).toBe('apps/my-app/src');
@@ -353,8 +352,8 @@ describe('application schematic', () => {
       const jestConfig = tree.readContent('apps/my-app/jest.config.js');
       expect(jestConfig).toContain(tags.indentBy(4)`
         'vue-jest': {
-          tsConfig: ${'`${__dirname}/tsconfig.spec.json`'},
-          babelConfig: ${'`${__dirname}/babel.config.js`'},
+          tsConfig: 'apps/my-app/tsconfig.spec.json',
+          babelConfig: 'apps/my-app/babel.config.js',
         },
       `);
     });
@@ -373,8 +372,8 @@ describe('application schematic', () => {
       const jestConfig = tree.readContent('apps/my-app/jest.config.js');
       expect(jestConfig).toContain(tags.indentBy(4)`
         'vue-jest': {
-          tsConfig: '<rootDir>/tsconfig.spec.json',
-          babelConfig: '<rootDir>/babel.config.js',
+          tsConfig: 'apps/my-app/tsconfig.spec.json',
+          babelConfig: 'apps/my-app/babel.config.js',
         },
       `);
     });
@@ -386,9 +385,8 @@ describe('application schematic', () => {
         .runSchematicAsync('app', { ...options, directory: 'subdir' }, appTree)
         .toPromise();
       const workspaceJson = readJsonInTree(tree, 'workspace.json');
-      const { build, serve } = workspaceJson.projects[
-        'subdir-my-app'
-      ].architect;
+      const { build, serve } =
+        workspaceJson.projects['subdir-my-app'].architect;
 
       expect(workspaceJson.projects['subdir-my-app'].root).toBe(
         'apps/subdir/my-app'

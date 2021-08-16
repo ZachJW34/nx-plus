@@ -72,9 +72,7 @@ export async function testGeneratedApp(
 // a production build. Jest sets `NODE_ENV` to `test` by default.
 // This function is very similar to `runCommandAsync`.
 // https://github.com/nrwl/nx/blob/9.5.1/packages/nx-plugin/src/utils/testing-utils/async-commands.ts#L10
-export function runNxProdCommandAsync(
-  command: string
-): Promise<{
+export function runNxProdCommandAsync(command: string): Promise<{
   stdout: string;
   stderr: string;
 }> {
