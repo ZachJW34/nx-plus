@@ -14,5 +14,5 @@ describe('docusaurus e2e', () => {
     expect(result.stdout).toContain(
       `Success! Generated static files in "dist/apps/${appName}".`
     );
-  }, 100000);
+  }, 200000);
 });
