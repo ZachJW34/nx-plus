@@ -2,7 +2,6 @@ import { chain, Rule } from '@angular-devkit/schematics';
 import {
   addDepsToPackageJson,
   readWorkspace,
-  updateJsonInTree,
   updatePackagesInPackageJson,
 } from '@nrwl/workspace';
 import * as path from 'path';

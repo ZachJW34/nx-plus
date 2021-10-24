@@ -25,6 +25,7 @@ function updateJestConfig(projectRoot: string) {
 
     if (!hasGlobals) {
       return addPropertyToJestConfig(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         tree as any,
         `${projectRoot}/${jestConfig}`,
         'globals',
@@ -32,6 +33,7 @@ function updateJestConfig(projectRoot: string) {
       );
     } else {
       return addPropertyToJestConfig(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         tree as any,
         `${projectRoot}/${jestConfig}`,
         'globals.vue-jest',
