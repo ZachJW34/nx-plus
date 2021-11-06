@@ -311,14 +311,13 @@ export default function (options: ApplicationSchematicSchema): Rule {
         : noop(),
       addDepsToPackageJson(
         {
-          '@nuxt/typescript-runtime': '^2.0.1',
-          'core-js': '^3.8.3',
-          nuxt: '2.14.12',
+          'core-js': '^3.15.1',
+          nuxt: '^2.15.7',
         },
         {
-          '@nuxtjs/eslint-config-typescript': '^5.0.0',
-          '@nuxt/types': '2.14.12',
-          '@nuxt/typescript-build': '^2.0.4',
+          '@nuxtjs/eslint-config-typescript': '^6.0.1',
+          '@nuxt/types': '^2.15.7',
+          '@nuxt/typescript-build': '^2.1.0',
           'eslint-plugin-nuxt': '^2.0.0',
         },
         true
