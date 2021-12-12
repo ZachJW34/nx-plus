@@ -1,6 +1,6 @@
 {
   "name": "@nx-plus/vite",
-  "version": "12.0.0",
+  "version": "12.2.0",
   "main": "src/index.js",
   "generators": "./generators.json",
   "executors": "./executors.json",
@@ -31,7 +31,7 @@
     "@nrwl/workspace": "^12.0.0"
   },
   "dependencies": {
-    "@nrwl/devkit": "11.5.1",
+    "@nrwl/devkit": "^12.0.0",
     "semver": "^7.3.2"
   }
 }

@@ -1,4 +1,4 @@
-import { appRootPath } from '@nrwl/workspace/src/utilities/app-root';
+import { appRootPath } from '@nrwl/tao/src/utils/app-root';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 import { join } from 'path';

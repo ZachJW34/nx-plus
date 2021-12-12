@@ -3,7 +3,7 @@
 > First class support for [Vite](https://vitejs.dev/) in your [Nx](https://nx.dev/) workspace.
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/ZachJW34/nx-plus/master/libs/vite/nx-plus-vite.png">
+  <img src="https://raw.githubusercontent.com/ZachJW34/nx-plus/master/libs/vue/nx-plus-vue.png">
 </div>
 
 ## Contents
@@ -89,25 +89,21 @@ nx serve my-app
 | --------- | --------------------- |
 | `<name>`  | The name of your app. |
 
-| Options         | Default | Description                                                            |
-| --------------- | ------- | ---------------------------------------------------------------------- |
-| `--config`      | -       | Use specified config file.                                             |
-| `--root`        | -       | Use specified root directory.                                          |
-| `--base`        | '/'     | Public base path.                                                      |
-| `--logLevel`    | -       | Change specificity of logging. One of: "silent","error", "warn", "all" |
-| `--clearScreen` | `false` | Allow/disable clear screen when logging.                               |
-| `--debug`       | `true`  | Show debug logs.                                                       |
-| `--filter`      | -       | Filter debug log.                                                      |
-| `--host`        | `true`  | Specify hostname.                                                      |
-| `--port`        | `true`  | Specify port.                                                          |
-| `--https`       | `true`  | Use TLS + HTTP/2.                                                      |
-| `--open`        | `true`  | Open browser on startup.                                               |
-| `--cors`        | `true`  | Enable cors.                                                           |
-| `--strictPort`  | `true`  | Exit if specified port is already in use.                              |
-| `--mode`        | `true`  | Set env mode.                                                          |
-| `--force`       | `true`  | Force the optimizer to ignore the cache and re-bundle.                 |
+| Options        | Default | Description                                            |
+| -------------- | ------- | ------------------------------------------------------ |
+| `--config`     | -       | Use specified config file.                             |
+| `--root`       | -       | Use specified root directory.                          |
+| `--base`       | '/'     | Public base path.                                      |
+| `--host`       | -       | Specify hostname.                                      |
+| `--port`       | -       | Specify port.                                          |
+| `--https`      | -       | Use TLS + HTTP/2.                                      |
+| `--open`       | -       | Open browser on startup.                               |
+| `--cors`       | -       | Enable cors.                                           |
+| `--strictPort` | -       | Exit if specified port is already in use.              |
+| `--mode`       | -       | Set env mode.                                          |
+| `--force`      | -       | Force the optimizer to ignore the cache and re-bundle. |
 
-### Browser
+### Build
 
 `nx build <name> [options]`
 
@@ -115,9 +111,24 @@ nx serve my-app
 | --------- | --------------------- |
 | `<name>`  | The name of your app. |
 
-| Options      | Default | Description                                             |
-| ------------ | ------- | ------------------------------------------------------- |
-| `--buildDir` | -       | Define the dist directory for your Nuxt.js application. |
+| Options               | Default    | Description                                              |
+| --------------------- | ---------- | -------------------------------------------------------- |
+| `--config`            | -          | Use specified config file.                               |
+| `--root`              | -          | Use specified root directory.                            |
+| `--base`              | '/'        | Public base path.                                        |
+| `--target`            | 'modules'  | Transpile target.                                        |
+| `--outDir`            | -          | Output directory.                                        |
+| `--assetsDir`         | '\_assets' | Directory under outDir to place assets in.               |
+| `--assetsInlineLimit` | `4096`     | Static asset base64 inline threshold in bytes.           |
+| `--ssr`               | -          | Build specified entry for server-side rendering.         |
+| `--sourcemap`         | `false`    | Output source maps for build.                            |
+| `--minify`            | 'esbuild'  | Enable/disable minification, or specify minifier to use. |
+| `--manifest`          | -          | Emit build manifest json.                                |
+| `--ssrManifest`       | -          | Emit ssr manifest json.                                  |
+| `--emptyOutDir`       | -          | Force empty outDir when it's outside of root.            |
+| `--mode`              | -          | Set env mode.                                            |
+| `--force`             | -          | Force the optimizer to ignore the cache and re-bundle.   |
+| `--watch`             | -          | Rebuilds when modules have changed on disk.              |
 
 ### Configuring Vite
 
@@ -140,39 +151,3 @@ We use `@nrwl/jest` for unit testing, so the options are as documented [here](ht
 `nx e2e <name> [options]`
 
 We use `@nrwl/cypress` for e2e testing, so the options are as documented [here](https://github.com/nrwl/nx/blob/master/docs/angular/api-cypress/builders/cypress.md#cypress).
-
-## Updating Nx Plus Nuxt
-
-Nx Plus Nuxt provides migrations which help you stay up to date with the latest version of Nx Plus Nuxt.
-
-Not only do we migrate the version of Nx Plus Nuxt, but we also update the versions of dependencies which we install such as `nuxt` and `@nuxt/types`.
-
-We recommend waiting for Nx Plus Nuxt to update these dependencies for you as we verify that these versions work together.
-
-### How to Migrate
-
-#### Generate migrations.json
-
-All you have to do to update Nx Plus Nuxt to the latest version is run the following:
-
-```
-nx migrate @nx-plus/nuxt
-nx migrate @nx-plus/nuxt@version # you can also specify version
-```
-
-This will fetch the specified version of `@nx-plus/nuxt`, analyze the dependencies and fetch all the dependent packages. The process will keep going until the whole tree of dependencies is resolved. This will result in:
-
-- `package.json` being updated
-- `migrations.json` being generated
-
-At this point, no packages have been installed, and no other files have been touched.
-
-Now, you can inspect `package.json` to see if the changes make sense and install the packages by running `npm install` or `yarn`.
-
-#### Run Migrations
-
-`migrations.json` contains the transformations that must run to prepare the workspace to the newly installed versions of packages. To run all the migrations, invoke:
-
-```
-nx migrate --run-migrations=migrations.json
-```
