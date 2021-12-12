@@ -8,9 +8,12 @@ import {
 } from '@nrwl/nx-plugin/testing';
 
 describe('nuxt e2e', () => {
+  beforeAll(() => {
+    ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
+  });
+
   it('should generate app', async () => {
     const appName = uniq('app');
-    ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
     await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
 
     const lintResult = await runNxCommandAsync(`lint ${appName}`);
@@ -57,7 +60,6 @@ describe('nuxt e2e', () => {
 
   it('should report lint error in index.vue', async () => {
     const appName = uniq('app');
-    ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
     await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
 
     updateFile(
@@ -73,7 +75,6 @@ describe('nuxt e2e', () => {
 
   it('should generate static app', async () => {
     const appName = uniq('app');
-    ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
     await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
 
     await runNxCommandAsync(`static ${appName}`);
@@ -92,7 +93,6 @@ describe('nuxt e2e', () => {
   describe('--directory subdir', () => {
     it('should generate app', async () => {
       const appName = uniq('app');
-      ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
       await runNxCommandAsync(
         `generate @nx-plus/nuxt:app ${appName} --directory subdir`
       );
@@ -123,7 +123,6 @@ describe('nuxt e2e', () => {
 
     it('should generate static app', async () => {
       const appName = uniq('app');
-      ensureNxProject('@nx-plus/nuxt', 'dist/libs/nuxt');
       await runNxCommandAsync(
         `generate @nx-plus/nuxt:app ${appName} --directory subdir`
       );

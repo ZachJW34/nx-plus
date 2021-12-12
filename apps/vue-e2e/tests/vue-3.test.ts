@@ -10,9 +10,12 @@ import { runNxProdCommandAsync, testGeneratedApp } from './utils';
 
 describe('vue 3 e2e', () => {
   describe('app', () => {
+    beforeAll(() => {
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+    });
+
     it('should generate app', async () => {
       const appName = uniq('app');
-      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
         `generate @nx-plus/vue:app ${appName} --vueVersion 3`
       );
@@ -29,7 +32,6 @@ describe('vue 3 e2e', () => {
     describe('--routing', () => {
       it('should generate app with routing', async () => {
         const appName = uniq('app');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
           `generate @nx-plus/vue:app ${appName} --vueVersion 3 --routing`
         );
@@ -54,7 +56,6 @@ describe('vue 3 e2e', () => {
     describe('vuex', () => {
       it('should generate app and add vuex', async () => {
         const appName = uniq('app');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
           `generate @nx-plus/vue:app ${appName} --vueVersion 3`
         );
@@ -72,7 +73,6 @@ describe('vue 3 e2e', () => {
 
     it('should generate app with routing and add vuex', async () => {
       const appName = uniq('app');
-      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
         `generate @nx-plus/vue:app ${appName} --vueVersion 3 --routing`
       );
@@ -96,7 +96,6 @@ describe('vue 3 e2e', () => {
 
     it('should report lint error in App.vue', async () => {
       const appName = uniq('app');
-      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
         `generate @nx-plus/vue:app ${appName} --vueVersion 3`
       );
@@ -111,12 +110,30 @@ describe('vue 3 e2e', () => {
       });
       expect(result.stderr).toContain('Lint errors found in the listed files.');
     }, 300000);
+
+    it('should generate component', async () => {
+      const appName = uniq('app');
+      await runNxCommandAsync(
+        `generate @nx-plus/vue:app ${appName} --vueVersion 3`
+      );
+
+      await runNxCommandAsync(
+        `generate @nx-plus/vue:component my-component --project ${appName}`
+      );
+
+      expect(() =>
+        checkFilesExist(`apps/${appName}/src/MyComponent.vue`)
+      ).not.toThrow();
+    }, 300000);
   });
 
   describe('library', () => {
+    beforeAll(() => {
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+    });
+
     it('should generate lib', async () => {
       const lib = uniq('lib');
-      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
         `generate @nx-plus/vue:lib ${lib} --vueVersion 3`
       );
@@ -134,7 +151,6 @@ describe('vue 3 e2e', () => {
 
     it('should generate publishable lib', async () => {
       const lib = uniq('lib');
-      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(
         `generate @nx-plus/vue:lib ${lib} --vueVersion 3 --publishable`
       );
@@ -185,43 +201,20 @@ describe('vue 3 e2e', () => {
         )
       ).toThrow();
     }, 300000);
-  });
 
-  describe('component', () => {
-    describe('inside an app', () => {
-      it('should generate component', async () => {
-        const appName = uniq('app');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
-        await runNxCommandAsync(
-          `generate @nx-plus/vue:app ${appName} --vueVersion 3`
-        );
+    it('should generate component', async () => {
+      const libName = uniq('lib');
+      await runNxCommandAsync(
+        `generate @nx-plus/vue:lib ${libName} --vueVersion 3`
+      );
 
-        await runNxCommandAsync(
-          `generate @nx-plus/vue:component my-component --project ${appName}`
-        );
+      await runNxCommandAsync(
+        `generate @nx-plus/vue:component my-component --project ${libName}`
+      );
 
-        expect(() =>
-          checkFilesExist(`apps/${appName}/src/MyComponent.vue`)
-        ).not.toThrow();
-      }, 300000);
-    });
-
-    describe('inside a library', () => {
-      it('should generate component', async () => {
-        const libName = uniq('lib');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
-        await runNxCommandAsync(
-          `generate @nx-plus/vue:lib ${libName} --vueVersion 3`
-        );
-
-        await runNxCommandAsync(
-          `generate @nx-plus/vue:component my-component --project ${libName}`
-        );
-
-        expect(() =>
-          checkFilesExist(`libs/${libName}/src/lib/MyComponent.vue`)
-        ).not.toThrow();
-      }, 300000);
-    });
+      expect(() =>
+        checkFilesExist(`libs/${libName}/src/lib/MyComponent.vue`)
+      ).not.toThrow();
+    }, 300000);
   });
 });

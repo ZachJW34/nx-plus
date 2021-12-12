@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "vite",
+  "version": "0.0.1",
+  "generators": {
+    "application": {
+      "factory": "./src/generators/application/generator#applicationGenerator",
+      "schema": "./src/generators/application/schema.json",
+      "description": "application generator",
+      "aliases": ["app"]
+    }
+  },
+  "schematics": {
+    "application": {
+      "factory": "./src/generators/application/generator#applicationSchematic",
+      "schema": "./src/generators/application/schema.json",
+      "description": "application schematic",
+      "aliases": ["app"]
+    }
+  }
+}

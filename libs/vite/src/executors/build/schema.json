@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "title": "Build executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "string",
+      "description": "use specified config file"
+    },
+    "root": {
+      "type": "string",
+      "description": "use specified root directory"
+    },
+    "base": { "type": "string", "description": "public base path" },
+    "logLevel": {
+      "type": "string",
+      "description": "silent | error | warn | all"
+    },
+    "clearScreen": {
+      "type": "boolean",
+      "description": "allow/disable clear screen when logging"
+    },
+    "debug": {
+      "type": ["string", "boolean"],
+      "description": "show debug logs"
+    },
+    "filter": { "type": "string", "description": "filter debug log" },
+    "target": {
+      "type": "string",
+      "description": "transpile target"
+    },
+    "outDir": {
+      "type": "string",
+      "description": "output directory"
+    },
+    "assetsDir": {
+      "type": "string",
+      "description": "directory under outDir to place assets in"
+    },
+    "assetsInlineLimit": {
+      "type": "number",
+      "description": "static asset base64 inline threshold in bytes"
+    },
+    "ssr": {
+      "type": "string",
+      "description": "build specified entry for server-side rendering"
+    },
+    "sourcemap": {
+      "type": "boolean",
+      "description": "output source maps for build"
+    },
+    "minify": {
+      "type": ["string", "boolean"],
+      "description": "enable/disable minification, or specify minifier to use"
+    },
+    "manifest": {
+      "type": "boolean",
+      "description": "emit build manifest json"
+    },
+    "ssrManifest": {
+      "type": "boolean",
+      "description": "emit ssr manifest json"
+    },
+    "emptyOutDir": {
+      "type": "boolean",
+      "description": "force empty outDir when it's outside of root"
+    },
+    "mode": { "type": "string", "description": "set env mode" },
+    "watch": {
+      "type": "boolean",
+      "description": "rebuilds when modules have changed on disk"
+    }
+  },
+  "required": ["config"]
+}
