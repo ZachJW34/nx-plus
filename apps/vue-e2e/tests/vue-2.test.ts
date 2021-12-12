@@ -8,11 +8,14 @@ import {
 } from '@nrwl/nx-plugin/testing';
 import { runNxProdCommandAsync, testGeneratedApp } from './utils';
 
-describe('vue 2 e2e', () => {
+describe.skip('vue 2 e2e', () => {
   describe('app', () => {
+    beforeAll(() => {
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+    });
+
     it('should generate app', async () => {
       const appName = uniq('app');
-      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
 
       await testGeneratedApp(appName, {
@@ -27,7 +30,6 @@ describe('vue 2 e2e', () => {
     describe('--routing', () => {
       it('should generate app with routing', async () => {
         const appName = uniq('app');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
           `generate @nx-plus/vue:app ${appName} --routing`
         );
@@ -52,7 +54,6 @@ describe('vue 2 e2e', () => {
     describe('--style', () => {
       it('should generate app with scss', async () => {
         const appName = uniq('app');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
           `generate @nx-plus/vue:app ${appName} --style scss`
         );
@@ -68,7 +69,6 @@ describe('vue 2 e2e', () => {
 
       it('should generate app with stylus', async () => {
         const appName = uniq('app');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
           `generate @nx-plus/vue:app ${appName} --style stylus`
         );
@@ -84,7 +84,6 @@ describe('vue 2 e2e', () => {
 
       it('should generate app with less', async () => {
         const appName = uniq('app');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
           `generate @nx-plus/vue:app ${appName} --style less`
         );
@@ -102,7 +101,6 @@ describe('vue 2 e2e', () => {
     describe('vuex', () => {
       it('should generate app and add vuex', async () => {
         const appName = uniq('app');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
         await runNxCommandAsync(`generate @nx-plus/vue:vuex ${appName}`);
 
@@ -118,7 +116,6 @@ describe('vue 2 e2e', () => {
 
     it('should generate app with routing and add vuex', async () => {
       const appName = uniq('app');
-      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(`generate @nx-plus/vue:app ${appName} --routing`);
       await runNxCommandAsync(`generate @nx-plus/vue:vuex ${appName}`);
 
@@ -140,7 +137,6 @@ describe('vue 2 e2e', () => {
 
     it('should report lint error in App.vue', async () => {
       const appName = uniq('app');
-      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
 
       updateFile(
@@ -157,7 +153,6 @@ describe('vue 2 e2e', () => {
     describe('--directory subdir', () => {
       it('should generate app', async () => {
         const appName = uniq('app');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
           `generate @nx-plus/vue:app ${appName} --directory subdir`
         );
@@ -177,9 +172,12 @@ describe('vue 2 e2e', () => {
   });
 
   describe('library', () => {
+    beforeAll(() => {
+      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
+    });
+
     it('should generate lib', async () => {
       const lib = uniq('lib');
-      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(`generate @nx-plus/vue:lib ${lib}`);
 
       const lintResult = await runNxCommandAsync(`lint ${lib}`);
@@ -195,7 +193,6 @@ describe('vue 2 e2e', () => {
 
     it('should generate publishable lib', async () => {
       const lib = uniq('lib');
-      ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
       await runNxCommandAsync(`generate @nx-plus/vue:lib ${lib} --publishable`);
 
       let buildResult = await runNxProdCommandAsync(`build ${lib}`);
@@ -248,7 +245,6 @@ describe('vue 2 e2e', () => {
     describe('--directory subdir', () => {
       it('should generate publishable lib', async () => {
         const lib = uniq('lib');
-        ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
         await runNxCommandAsync(
           `generate @nx-plus/vue:lib ${lib} --directory subdir --publishable`
         );

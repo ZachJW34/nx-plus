@@ -11,7 +11,15 @@ export default async function* runExecutor(options: ViteServerExecutorSchema) {
     clearScreen: options.clearScreen,
     server: cleanViteOptions(options) as ServerOptions,
   });
+
+  if (!server.httpServer) {
+    throw new Error('HTTP server not available');
+  }
+
   await server.listen();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (server as any).printUrls();
   yield {
     baseUrl: `http://localhost:${server.config.server.port}`,
     success: true,

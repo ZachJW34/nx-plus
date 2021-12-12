@@ -9,7 +9,7 @@ import {
 import { join } from 'path';
 
 describe('vite e2e', () => {
-  it('should create vite', async (done) => {
+  it('should create vite app', async () => {
     const appName = uniq('vite');
     ensureNxProject('@nx-plus/vite', 'dist/libs/vite');
     await runNxCommandAsync(`generate @nx-plus/vite:app ${appName}`);
@@ -38,8 +38,6 @@ describe('vite e2e', () => {
 
     const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e --headless`);
     expect(e2eResult.stdout).toContain('All specs passed!');
-
-    done();
   }, 100000);
 });
 

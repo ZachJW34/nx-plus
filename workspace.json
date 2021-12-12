@@ -305,8 +305,6 @@
           "builder": "@nrwl/nx-plugin:e2e",
           "options": {
             "target": "vite:build",
-            "npmPackageName": "@nx-plus/vite",
-            "pluginOutputPath": "dist/libs/vite",
             "jestConfig": "apps/vite-e2e/jest.config.js"
           }
         }

@@ -187,7 +187,7 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
   displayName: '${options.projectName}',
   preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
   transform: {
-    '^.+\\.vue$': 'vue-jest',
+    '^.+\\.vue$': 'vue3-jest',
     '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':
       'jest-transform-stub',
     '^.+\\.tsx?$': 'ts-jest',
@@ -199,10 +199,10 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
   snapshotSerializers: ['jest-serializer-vue'],
   globals: {
     'ts-jest': { 
-      tsconfig: '<rootDir>/tsconfig.spec.json',
+      tsconfig: '${options.projectRoot}/tsconfig.spec.json',
     },
     'vue-jest': {
-      tsConfig: '<rootDir>/tsconfig.spec.json',
+      tsConfig: '${options.projectRoot}/tsconfig.spec.json',
     }
   },
 };
@@ -216,7 +216,7 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
       '@vue/test-utils': '^2.0.0-0',
       'jest-serializer-vue': '^2.0.2',
       'jest-transform-stub': '^2.0.0',
-      'vue-jest': '5.0.0-alpha.7',
+      'vue3-jest': '^27.0.0-alpha.1',
     }
   );
   return [jestInitTask, jestTask, installTask];
@@ -280,10 +280,9 @@ export async function applicationGenerator(
     host,
     { vue: '^3.0.5' },
     {
-      '@vitejs/plugin-vue': '^1.2.3',
-      '@vue/compiler-sfc': '^3.0.5',
-      typescript: '^4.3.2',
-      vite: '^2.3.7',
+      '@vitejs/plugin-vue': '^2.0.0',
+      typescript: '^4.4.4',
+      vite: '^2.7.1',
     }
   );
   addPostInstall(host);
