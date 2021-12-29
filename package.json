@@ -41,7 +41,7 @@
     "@angular-devkit/architect": "0.1201.0",
     "@angular-devkit/core": "12.1.0",
     "@angular-devkit/schematics": "12.1.0",
-    "@docusaurus/core": "^2.0.0-alpha.61",
+    "@docusaurus/core": "2.0.0-beta.13",
     "@nrwl/cli": "12.6.5",
     "@nrwl/cypress": "12.6.5",
     "@nrwl/devkit": "12.6.5",
