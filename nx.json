@@ -20,29 +20,7 @@
       }
     }
   },
-  "projects": {
-    "docusaurus": {
-      "tags": []
-    },
-    "docusaurus-e2e": {
-      "tags": [],
-      "implicitDependencies": ["docusaurus"]
-    },
-    "nuxt": {
-      "tags": []
-    },
-    "nuxt-e2e": {
-      "tags": [],
-      "implicitDependencies": ["nuxt"]
-    },
-    "vue": {
-      "tags": []
-    },
-    "vue-e2e": {
-      "tags": [],
-      "implicitDependencies": ["vue"]
-    }
-  },
+  "projects": {},
   "affected": {
     "defaultBase": "master"
   },
