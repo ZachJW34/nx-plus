@@ -1,29 +1,30 @@
 {
   "name": "nx-plus",
   "version": "0.0.0",
+  "private": true,
   "license": "MIT",
   "scripts": {
+    "affected": "nx affected",
+    "affected:apps": "nx affected:apps",
+    "affected:build": "nx affected:build",
+    "affected:dep-graph": "nx affected:dep-graph",
+    "affected:e2e": "nx affected:e2e",
+    "affected:libs": "nx affected:libs",
+    "affected:lint": "nx affected:lint",
+    "affected:test": "nx affected:test",
+    "build": "nx build",
+    "create-playground": "node tools/scripts/create-playground.js",
+    "dep-graph": "nx dep-graph",
+    "e2e": "nx e2e",
+    "format": "nx format:write",
+    "format:check": "nx format:check",
+    "format:write": "nx format:write",
+    "help": "nx help",
+    "lint": "nx workspace-lint && nx lint",
     "nx": "nx",
     "start": "nx serve",
-    "build": "nx build",
     "test": "nx test",
-    "lint": "nx workspace-lint && nx lint",
-    "e2e": "nx e2e",
-    "affected:apps": "nx affected:apps",
-    "affected:libs": "nx affected:libs",
-    "affected:build": "nx affected:build",
-    "affected:e2e": "nx affected:e2e",
-    "affected:test": "nx affected:test",
-    "affected:lint": "nx affected:lint",
-    "affected:dep-graph": "nx affected:dep-graph",
-    "affected": "nx affected",
-    "format": "nx format:write",
-    "format:write": "nx format:write",
-    "format:check": "nx format:check",
     "update": "nx migrate latest",
-    "dep-graph": "nx dep-graph",
-    "help": "nx help",
-    "create-playground": "node tools/scripts/create-playground.js",
     "update-playground": "node tools/scripts/update-playground.js",
     "workspace-generator": "nx workspace-generator"
   },
@@ -35,8 +36,6 @@
   "lint-staged": {
     "*.{ts,js,tsx,jsx,scss,less,css,html,json,md,mdx}": "prettier --write"
   },
-  "private": true,
-  "dependencies": {},
   "devDependencies": {
     "@angular-devkit/architect": "0.1201.0",
     "@angular-devkit/core": "12.1.0",
@@ -59,6 +58,7 @@
     "@typescript-eslint/parser": "4.19.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/cli-shared-utils": "~4.5.0",
+    "@yarnpkg/plugin-dlx": "^3.1.1",
     "dotenv": "8.2.0",
     "eslint": "7.22.0",
     "eslint-config-prettier": "8.1.0",
@@ -76,5 +76,6 @@
     "tslint": "6.1.3",
     "typescript": "4.3.5",
     "vite": "^2.7.1"
-  }
+  },
+  "packageManager": "yarn@3.2.0-rc.10"
 }
