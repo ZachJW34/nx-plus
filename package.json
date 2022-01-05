@@ -35,15 +35,15 @@
     "@angular-devkit/core": "12.1.0",
     "@angular-devkit/schematics": "12.1.0",
     "@docusaurus/core": "^2.0.0-alpha.61",
-    "@nrwl/cli": "12.10.1",
-    "@nrwl/cypress": "12.10.1",
-    "@nrwl/devkit": "12.10.1",
-    "@nrwl/eslint-plugin-nx": "12.10.1",
-    "@nrwl/jest": "12.10.1",
-    "@nrwl/node": "12.10.1",
-    "@nrwl/nx-plugin": "12.10.1",
-    "@nrwl/tao": "12.10.1",
-    "@nrwl/workspace": "12.10.1",
+    "@nrwl/cli": "13.1.4",
+    "@nrwl/cypress": "13.1.4",
+    "@nrwl/devkit": "13.1.4",
+    "@nrwl/eslint-plugin-nx": "13.1.4",
+    "@nrwl/jest": "13.1.4",
+    "@nrwl/node": "13.1.4",
+    "@nrwl/nx-plugin": "13.1.4",
+    "@nrwl/tao": "13.1.4",
+    "@nrwl/workspace": "13.1.4",
     "@types/fs-extra": "^9.0.1",
     "@types/jest": "27.0.2",
     "@types/node": "14.14.33",
@@ -71,3 +71,4 @@
     "vite": "^2.7.1"
   }
 }
+
