@@ -9,6 +9,7 @@ import {
   Tree,
   url,
 } from '@angular-devkit/schematics';
+// change to use: import { Tree } from '@nrwl/devkit';
 import {
   addDepsToPackageJson,
   addProjectToNxJsonInTree,
@@ -17,9 +18,10 @@ import {
   names,
   offsetFromRoot,
   ProjectType,
-  toFileName,
   updateWorkspace,
 } from '@nrwl/workspace';
+// change to use: import { names, offsetFromRoot } from '@nrwl/devkit';
+
 import { appsDir, InsertChange } from '@nrwl/workspace/src/utils/ast-utils';
 import { AppSchematicSchema } from './schema';
 
@@ -33,6 +35,18 @@ interface NormalizedSchema extends AppSchematicSchema {
   projectRoot: string;
   projectDirectory: string;
   parsedTags: string[];
+}
+
+/**
+ * Upper camelCase to lowercase, hyphenated
+ * From: ./nrwl/nx/blob/master/packages/devkit/src/utils/names.ts
+ * Copied because they haven't exported it...
+ */
+function toFileName(s: string): string {
+  return s
+    .replace(/([a-z\d])([A-Z])/g, '$1_$2')
+    .toLowerCase()
+    .replace(/[ _]/g, '-');
 }
 
 function normalizeOptions(
@@ -81,6 +95,7 @@ function updateGitIgnore(): Rule {
     const gitIgnoreSource = tree
       .read(gitIgnorePath)
       .toString('utf-8')
+      // change to use: .read(gitIgnorePath, 'utf-8')
       .trimRight();
     const ignorePatterns = ['.docusaurus/', '.cache-loader/'].filter(
       (ip) => !gitIgnoreSource.includes(ip)
@@ -111,6 +126,7 @@ function updatePrettierIgnore(): Rule {
     const prettierIgnoreSource = tree
       .read(prettierIgnorePath)
       .toString('utf-8')
+      // change to use: .read(prettierIgnorePath, 'utf-8')
       .trimRight();
     const ignorePattern = '.docusaurus/';
 

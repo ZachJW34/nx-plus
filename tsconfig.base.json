@@ -1,7 +1,23 @@
 {
-  "compileOnSave": false,
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "strictInputAccessModifiers": true,
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "enableResourceInlining": false,
+    "strictDomEventTypes": false
+  },
+  "compileOnSave": true,
   "compilerOptions": {
     "rootDir": ".",
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
