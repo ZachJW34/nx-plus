@@ -1,14 +1,14 @@
 {
-  "version": 1,
+  "version": 2,
   "projects": {
     "docusaurus": {
       "root": "libs/docusaurus",
       "sourceRoot": "libs/docusaurus/src",
       "projectType": "library",
-      "schematics": {},
-      "architect": {
+      "generators": {},
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "libs/docusaurus/**/*.ts",
@@ -21,7 +21,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/docusaurus/jest.config.js",
             "passWithNoTests": true
@@ -29,7 +29,7 @@
           "outputs": ["coverage/libs/docusaurus"]
         },
         "build": {
-          "builder": "@nrwl/node:package",
+          "executor": "@nrwl/node:package",
           "options": {
             "outputPath": "dist/libs/docusaurus",
             "tsConfig": "libs/docusaurus/tsconfig.lib.json",
@@ -68,9 +68,9 @@
       "projectType": "application",
       "root": "apps/docusaurus-e2e",
       "sourceRoot": "apps/docusaurus-e2e/src",
-      "architect": {
+      "targets": {
         "e2e": {
-          "builder": "@nrwl/nx-plugin:e2e",
+          "executor": "@nrwl/nx-plugin:e2e",
           "options": {
             "target": "docusaurus:build",
             "jestConfig": "apps/docusaurus-e2e/jest.config.js"
@@ -82,10 +82,10 @@
       "root": "libs/nuxt",
       "sourceRoot": "libs/nuxt/src",
       "projectType": "library",
-      "schematics": {},
-      "architect": {
+      "generators": {},
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "libs/nuxt/**/*.ts",
@@ -98,7 +98,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/nuxt/jest.config.js",
             "passWithNoTests": true
@@ -106,7 +106,7 @@
           "outputs": ["coverage/libs/nuxt"]
         },
         "build": {
-          "builder": "@nrwl/node:package",
+          "executor": "@nrwl/node:package",
           "options": {
             "outputPath": "dist/libs/nuxt",
             "tsConfig": "libs/nuxt/tsconfig.lib.json",
@@ -145,12 +145,85 @@
       "projectType": "application",
       "root": "apps/nuxt-e2e",
       "sourceRoot": "apps/nuxt-e2e/src",
-      "architect": {
+      "targets": {
         "e2e": {
-          "builder": "@nrwl/nx-plugin:e2e",
+          "executor": "@nrwl/nx-plugin:e2e",
           "options": {
             "target": "nuxt:build",
             "jestConfig": "apps/nuxt-e2e/jest.config.js"
+          }
+        }
+      }
+    },
+    "vite": {
+      "root": "libs/vite",
+      "sourceRoot": "libs/vite/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/vite/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/vite"],
+          "options": {
+            "jestConfig": "libs/vite/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "executor": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/vite",
+            "tsConfig": "libs/vite/tsconfig.lib.json",
+            "packageJson": "libs/vite/package.json",
+            "main": "libs/vite/src/index.ts",
+            "assets": [
+              "libs/vite/*.md",
+              {
+                "input": "./libs/vite/src",
+                "glob": "**/!(*.ts)",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/vite/src",
+                "glob": "**/*.d.ts",
+                "output": "./src"
+              },
+              {
+                "input": "./libs/vite",
+                "glob": "generators.json",
+                "output": "."
+              },
+              {
+                "input": "./libs/vite",
+                "glob": "executors.json",
+                "output": "."
+              },
+              {
+                "input": "./libs/vite",
+                "glob": "patch-nx-dep-graph.js",
+                "output": "."
+              }
+            ]
+          }
+        }
+      }
+    },
+    "vite-e2e": {
+      "projectType": "application",
+      "root": "apps/vite-e2e",
+      "sourceRoot": "apps/vite-e2e/src",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/nx-plugin:e2e",
+          "options": {
+            "target": "vite:build",
+            "jestConfig": "apps/vite-e2e/jest.config.js"
           }
         }
       }
@@ -159,10 +232,10 @@
       "root": "libs/vue",
       "sourceRoot": "libs/vue/src",
       "projectType": "library",
-      "schematics": {},
-      "architect": {
+      "generators": {},
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "libs/vue/**/*.ts",
@@ -175,7 +248,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/vue/jest.config.js",
             "passWithNoTests": true
@@ -183,7 +256,7 @@
           "outputs": ["coverage/libs/vue"]
         },
         "build": {
-          "builder": "@nrwl/node:package",
+          "executor": "@nrwl/node:package",
           "options": {
             "outputPath": "dist/libs/vue",
             "tsConfig": "libs/vue/tsconfig.lib.json",
@@ -227,85 +300,12 @@
       "projectType": "application",
       "root": "apps/vue-e2e",
       "sourceRoot": "apps/vue-e2e/src",
-      "architect": {
+      "targets": {
         "e2e": {
-          "builder": "@nrwl/nx-plugin:e2e",
+          "executor": "@nrwl/nx-plugin:e2e",
           "options": {
             "target": "vue:build",
             "jestConfig": "apps/vue-e2e/jest.config.js"
-          }
-        }
-      }
-    },
-    "vite": {
-      "root": "libs/vite",
-      "sourceRoot": "libs/vite/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/vite/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/vite"],
-          "options": {
-            "jestConfig": "libs/vite/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "build": {
-          "builder": "@nrwl/node:package",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "outputPath": "dist/libs/vite",
-            "tsConfig": "libs/vite/tsconfig.lib.json",
-            "packageJson": "libs/vite/package.json",
-            "main": "libs/vite/src/index.ts",
-            "assets": [
-              "libs/vite/*.md",
-              {
-                "input": "./libs/vite/src",
-                "glob": "**/!(*.ts)",
-                "output": "./src"
-              },
-              {
-                "input": "./libs/vite/src",
-                "glob": "**/*.d.ts",
-                "output": "./src"
-              },
-              {
-                "input": "./libs/vite",
-                "glob": "generators.json",
-                "output": "."
-              },
-              {
-                "input": "./libs/vite",
-                "glob": "executors.json",
-                "output": "."
-              },
-              {
-                "input": "./libs/vite",
-                "glob": "patch-nx-dep-graph.js",
-                "output": "."
-              }
-            ]
-          }
-        }
-      }
-    },
-    "vite-e2e": {
-      "projectType": "application",
-      "root": "apps/vite-e2e",
-      "sourceRoot": "apps/vite-e2e/src",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/nx-plugin:e2e",
-          "options": {
-            "target": "vite:build",
-            "jestConfig": "apps/vite-e2e/jest.config.js"
           }
         }
       }
@@ -314,7 +314,7 @@
   "cli": {
     "defaultCollection": "@nrwl/workspace"
   },
-  "schematics": {
+  "generators": {
     "@nrwl/workspace": {
       "library": {
         "linter": "eslint"
