@@ -34,7 +34,7 @@
     "@angular-devkit/architect": "0.1201.0",
     "@angular-devkit/core": "12.1.0",
     "@angular-devkit/schematics": "12.1.0",
-    "@docusaurus/core": "^2.0.0-alpha.61",
+    "@docusaurus/core": "^2.0.0-beta.14",
     "@nrwl/cli": "13.1.4",
     "@nrwl/cypress": "13.1.4",
     "@nrwl/devkit": "13.1.4",
@@ -71,4 +71,3 @@
     "vite": "^2.7.1"
   }
 }
-
