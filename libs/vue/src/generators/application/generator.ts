@@ -1,15 +1,16 @@
 import {
+  addDependenciesToPackageJson,
   addProjectConfiguration,
+  convertNxGenerator,
   formatFiles,
   generateFiles,
   getWorkspaceLayout,
+  logger,
   names,
   offsetFromRoot,
+  stripIndents,
   Tree,
-  addDependenciesToPackageJson,
   updateJson,
-  convertNxGenerator,
-  logger,
 } from '@nrwl/devkit';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 import * as path from 'path';
@@ -21,6 +22,7 @@ interface NormalizedSchema extends ApplicationGeneratorSchema {
   projectRoot: string;
   projectDirectory: string;
   parsedTags: string[];
+  isVue3: boolean;
 }
 
 function normalizeOptions(
@@ -36,6 +38,7 @@ function normalizeOptions(
   const parsedTags = schema.tags
     ? schema.tags.split(',').map((s) => s.trim())
     : [];
+  const isVue3 = schema.vueVersion === 3;
 
   return {
     ...schema,
@@ -44,6 +47,7 @@ function normalizeOptions(
     projectRoot,
     projectDirectory,
     parsedTags,
+    isVue3,
   };
 }
 
@@ -52,7 +56,9 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
     ...options,
     ...names(options.name),
     offsetFromRoot: offsetFromRoot(options.projectRoot),
-    template: '',
+    dot: '.',
+    baseUrl: '<%= BASE_URL %>',
+    htmlWebpackPluginTitle: '<%= htmlWebpackPlugin.options.title %>',
   };
   generateFiles(
     tree,
@@ -60,28 +66,47 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
     options.projectRoot,
     templateOptions
   );
+
+  const fileChanges = tree.listChanges();
   if (options.unitTestRunner === 'none') {
-    const { path } = tree
-      .listChanges()
-      .find(({ path }) => path.includes('example.spec.ts'));
+    const { path } = fileChanges.find(({ path }) =>
+      path.includes('example.spec.ts')
+    );
+    tree.delete(path);
+  }
+
+  if (!options.routing) {
+    const routerFiles = [
+      '/src/router/index.ts',
+      '/src/views/About.vue',
+      '/src/views/Home.vue',
+    ];
+    fileChanges
+      .filter(({ path }) => routerFiles.some((file) => path.includes(file)))
+      .forEach(({ path }) => tree.delete(path));
+  }
+
+  if (options.isVue3) {
+    const { path } = fileChanges.find(({ path }) =>
+      path.includes('/src/shims-tsx.d.ts')
+    );
     tree.delete(path);
   }
 }
 
 function getEslintConfig(options: NormalizedSchema) {
-  const eslintConfig = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const eslintConfig: any = {
     extends: [
-      `${offsetFromRoot(options.projectRoot)}.eslintrc.json`,
-      `plugin:vue/vue3-essential`,
+      `plugin:vue/${options.isVue3 ? 'vue3-' : ''}essential`,
       '@vue/typescript/recommended',
       'prettier',
     ],
     rules: {},
-    ignorePatterns: ['!**/*'],
     env: {
       node: true,
     },
-  } as any;
+  };
 
   if (options.unitTestRunner === 'jest') {
     eslintConfig.overrides = [
@@ -129,35 +154,6 @@ async function addEsLint(tree: Tree, options: NormalizedSchema) {
   );
 
   return [lintTask, installTask];
-}
-
-async function addCypress(tree: Tree, options: NormalizedSchema) {
-  const { cypressInitGenerator, cypressProjectGenerator } = await import(
-    '@nrwl/cypress'
-  );
-  const { Linter } = await import('@nrwl/linter');
-  const cypressInitTask = await cypressInitGenerator(tree);
-  const cypressTask = await cypressProjectGenerator(tree, {
-    project: options.projectName,
-    name: options.name + '-e2e',
-    directory: options.directory,
-    linter: Linter.EsLint,
-    js: false,
-  });
-
-  const appSpecPath = options.projectRoot + '-e2e/src/integration/app.spec.ts';
-  tree.write(
-    appSpecPath,
-    tree
-      .read(appSpecPath)
-      .toString('utf-8')
-      .replace(
-        `Welcome to ${options.projectName}!`,
-        'Hello Vue 3 + TypeScript + Vite'
-      )
-  );
-
-  return [cypressInitTask, cypressTask];
 }
 
 async function addJest(tree: Tree, options: NormalizedSchema) {
@@ -222,15 +218,44 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
   return [jestInitTask, jestTask, installTask];
 }
 
+async function addCypress(tree: Tree, options: NormalizedSchema) {
+  const { cypressInitGenerator, cypressProjectGenerator } = await import(
+    '@nrwl/cypress'
+  );
+  const { Linter } = await import('@nrwl/linter');
+  const cypressInitTask = await cypressInitGenerator(tree);
+  const cypressTask = await cypressProjectGenerator(tree, {
+    project: options.projectName,
+    name: options.name + '-e2e',
+    directory: options.directory,
+    linter: Linter.EsLint,
+    js: false,
+  });
+
+  const appSpecPath = options.projectRoot + '-e2e/src/integration/app.spec.ts';
+  tree.write(
+    appSpecPath,
+    tree
+      .read(appSpecPath)
+      .toString('utf-8')
+      .replace(
+        `Welcome to ${options.projectName}!`,
+        'Welcome to Your Vue.js + TypeScript App'
+      )
+  );
+
+  return [cypressInitTask, cypressTask];
+}
+
 function addPostInstall(tree: Tree) {
-  return updateJson(tree, 'package.json', (json) => {
+  updateJson(tree, 'package.json', (json) => {
     const vuePostInstall =
-      'node node_modules/@nx-plus/vite/patch-nx-dep-graph.js';
+      'node node_modules/@nx-plus/vue/patch-nx-dep-graph.js';
     const { postinstall } = json.scripts || {};
     if (postinstall) {
       if (postinstall !== vuePostInstall) {
         logger.warn(
-          "We couldn't add our postinstall script. Without it Nx's dependency graph won't support Vue files. For more information see https://github.com/ZachJW34/nx-plus/tree/master/libs/vite#nx-dependency-graph-support"
+          "We couldn't add our postinstall script. Without it Nx's dependency graph won't support Vue files. For more information see https://github.com/ZachJW34/nx-plus/tree/master/libs/vue#nx-dependency-graph-support"
         );
       }
       return json;
@@ -238,6 +263,25 @@ function addPostInstall(tree: Tree) {
     json.scripts = { ...json.scripts, postinstall: vuePostInstall };
     return json;
   });
+}
+
+async function addBabel(tree: Tree, options: NormalizedSchema) {
+  const babelConfigPath = `${options.projectRoot}/babel.config.js`;
+  tree.write(
+    babelConfigPath,
+    stripIndents`
+      module.exports = {
+        presets: ["@vue/cli-plugin-babel/preset"]
+      };`
+  );
+
+  const installTask = addDependenciesToPackageJson(
+    tree,
+    { 'core-js': '^3.6.5' },
+    { '@vue/cli-plugin-babel': '~4.5.0' }
+  );
+
+  return [installTask];
 }
 
 export async function applicationGenerator(
@@ -252,36 +296,72 @@ export async function applicationGenerator(
     sourceRoot: `${options.projectRoot}/src`,
     targets: {
       build: {
-        executor: '@nx-plus/vite:build',
+        executor: '@nx-plus/vue:browser',
         options: {
-          config: `${options.projectRoot}/vite.config.ts`,
+          dest: `dist/${options.projectRoot}`,
+          index: `${options.projectRoot}/public/index.html`,
+          main: `${options.projectRoot}/src/main.ts`,
+          tsConfig: `${options.projectRoot}/tsconfig.app.json`,
+        },
+        configurations: {
+          production: {
+            mode: 'production',
+            filenameHashing: true,
+            productionSourceMap: true,
+            css: {
+              extract: true,
+              sourceMap: false,
+            },
+          },
         },
       },
       serve: {
-        executor: '@nx-plus/vite:server',
+        executor: '@nx-plus/vue:dev-server',
         options: {
-          config: `${options.projectRoot}/vite.config.ts`,
+          browserTarget: `${options.projectName}:build`,
+        },
+        configurations: {
+          production: {
+            browserTarget: `${options.projectName}:build:production`,
+          },
         },
       },
     },
     tags: options.parsedTags,
   });
+
   addFiles(tree, options);
+
   const lintTasks = await addEsLint(tree, options);
+
   const cypressTasks =
-    schema.e2eTestRunner === 'cypress' ? await addCypress(tree, options) : [];
+    options.e2eTestRunner === 'cypress' ? await addCypress(tree, options) : [];
+
   const jestTasks =
-    schema.unitTestRunner === 'jest' ? await addJest(tree, options) : [];
+    options.unitTestRunner === 'jest' ? await addJest(tree, options) : [];
+
+  const babelTasks = options.babel ? await addBabel(tree, options) : [];
+
   const installTask = addDependenciesToPackageJson(
     tree,
-    { vue: '^3.0.5' },
     {
-      '@vitejs/plugin-vue': '^2.0.0',
-      typescript: '^4.4.4',
-      vite: '^2.7.1',
+      vue: options.isVue3 ? '^3.0.0' : '^2.6.11',
+      ...(options.routing
+        ? { 'vue-router': options.isVue3 ? '^4.0.0-0' : '^3.2.0' }
+        : {}),
+    },
+    {
+      '@vue/cli-plugin-typescript': '~4.5.0',
+      '@vue/cli-service': '~4.5.0',
+      ...(options.isVue3 ? { '@vue/compiler-sfc': '^3.0.0' } : {}),
+      '@vue/eslint-config-typescript': '^5.0.2',
+      'eslint-plugin-vue': '^7.8.0',
+      ...(!options.isVue3 ? { 'vue-template-compiler': '^2.6.11' } : {}),
     }
   );
+
   addPostInstall(tree);
+
   if (!options.skipFormat) {
     await formatFiles(tree);
   }
@@ -290,6 +370,7 @@ export async function applicationGenerator(
     ...lintTasks,
     ...cypressTasks,
     ...jestTasks,
+    ...babelTasks,
     installTask
   );
 }

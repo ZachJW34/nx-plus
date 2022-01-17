@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "executors": {
+    "browser": {
+      "implementation": "./src/executors/browser/executor",
+      "schema": "./src/executors/browser/schema.json",
+      "description": "browser builder"
+    },
+    "dev-server": {
+      "implementation": "./src/executors/dev-server/executor",
+      "schema": "./src/executors/dev-server/schema.json",
+      "description": "dev-server builder"
+    },
+    "library": {
+      "implementation": "./src/executors/library/executor",
+      "schema": "./src/executors/library/schema.json",
+      "description": "library builder"
+    }
+  },
+  "builders": {
+    "browser": {
+      "implementation": "./src/executors/browser/compat",
+      "schema": "./src/executors/browser/schema.json",
+      "description": "browser builder"
+    },
+    "dev-server": {
+      "implementation": "./src/executors/dev-server/compat",
+      "schema": "./src/executors/dev-server/schema.json",
+      "description": "dev-server builder"
+    },
+    "library": {
+      "implementation": "./src/executors/library/compat",
+      "schema": "./src/executors/library/schema.json",
+      "description": "library builder"
+    }
+  }
+}

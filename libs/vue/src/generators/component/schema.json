@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "Component",
+  "cli": "nx",
+  "title": "Create a Vue Component",
+  "type": "object",
+  "examples": [
+    {
+      "command": "g component my-component --project my-project",
+      "description": "Generate a component in the my-project app"
+    }
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of your component.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the component?"
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "alias": "p",
+      "$default": {
+        "$source": "projectName"
+      },
+      "x-prompt": "What is the name of the project for this component?"
+    },
+    "directory": {
+      "type": "string",
+      "description": "Create the component under this directory (can be nested).",
+      "alias": "d"
+    },
+    "style": {
+      "description": "The file extension to be used for style files.",
+      "type": "string",
+      "alias": "s",
+      "default": "css",
+      "x-prompt": {
+        "message": "Which style format would you like to use?",
+        "type": "list",
+        "items": [
+          {
+            "value": "css",
+            "label": "CSS"
+          },
+          {
+            "value": "scss",
+            "label": "SCSS   [ https://sass-lang.com/documentation/syntax#scss ]"
+          },
+          {
+            "value": "stylus",
+            "label": "Stylus [ https://stylus-lang.com                         ]"
+          },
+          {
+            "value": "less",
+            "label": "LESS   [ http://lesscss.org                              ]"
+          }
+        ]
+      }
+    }
+  },
+  "required": ["name", "project"]
+}
