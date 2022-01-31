@@ -10,7 +10,7 @@
       "aliases": ["app"]
     },
     "vuex": {
-      "factory": "./src/generators/vuex/generator#componentGenerator",
+      "factory": "./src/generators/vuex/generator#vuexGenerator",
       "schema": "./src/generators/vuex/schema.json",
       "description": "vuex schematic"
     },
@@ -21,7 +21,7 @@
       "aliases": ["lib"]
     },
     "component": {
-      "factory": "./src/generators/component/generator#vuexGenerator",
+      "factory": "./src/generators/component/generator#componentGenerator",
       "schema": "./src/generators/component/schema.json",
       "description": "Create a component",
       "aliases": ["c"]
@@ -35,7 +35,7 @@
       "aliases": ["app"]
     },
     "vuex": {
-      "factory": "./src/generators/vuex/generator#componentSchematic",
+      "factory": "./src/generators/vuex/generator#vuexGenerator",
       "schema": "./src/generators/vuex/schema.json",
       "description": "vuex schematic"
     },
@@ -46,7 +46,7 @@
       "aliases": ["lib"]
     },
     "component": {
-      "factory": "./src/generators/component/generator#vuexSchematic",
+      "factory": "./src/generators/component/generator#componentGenerator",
       "schema": "./src/generators/component/schema.json",
       "description": "Create a component",
       "aliases": ["c"]

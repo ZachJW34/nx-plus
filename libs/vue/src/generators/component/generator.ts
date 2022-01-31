@@ -1,12 +1,12 @@
-import { ComponentGeneratorSchema } from './schema';
 import {
   convertNxGenerator,
   formatFiles,
   generateFiles,
   names,
   readProjectConfiguration,
-  Tree as DevkitTree,
+  Tree,
 } from '@nrwl/devkit';
+import { ComponentGeneratorSchema } from './schema';
 import path = require('path');
 
 interface NormalizedSchema extends ComponentGeneratorSchema {
@@ -15,19 +15,19 @@ interface NormalizedSchema extends ComponentGeneratorSchema {
 }
 
 function normalizeOptions(
-  host: DevkitTree,
+  host: Tree,
   schema: ComponentGeneratorSchema
 ): NormalizedSchema {
-  const name = names(schema.name).fileName;
+  const name = names(schema.name).className;
   const { projectType, sourceRoot } = readProjectConfiguration(
     host,
-    schema.name
+    schema.project
   );
   // depending on projectType build destination path of component
   const componentPath =
     projectType === 'application'
-      ? `${sourceRoot}/${names(schema.directory ?? '')}`
-      : `${sourceRoot}/lib/${names(schema.directory ?? '')}`;
+      ? `${sourceRoot}/${names(schema.directory ?? '').fileName}`
+      : `${sourceRoot}/lib/${names(schema.directory ?? '').fileName}`;
 
   return {
     ...schema,
@@ -36,10 +36,10 @@ function normalizeOptions(
   };
 }
 
-function createComponent(tree: DevkitTree, options: NormalizedSchema) {
+function createComponent(tree: Tree, options: NormalizedSchema) {
   const templateOptions = {
-    ...options,
     ...names(options.name),
+    ...options,
   };
 
   generateFiles(
@@ -51,7 +51,7 @@ function createComponent(tree: DevkitTree, options: NormalizedSchema) {
 }
 
 export async function componentGenerator(
-  tree: DevkitTree,
+  tree: Tree,
   schema: ComponentGeneratorSchema
 ) {
   const options = normalizeOptions(tree, schema);

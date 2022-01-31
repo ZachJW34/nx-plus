@@ -1,9 +1,9 @@
 import { ExecutorContext } from '@nrwl/devkit';
+import * as path from 'path';
 import * as semver from 'semver';
 import { BrowserExecutorSchema } from './executors/browser/schema';
 import { LibraryExecutorSchema } from './executors/library/schema';
 import { loadModule } from './utils';
-import * as path from 'path';
 
 export function modifyIndexHtmlPath(
   config,

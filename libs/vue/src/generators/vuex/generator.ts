@@ -5,7 +5,6 @@ import {
   convertNxGenerator,
   formatFiles,
   readProjectConfiguration,
-  stripIndents,
   Tree as DevkitTree,
 } from '@nrwl/devkit';
 import { findNodes } from '@nrwl/workspace';
@@ -30,29 +29,29 @@ function normalizeOptions(schema: VuexGeneratorSchema) {
 
 function addStoreConfig(tree: DevkitTree, options: NormalizedSchema) {
   const { sourceRoot } = readProjectConfiguration(tree, options.project);
-  const vue2Content = stripIndents`
-      import Vue from 'vue';
-      import Vuex from 'vuex';
+  const vue2Content = `
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-      Vue.use(Vuex);
+Vue.use(Vuex);
 
-      export default new Vuex.Store({
-        state: {},
-        mutations: {},
-        actions: {},
-        modules: {}
-      });
-    `;
-  const vue3Content = stripIndents`
-      import { createStore } from 'vuex';
+export default new Vuex.Store({
+  state: {},
+  mutations: {},
+  actions: {},
+  modules: {}
+});
+`;
+  const vue3Content = `
+import { createStore } from 'vuex';
 
-      export default createStore({
-        state: {},
-        mutations: {},
-        actions: {},
-        modules: {}
-      });
-    `;
+export default createStore({
+  state: {},
+  mutations: {},
+  actions: {},
+  modules: {}
+});
+`;
   tree.write(
     path.join(sourceRoot, 'store/index.ts'),
     options.isVue3 ? vue3Content : vue2Content
@@ -96,6 +95,7 @@ function getCreateAppCallExpression(
 function addStoreToMain(tree: DevkitTree, options: NormalizedSchema) {
   const { sourceRoot } = readProjectConfiguration(tree, options.project);
   const mainPath = path.join(sourceRoot, 'main.ts');
+  const mainContent = tree.read(mainPath).toString();
 
   if (!tree.exists(mainPath)) {
     throw new Error(`Could not find ${mainPath}.`);
@@ -103,7 +103,7 @@ function addStoreToMain(tree: DevkitTree, options: NormalizedSchema) {
 
   const mainSourceFile = ts.createSourceFile(
     mainPath,
-    tree.read(mainPath).toString('utf-8'),
+    mainContent,
     ts.ScriptTarget.Latest,
     true
   );
@@ -131,13 +131,20 @@ function addStoreToMain(tree: DevkitTree, options: NormalizedSchema) {
     content = '\n  store,';
   }
 
-  applyChangesToString(mainPath, [
+  const updatedMainContent = applyChangesToString(mainContent, [
+    {
+      type: ChangeType.Insert,
+      index: 0,
+      text: "import store from './store';\n",
+    },
     {
       type: ChangeType.Insert,
       index: position,
       text: content,
     },
   ]);
+
+  tree.write(mainPath, updatedMainContent);
 }
 
 export async function vuexGenerator(

@@ -9,10 +9,12 @@ exports[`component schematic for app directory should set directory when used 1`
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'MyComponent',
+  name: 'my-component',
 });
 </script>
 
+
 <style scoped></style>
+
 "
 `;
