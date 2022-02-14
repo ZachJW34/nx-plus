@@ -1,4 +1,4 @@
-export interface ApplicationSchematicSchema {
+export interface ApplicationGeneratorSchema {
   name: string;
   tags?: string;
   directory?: string;

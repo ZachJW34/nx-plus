@@ -1,19 +1,18 @@
-import { BuilderContext } from '@angular-devkit/architect';
-import { normalize, Path, resolve } from '@angular-devkit/core';
+import { ExecutorContext, logger } from '@nrwl/devkit';
 import * as path from 'path';
+import * as semver from 'semver';
+import { appRootPath } from './app-root';
+import { ApplicationGeneratorSchema } from './generators/application/schema';
+
+export function getProjectRoot(context: ExecutorContext) {
+  return path.join(
+    context.root,
+    context.workspace.projects[context.projectName].root
+  );
+}
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Module = require('module');
-
-export async function getProjectRoot(context: BuilderContext): Promise<Path> {
-  const projectMetadata = await context.getProjectMetadata(
-    context.target.project
-  );
-  return resolve(
-    normalize(context.workspaceRoot),
-    normalize((projectMetadata.root as string) || '')
-  );
-}
 
 export function loadModule(request, context, force = false) {
   try {
@@ -55,5 +54,35 @@ function clearRequireCache(id, map = new Map()) {
       if (!map.get(child.id)) clearRequireCache(child.id, map);
     });
     delete require.cache[id];
+  }
+}
+
+export function checkPeerDeps(options: ApplicationGeneratorSchema): void {
+  const expectedVersion = '^12.0.0';
+  const unmetPeerDeps = [
+    ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
+    ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),
+    '@nrwl/linter',
+    '@nrwl/workspace',
+  ].filter((dep) => {
+    try {
+      const { version } = loadModule(`${dep}/package.json`, appRootPath, true);
+      return !semver.satisfies(version, expectedVersion);
+    } catch (err) {
+      return true;
+    }
+  });
+
+  if (unmetPeerDeps.length) {
+    logger.warn(`
+You have the following unmet peer dependencies:
+
+${unmetPeerDeps
+  .map((dep) => `${dep}@${expectedVersion}\n`)
+  .join()
+  .split(',')
+  .join('')}
+@nx-plus/vite may not work as expected.
+    `);
   }
 }
