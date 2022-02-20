@@ -80,13 +80,6 @@ export function modifyCachePaths(config, context: BuilderContext): void {
       return options;
     });
   config.module
-    .rule('vue')
-    .use('vue-loader')
-    .tap((options) => {
-      options.cacheDirectory = vueLoaderCachePath;
-      return options;
-    });
-  config.module
     .rule('ts')
     .use('cache-loader')
     .tap((options) => {
