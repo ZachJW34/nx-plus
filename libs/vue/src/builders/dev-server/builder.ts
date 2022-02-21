@@ -17,6 +17,7 @@ import {
   resolveConfigureWebpack,
 } from '../../utils';
 import {
+  declareCustomElements,
   modifyBabelLoader,
   modifyCachePaths,
   modifyEntryPoint,
@@ -81,6 +82,7 @@ export function runBuilder(
 
     const inlineOptions = {
       chainWebpack: (config) => {
+        declareCustomElements(config, context);
         modifyIndexHtmlPath(config, browserOptions, context);
         modifyEntryPoint(config, browserOptions, context);
         modifyTsConfigPaths(config, browserOptions, context);

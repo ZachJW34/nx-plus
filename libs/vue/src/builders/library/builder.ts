@@ -15,6 +15,7 @@ import {
   resolveConfigureWebpack,
 } from '../../utils';
 import {
+  declareCustomElements,
   modifyBabelLoader,
   modifyCachePaths,
   modifyCopyAssets,
@@ -40,6 +41,7 @@ export function runBuilder(
 
     const inlineOptions = {
       chainWebpack: (config) => {
+        declareCustomElements(config, context);
         modifyTsConfigPaths(config, options, context);
         modifyCachePaths(config, context);
         modifyTypescriptAliases(config, options, context);

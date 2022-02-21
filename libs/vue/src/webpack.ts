@@ -1,9 +1,33 @@
 import { BuilderContext } from '@angular-devkit/architect';
 import { getSystemPath, join, normalize, Path } from '@angular-devkit/core';
+import * as fs from 'fs-extra';
 import * as semver from 'semver';
 import { BrowserBuilderSchema } from './builders/browser/schema';
 import { LibraryBuilderSchema } from './builders/library/schema';
 import { loadModule } from './utils';
+
+export function declareCustomElements(
+  config: any,
+  context: BuilderContext
+): void {
+  const customElementList: any[] = getFileContents(
+    getSystemPath(join(normalize(context.workspaceRoot), 'custom-elements.js'))
+  );
+
+  console.log('Declaring custom elements');
+  customElementList.forEach((e) => console.log(e));
+
+  config.module
+    .rule('vue')
+    .use('vue-loader')
+    .tap((options) => {
+      options.compilerOptions = {
+        isCustomElement: (tagName) =>
+          customElementList.some((e) => e.tagName === tagName),
+      };
+      return options;
+    });
+}
 
 export function modifyIndexHtmlPath(
   config,
@@ -169,4 +193,12 @@ export function modifyBabelLoader(
       options.cacheDirectory = babelLoaderCachePath;
       return options;
     });
+}
+
+function getFileContents(filePath: string): any {
+  try {
+    return fs.readJSONSync(filePath);
+  } catch (err) {
+    return false;
+  }
 }
