@@ -1,5 +1,5 @@
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import * as path from 'path';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function modifyTypescriptAliases(

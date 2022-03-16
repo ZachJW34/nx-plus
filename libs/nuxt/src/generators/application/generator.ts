@@ -74,6 +74,7 @@ async function addEsLint(tree: Tree, options: NormalizedSchema) {
       node: true,
     },
     extends: [
+      `${offsetFromRoot(options.projectRoot)}.eslintrc.json`,
       '@nuxtjs/eslint-config-typescript',
       'plugin:nuxt/recommended',
       'prettier',
