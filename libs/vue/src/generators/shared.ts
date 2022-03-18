@@ -129,7 +129,7 @@ function getEslintConfig(options: Options) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const eslintConfig: any = {
     extends: [
-      `${offsetFromRoot(options.projectRoot)}eslint.json`,
+      `${offsetFromRoot(options.projectRoot)}.eslintrc.json`,
       `plugin:vue/${options.isVue3 ? 'vue3-' : ''}essential`,
       '@vue/typescript/recommended',
       'prettier',

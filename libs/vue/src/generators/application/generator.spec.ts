@@ -85,7 +85,7 @@ describe('application schematic', () => {
     const eslintConfig = appTree.read('apps/my-app/.eslintrc.json').toString();
     expect(eslintConfig).toContain(`{
   "extends": [
-    "../../eslint.json",
+    "../../.eslintrc.json",
     "plugin:vue/essential",
     "@vue/typescript/recommended",
     "prettier"
@@ -387,7 +387,7 @@ new Vue({
         .toString();
       expect(eslintConfig).toContain(`{
   "extends": [
-    "../../../eslint.json",
+    "../../../.eslintrc.json",
     "plugin:vue/essential",
     "@vue/typescript/recommended",
     "prettier"
@@ -491,7 +491,7 @@ new Vue({
         .toString();
       expect(eslintConfig).toContain(`{
   "extends": [
-    "../../eslint.json",
+    "../../.eslintrc.json",
     "plugin:vue/essential",
     "@vue/typescript/recommended",
     "prettier"

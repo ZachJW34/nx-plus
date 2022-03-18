@@ -62,7 +62,7 @@ describe('library schematic', () => {
     const eslintConfig = appTree.read('libs/my-lib/.eslintrc.json').toString();
     expect(eslintConfig).toContain(`{
   "extends": [
-    "../../eslint.json",
+    "../../.eslintrc.json",
     "plugin:vue/essential",
     "@vue/typescript/recommended",
     "prettier"
@@ -218,7 +218,7 @@ describe('library schematic', () => {
         .toString();
       expect(eslintConfig).toContain(`{
   "extends": [
-    "../../../eslint.json",
+    "../../../.eslintrc.json",
     "plugin:vue/essential",
     "@vue/typescript/recommended",
     "prettier"
@@ -320,7 +320,7 @@ describe('library schematic', () => {
         .toString();
       expect(eslintConfig).toContain(`{
   "extends": [
-    "../../eslint.json",
+    "../../.eslintrc.json",
     "plugin:vue/essential",
     "@vue/typescript/recommended",
     "prettier"
