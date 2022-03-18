@@ -2,8 +2,8 @@
   "name": "@nx-plus/nuxt",
   "version": "12.4.3",
   "main": "src/index.js",
-  "schematics": "./collection.json",
-  "builders": "./builders.json",
+  "generators": "./generators.json",
+  "executors": "./executors.json",
   "description": "Nuxt plugin for Nx",
   "repository": {
     "type": "git",
@@ -33,9 +33,6 @@
     "@nrwl/workspace": "^13.4.3"
   },
   "dependencies": {
-    "@angular-devkit/architect": "0.1301.2",
-    "@angular-devkit/core": "13.1.2",
-    "@angular-devkit/schematics": "13.1.2",
     "@nrwl/devkit": "^13.4.3",
     "fs-extra": "^10.0.0",
     "rxjs": "7.5.1",

@@ -2,6 +2,7 @@ import { logger, Tree } from '@nrwl/devkit';
 import * as path from 'path';
 import * as semver from 'semver';
 import { appRootPath } from './app-root';
+import { ApplicationGeneratorSchema } from './generators/application/schema';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Module = require('module');
@@ -49,7 +50,7 @@ function clearRequireCache(id, map = new Map()) {
   }
 }
 
-export function checkPeerDeps(tree: Tree, options): void {
+export function checkPeerDeps(options: ApplicationGeneratorSchema): void {
   const expectedVersion = '^12.0.0';
   const unmetPeerDeps = [
     ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),

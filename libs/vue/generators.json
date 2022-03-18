@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "vue",
+  "version": "0.0.1",
+  "generators": {
+    "application": {
+      "factory": "./src/generators/application/generator#applicationGenerator",
+      "schema": "./src/generators/application/schema.json",
+      "description": "application schematic",
+      "aliases": ["app"]
+    },
+    "vuex": {
+      "factory": "./src/generators/vuex/generator#vuexGenerator",
+      "schema": "./src/generators/vuex/schema.json",
+      "description": "vuex schematic"
+    },
+    "library": {
+      "factory": "./src/generators/library/generator#libraryGenerator",
+      "schema": "./src/generators/library/schema.json",
+      "description": "library schematic",
+      "aliases": ["lib"]
+    },
+    "component": {
+      "factory": "./src/generators/component/generator#componentGenerator",
+      "schema": "./src/generators/component/schema.json",
+      "description": "Create a component",
+      "aliases": ["c"]
+    }
+  },
+  "schematics": {
+    "application": {
+      "factory": "./src/generators/application/generator#applicationSchematic",
+      "schema": "./src/generators/application/schema.json",
+      "description": "application schematic",
+      "aliases": ["app"]
+    },
+    "vuex": {
+      "factory": "./src/generators/vuex/generator#vuexGenerator",
+      "schema": "./src/generators/vuex/schema.json",
+      "description": "vuex schematic"
+    },
+    "library": {
+      "factory": "./src/generators/library/generator#librarySchematic",
+      "schema": "./src/generators/library/schema.json",
+      "description": "library schematic",
+      "aliases": ["lib"]
+    },
+    "component": {
+      "factory": "./src/generators/component/generator#componentGenerator",
+      "schema": "./src/generators/component/schema.json",
+      "description": "Create a component",
+      "aliases": ["c"]
+    }
+  }
+}

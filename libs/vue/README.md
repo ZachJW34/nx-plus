@@ -232,19 +232,19 @@ nx serve my-app
 
 `nx lint <name> [options]`
 
-We use `@nrwl/linter` for linting, so the options are as documented [here](https://github.com/nrwl/nx/blob/master/docs/angular/api-linter/builders/eslint.md#eslint).
+We use `@nrwl/linter` for linting, so the options are as documented [here](https://github.com/nrwl/nx/tree/master/packages/linter).
 
 ### Unit Testing
 
 `nx test <name> [options]`
 
-We use `@nrwl/jest` for unit testing, so the options are as documented [here](https://github.com/nrwl/nx/blob/master/docs/angular/api-jest/builders/jest.md#jest).
+We use `@nrwl/jest` for unit testing, so the options are as documented [here](https://github.com/nrwl/nx/tree/master/packages/jest).
 
 ### E2E Testing
 
 `nx e2e <name> [options]`
 
-We use `@nrwl/cypress` for e2e testing, so the options are as documented [here](https://github.com/nrwl/nx/blob/master/docs/angular/api-cypress/builders/cypress.md#cypress).
+We use `@nrwl/cypress` for e2e testing, so the options are as documented [here](https://github.com/nrwl/nx/tree/master/packages/cypress).
 
 ## Modify the Webpack Configuration
 
