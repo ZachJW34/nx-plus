@@ -82,29 +82,10 @@ describe('application schematic', () => {
     const tsconfigAppJson = readJson(appTree, 'apps/my-app/tsconfig.app.json');
     expect(tsconfigAppJson.exclude).toEqual(['**/*.spec.ts', '**/*.spec.tsx']);
 
-    const eslintConfig = appTree.read('apps/my-app/.eslintrc.json').toString();
-    expect(eslintConfig).toContain(`{
-  "extends": [
-    "../../.eslintrc.json",
-    "plugin:vue/essential",
-    "@vue/typescript/recommended",
-    "prettier"
-  ],
-  "rules": {},
-  "env": {
-    "node": true
-  },
-  "overrides": [
-    {
-      "files": [
-        "**/*.spec.{j,t}s?(x)"
-      ],
-      "env": {
-        "jest": true
-      }
-    }
-  ]
-}`);
+    const eslintConfig = JSON.parse(
+      appTree.read('apps/my-app/.eslintrc.json').toString()
+    );
+    expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
     expect(
       appTree.read('apps/my-app-e2e/src/integration/app.spec.ts').toString()
@@ -236,9 +217,13 @@ a
       );
       expect(tsconfigAppJson.exclude).toBeUndefined();
 
-      expect(
+      const eslintConfig = JSON.parse(
         appTree.read('apps/my-app/.eslintrc.json').toString()
-      ).not.toContain('"overrides":');
+      );
+
+      const expected = getEslintConfigWithOffset('../../');
+      delete expected.overrides;
+      expect(eslintConfig).toEqual(expected);
 
       const tsConfigJson = readJson(appTree, 'apps/my-app/tsconfig.json');
       expect(tsConfigJson.references[1]).toBeUndefined();
@@ -382,31 +367,10 @@ new Vue({
         '**/*.spec.tsx',
       ]);
 
-      const eslintConfig = appTree
-        .read('apps/subdir/my-app/.eslintrc.json')
-        .toString();
-      expect(eslintConfig).toContain(`{
-  "extends": [
-    "../../../.eslintrc.json",
-    "plugin:vue/essential",
-    "@vue/typescript/recommended",
-    "prettier"
-  ],
-  "rules": {},
-  "env": {
-    "node": true
-  },
-  "overrides": [
-    {
-      "files": [
-        "**/*.spec.{j,t}s?(x)"
-      ],
-      "env": {
-        "jest": true
-      }
-    }
-  ]
-}`);
+      const eslintConfig = JSON.parse(
+        appTree.read('apps/subdir/my-app/.eslintrc.json').toString()
+      );
+      expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../../'));
 
       expect(
         appTree
@@ -486,31 +450,10 @@ new Vue({
         '**/*.spec.tsx',
       ]);
 
-      const eslintConfig = appTree
-        .read('custom-apps-dir/my-app/.eslintrc.json')
-        .toString();
-      expect(eslintConfig).toContain(`{
-  "extends": [
-    "../../.eslintrc.json",
-    "plugin:vue/essential",
-    "@vue/typescript/recommended",
-    "prettier"
-  ],
-  "rules": {},
-  "env": {
-    "node": true
-  },
-  "overrides": [
-    {
-      "files": [
-        "**/*.spec.{j,t}s?(x)"
-      ],
-      "env": {
-        "jest": true
-      }
-    }
-  ]
-}`);
+      const eslintConfig = JSON.parse(
+        appTree.read('custom-apps-dir/my-app/.eslintrc.json').toString()
+      );
+      expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
       expect(
         appTree
@@ -528,3 +471,27 @@ new Vue({
     });
   });
 });
+
+export function getEslintConfigWithOffset(offset: string) {
+  return {
+    extends: [
+      `${offset}.eslintrc.json`,
+      `plugin:vue/essential`,
+      '@vue/typescript/recommended',
+      'prettier',
+    ],
+    rules: {},
+    ignorePatterns: ['!**/*'],
+    overrides: [
+      {
+        files: ['**/*.spec.{j,t}s?(x)'],
+        env: {
+          jest: true,
+        },
+      },
+    ],
+    env: {
+      node: true,
+    },
+  };
+}

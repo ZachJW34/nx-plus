@@ -278,7 +278,7 @@ export async function applicationGenerator(
     {
       '@vitejs/plugin-vue': '^2.0.0',
       typescript: '^4.4.4',
-      vite: '^2.7.1',
+      vite: '^2.8.6',
     }
   );
   addPostInstall(tree);

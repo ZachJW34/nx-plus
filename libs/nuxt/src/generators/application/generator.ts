@@ -82,6 +82,7 @@ async function addEsLint(tree: Tree, options: NormalizedSchema) {
     parserOptions: {
       extraFileExtensions: ['.vue'],
     },
+    ignorePatterns: ['!**/*'],
     rules: {},
   };
 

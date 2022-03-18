@@ -135,6 +135,7 @@ function getEslintConfig(options: Options) {
       'prettier',
     ],
     rules: {},
+    ignorePatterns: ['!**/*'],
     env: {
       node: true,
     },

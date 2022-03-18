@@ -2,6 +2,7 @@ import { readJson, readProjectConfiguration, Tree } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import { libraryGenerator } from './generator';
 import { LibraryGeneratorSchema } from './schema';
+import { getEslintConfigWithOffset } from '../application/generator.spec';
 
 export const options: LibraryGeneratorSchema = {
   name: 'my-lib',
@@ -59,29 +60,10 @@ describe('library schematic', () => {
     const tsconfigLibJson = readJson(appTree, 'libs/my-lib/tsconfig.lib.json');
     expect(tsconfigLibJson.exclude).toEqual(['**/*.spec.ts', '**/*.spec.tsx']);
 
-    const eslintConfig = appTree.read('libs/my-lib/.eslintrc.json').toString();
-    expect(eslintConfig).toContain(`{
-  "extends": [
-    "../../.eslintrc.json",
-    "plugin:vue/essential",
-    "@vue/typescript/recommended",
-    "prettier"
-  ],
-  "rules": {},
-  "env": {
-    "node": true
-  },
-  "overrides": [
-    {
-      "files": [
-        "**/*.spec.{j,t}s?(x)"
-      ],
-      "env": {
-        "jest": true
-      }
-    }
-  ]
-}`);
+    const eslintConfig = JSON.parse(
+      appTree.read('libs/my-lib/.eslintrc.json').toString()
+    );
+    expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
     const tsConfigJson = readJson(appTree, 'libs/my-lib/tsconfig.json');
     expect(tsConfigJson.references[1]).toEqual({
@@ -131,6 +113,13 @@ describe('library schematic', () => {
         'libs/my-lib/tsconfig.lib.json'
       );
       expect(tsconfigLibJson.exclude).toBeUndefined();
+
+      const eslintConfig = JSON.parse(
+        appTree.read('libs/my-lib/.eslintrc.json').toString()
+      );
+      const expected = getEslintConfigWithOffset('../../');
+      delete expected.overrides;
+      expect(eslintConfig).toEqual(expected);
 
       expect(
         appTree.read('libs/my-lib/.eslintrc.json').toString()
@@ -213,31 +202,10 @@ describe('library schematic', () => {
         '**/*.spec.tsx',
       ]);
 
-      const eslintConfig = appTree
-        .read('libs/subdir/my-lib/.eslintrc.json')
-        .toString();
-      expect(eslintConfig).toContain(`{
-  "extends": [
-    "../../../.eslintrc.json",
-    "plugin:vue/essential",
-    "@vue/typescript/recommended",
-    "prettier"
-  ],
-  "rules": {},
-  "env": {
-    "node": true
-  },
-  "overrides": [
-    {
-      "files": [
-        "**/*.spec.{j,t}s?(x)"
-      ],
-      "env": {
-        "jest": true
-      }
-    }
-  ]
-}`);
+      const eslintConfig = JSON.parse(
+        appTree.read('libs/subdir/my-lib/.eslintrc.json').toString()
+      );
+      expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../../'));
 
       expect(
         JSON.parse(appTree.read('libs/subdir/my-lib/package.json').toString())
@@ -315,31 +283,10 @@ describe('library schematic', () => {
         '**/*.spec.tsx',
       ]);
 
-      const eslintConfig = appTree
-        .read('custom-libs-dir/my-lib/.eslintrc.json')
-        .toString();
-      expect(eslintConfig).toContain(`{
-  "extends": [
-    "../../.eslintrc.json",
-    "plugin:vue/essential",
-    "@vue/typescript/recommended",
-    "prettier"
-  ],
-  "rules": {},
-  "env": {
-    "node": true
-  },
-  "overrides": [
-    {
-      "files": [
-        "**/*.spec.{j,t}s?(x)"
-      ],
-      "env": {
-        "jest": true
-      }
-    }
-  ]
-}`);
+      const eslintConfig = JSON.parse(
+        appTree.read('custom-libs-dir/my-lib/.eslintrc.json').toString()
+      );
+      expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
       expect(readJson(appTree, 'custom-libs-dir/my-lib/package.json')).toEqual({
         name: '@proj/my-lib',

@@ -30,7 +30,8 @@ describe('vite e2e', () => {
       `dist/apps/${appName}/index.html`,
       `dist/apps/${appName}/assets/index.css`,
       `dist/apps/${appName}/assets/index.js`,
-      `dist/apps/${appName}/assets/vendor.js`
+      `dist/apps/${appName}/assets/vendor.js`,
+      `dist/apps/${appName}/assets/logo.png`
     );
     // Cannot disable hashing for assets
     // see: https://github.com/vitejs/vite/issues/2944
@@ -38,7 +39,7 @@ describe('vite e2e', () => {
 
     const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e --headless`);
     expect(e2eResult.stdout).toContain('All specs passed!');
-  }, 100000);
+  }, 200000);
 });
 
 function disableHashing(app: string, directory: string = '') {

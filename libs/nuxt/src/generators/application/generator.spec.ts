@@ -65,12 +65,7 @@ describe('nuxt schematic', () => {
     const eslintConfig = JSON.parse(
       appTree.read('apps/my-app/.eslintrc.json').toString()
     );
-    expect(eslintConfig.extends).toEqual([
-      '../../.eslintrc.json',
-      '@nuxtjs/eslint-config-typescript',
-      'plugin:nuxt/recommended',
-      'prettier',
-    ]);
+    expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
     expect(
       appTree.read('apps/my-app-e2e/src/integration/app.spec.ts').toString()
@@ -168,12 +163,7 @@ describe('nuxt schematic', () => {
       const eslintConfig = JSON.parse(
         appTree.read('apps/subdir/my-app/.eslintrc.json').toString()
       );
-      expect(eslintConfig.extends).toEqual([
-        '../../../.eslintrc.json',
-        '@nuxtjs/eslint-config-typescript',
-        'plugin:nuxt/recommended',
-        'prettier',
-      ]);
+      expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../../'));
 
       expect(
         appTree
@@ -197,7 +187,7 @@ describe('nuxt schematic', () => {
       await applicationGenerator(appTree, options);
       const {
         root,
-        targets: { build, serve, test, lint, static: staticGenerate },
+        targets: { build, serve },
       } = readProjectConfiguration(appTree, 'my-app');
 
       expect(root).toBe('custom-apps-dir/my-app');
@@ -233,12 +223,7 @@ describe('nuxt schematic', () => {
       const eslintConfig = JSON.parse(
         appTree.read('custom-apps-dir/my-app/.eslintrc.json').toString()
       );
-      expect(eslintConfig.extends).toEqual([
-        '../../.eslintrc.json',
-        '@nuxtjs/eslint-config-typescript',
-        'plugin:nuxt/recommended',
-        'prettier',
-      ]);
+      expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
       expect(
         appTree
@@ -248,3 +233,22 @@ describe('nuxt schematic', () => {
     });
   });
 });
+
+function getEslintConfigWithOffset(offset: string) {
+  return {
+    env: {
+      browser: true,
+      node: true,
+    },
+    extends: [
+      `${offset}.eslintrc.json`,
+      '@nuxtjs/eslint-config-typescript',
+      'plugin:nuxt/recommended',
+      'prettier',
+    ],
+    parserOptions: {
+      extraFileExtensions: ['.vue'],
+    },
+    ignorePatterns: ['!**/*'],
+  };
+}
