@@ -2,7 +2,7 @@ import { ViteBuildExecutorSchema } from './build/schema';
 import { ViteServerExecutorSchema } from './server/schema';
 
 export function cleanViteOptions(
-  options: ViteServerExecutorSchema | ViteBuildExecutorSchema
+  options: Partial<ViteServerExecutorSchema> | Partial<ViteBuildExecutorSchema>
 ) {
   const ret = { ...options };
   delete ret.debug;

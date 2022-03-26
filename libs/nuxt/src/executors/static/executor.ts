@@ -3,14 +3,16 @@ import {
   parseTargetString,
   readTargetOptions,
 } from '@nrwl/devkit';
-import { Builder, Generator, loadNuxtConfig, Nuxt } from 'nuxt';
 import * as path from 'path';
 import { getProjectRoot } from '../../utils';
 import { modifyTypescriptAliases } from '../../webpack';
 import { default as browserExecutor } from '../browser/executor';
 import { StaticExecutorSchema } from './schema';
 
-const serverBuilderOverriddenKeys = [];
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { Builder, Generator, loadNuxtConfig, Nuxt } = require('nuxt');
+
+const serverBuilderOverriddenKeys: string[] = [];
 
 export default async function* runExecutor(
   options: StaticExecutorSchema,
@@ -19,13 +21,12 @@ export default async function* runExecutor(
   try {
     const browserTarget = parseTargetString(options.browserTarget);
     const rawBrowserOptions = readTargetOptions(browserTarget, context);
-    const overrides = Object.keys(options)
+    const overrides = Object.entries(options)
       .filter(
-        (key) =>
-          options[key] !== undefined &&
-          serverBuilderOverriddenKeys.includes(key)
+        ([key, val]) =>
+          val !== undefined && serverBuilderOverriddenKeys.includes(key)
       )
-      .reduce((previous, key) => ({ ...previous, [key]: options[key] }), {});
+      .reduce((previous, [key, val]) => ({ ...previous, [key]: val }), {});
     const browserOptions = { ...rawBrowserOptions, ...overrides };
 
     await browserExecutor(browserOptions, context).next();
@@ -41,7 +42,10 @@ export default async function* runExecutor(
           dir: path.join(context.root, browserOptions.buildDir, 'dist'),
         },
         build: {
-          extend(config, ctx) {
+          extend(
+            config: Record<string, unknown>,
+            ctx: Record<string, unknown>
+          ) {
             modifyTypescriptAliases(config, projectRoot);
 
             // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -69,9 +73,9 @@ export default async function* runExecutor(
       success: true,
     };
   } catch (error) {
+    console.error(error);
     yield {
       success: false,
-      error,
     };
   }
 }

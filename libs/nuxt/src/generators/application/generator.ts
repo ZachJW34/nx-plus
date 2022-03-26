@@ -60,10 +60,13 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
     templateOptions
   );
   if (options.unitTestRunner === 'none') {
-    const { path } = tree
-      .listChanges()
-      .find(({ path }) => path.includes('test/Logo.spec.js'));
-    tree.delete(path);
+    const { path } =
+      tree
+        .listChanges()
+        .find(({ path }) => path.includes('test/NuxtLogo.spec.js')) || {};
+    if (path) {
+      tree.delete(path);
+    }
   }
 }
 
@@ -171,7 +174,7 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
     '@nrwl/cypress'
   );
   const { Linter } = await import('@nrwl/linter');
-  const cypressInitTask = await cypressInitGenerator(tree);
+  const cypressInitTask = await cypressInitGenerator(tree, {});
   const cypressTask = await cypressProjectGenerator(tree, {
     project: options.projectName,
     name: options.name + '-e2e',
@@ -183,10 +186,13 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
   const appSpecPath = options.projectRoot + '-e2e/src/integration/app.spec.ts';
   tree.write(
     appSpecPath,
-    tree
-      .read(appSpecPath)
-      .toString('utf-8')
-      .replace(`Welcome to ${options.projectName}!`, options.projectName)
+    `describe('${options.projectName}', () => {
+  it('should display welcome message', () => {
+    cy.visit('/')
+    cy.contains('h2', 'Welcome to your Nuxt Application')
+  });
+});
+`
   );
 
   return [cypressInitTask, cypressTask];
@@ -270,10 +276,11 @@ export async function applicationGenerator(
       nuxt: '^2.15.7',
     },
     {
-      '@nuxtjs/eslint-config-typescript': '^6.0.1',
+      '@nuxtjs/eslint-config-typescript': '^9.0.0',
       '@nuxt/types': '^2.15.7',
       '@nuxt/typescript-build': '^2.1.0',
-      'eslint-plugin-nuxt': '^2.0.0',
+      'eslint-plugin-nuxt': '^3.2.0',
+      'ts-loader': '^8.3.0',
     }
   );
 

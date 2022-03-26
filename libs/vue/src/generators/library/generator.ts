@@ -54,7 +54,7 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
 }
 
 function addPublishable(tree: Tree, options: NormalizedSchema) {
-  const npmScope = readNxJson(tree).npmScope;
+  const npmScope = readNxJson(tree)?.npmScope;
 
   tree.write(
     `${options.projectRoot}/package.json`,
@@ -72,7 +72,7 @@ function updateTsConfig(tree: Tree, options: NormalizedSchema) {
     const c = json.compilerOptions;
     c.paths = c.paths || {};
     delete c.paths[options.name];
-    c.paths[`@${nxJson.npmScope}/${options.projectDirectory}`] = [
+    c.paths[`@${nxJson?.npmScope}/${options.projectDirectory}`] = [
       `${options.projectRoot}/src/index.ts`,
     ];
     return json;

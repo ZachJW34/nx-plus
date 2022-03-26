@@ -33,6 +33,10 @@ const devServerBuilderOverriddenKeys = [
   'stdin',
 ];
 
+// Deal with this later
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ANY = any;
+
 function modifyChalk(context: ExecutorContext) {
   // The vue-cli build command is not suitable for an nx project.
   // We spy on chalk to intercept the console output and replace
@@ -59,31 +63,31 @@ export default async function* runExecutor(
   // `undefined`.
   // TODO: Handle this less obtrusively.
   if (
+    options.css &&
     options.css.requireModuleExtension === undefined &&
     options.css.extract === undefined &&
     options.css.sourceMap === undefined &&
     !Object.keys(options.css.loaderOptions).length
   ) {
-    options.css = undefined;
+    (options as ANY).css = undefined;
   }
 
   const browserTarget = parseTargetString(options.browserTarget);
   const rawBrowserOptions = readTargetOptions(browserTarget, context);
 
-  const overrides = Object.keys(options)
+  const overrides = Object.entries(options)
     .filter(
-      (key) =>
-        options[key] !== undefined &&
-        devServerBuilderOverriddenKeys.includes(key)
+      ([key, val]) =>
+        val !== undefined && devServerBuilderOverriddenKeys.includes(key)
     )
-    .reduce((previous, key) => ({ ...previous, [key]: options[key] }), {});
+    .reduce((previous, [key, val]) => ({ ...previous, [key]: val }), {});
   const browserOptions = { ...rawBrowserOptions, ...overrides };
 
   const projectRoot = getProjectRoot(context);
   const babelConfig = await getBabelConfig(projectRoot);
 
   const inlineOptions = {
-    chainWebpack: (config) => {
+    chainWebpack: (config: ANY) => {
       modifyIndexHtmlPath(config, browserOptions, context);
       modifyEntryPoint(config, browserOptions, context);
       modifyTsConfigPaths(config, browserOptions, context);
@@ -97,7 +101,7 @@ export default async function* runExecutor(
         // There is no option to disable file watching in `webpack-dev-server`,
         // but webpack's file watcher can be overriden.
         config.plugin('vue-cli').use({
-          apply: (compiler) => {
+          apply: (compiler: ANY) => {
             compiler.hooks.afterEnvironment.tap('vue-cli', () => {
               // eslint-disable-next-line @typescript-eslint/no-empty-function
               compiler.watchFileSystem = { watch: () => {} };

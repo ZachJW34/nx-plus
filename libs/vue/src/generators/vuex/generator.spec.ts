@@ -25,7 +25,7 @@ describe('vuex schematic', () => {
 
     expect(appTree.exists('apps/my-app/src/store/index.ts')).toBeTruthy();
 
-    const main = appTree.read('apps/my-app/src/main.ts').toString();
+    const main = appTree.read('apps/my-app/src/main.ts', 'utf-8');
     expect(main).toContain("import store from './store';");
     expect(main).toContain(`
 new Vue({
@@ -45,7 +45,7 @@ new Vue({
 
     expect(appTree.exists('apps/my-app/src/store/index.ts')).toBeTruthy();
 
-    const main = appTree.read('apps/my-app/src/main.ts').toString();
+    const main = appTree.read('apps/my-app/src/main.ts', 'utf-8');
     expect(main).toContain("import store from './store';");
     expect(main).toContain(`createApp(App).use(store)
   .mount('#app');`);

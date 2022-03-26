@@ -61,10 +61,13 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
     templateOptions
   );
   if (options.unitTestRunner === 'none') {
-    const { path } = tree
-      .listChanges()
-      .find(({ path }) => path.includes('example.spec.ts'));
-    tree.delete(path);
+    const { path } =
+      tree.listChanges().find(({ path }) => path.includes('example.spec.ts')) ||
+      {};
+
+    if (path) {
+      tree.delete(path);
+    }
   }
 }
 
@@ -136,7 +139,7 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
     '@nrwl/cypress'
   );
   const { Linter } = await import('@nrwl/linter');
-  const cypressInitTask = await cypressInitGenerator(tree);
+  const cypressInitTask = await cypressInitGenerator(tree, {});
   const cypressTask = await cypressProjectGenerator(tree, {
     project: options.projectName,
     name: options.name + '-e2e',
@@ -148,13 +151,13 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
   const appSpecPath = options.projectRoot + '-e2e/src/integration/app.spec.ts';
   tree.write(
     appSpecPath,
-    tree
-      .read(appSpecPath)
-      .toString('utf-8')
-      .replace(
-        `Welcome to ${options.projectName}!`,
-        'Hello Vue 3 + TypeScript + Vite'
-      )
+    `describe('${options.projectName}', () => {
+  it('should display welcome message', () => {
+    cy.visit('/')
+    cy.contains('h1', 'Hello Vue 3 + TypeScript + Vite')
+  });
+});
+`
   );
 
   return [cypressInitTask, cypressTask];
@@ -174,7 +177,9 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
     babelJest: false,
   });
   updateJson(tree, `${options.projectRoot}/tsconfig.spec.json`, (json) => {
-    json.include = json.include.filter((pattern) => !/\.jsx?$/.test(pattern));
+    json.include = json.include.filter(
+      (pattern: string) => !/\.jsx?$/.test(pattern)
+    );
     json.compilerOptions = {
       ...json.compilerOptions,
       jsx: 'preserve',

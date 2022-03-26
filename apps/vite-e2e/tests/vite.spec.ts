@@ -37,7 +37,7 @@ describe('vite e2e', () => {
     // see: https://github.com/vitejs/vite/issues/2944
     expect(buildResult.stdout).toContain(`dist/apps/${appName}/assets/logo`);
 
-    const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e --headless`);
+    const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e`);
     expect(e2eResult.stdout).toContain('All specs passed!');
   }, 200000);
 });

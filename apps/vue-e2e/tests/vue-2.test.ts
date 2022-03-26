@@ -8,7 +8,7 @@ import {
 } from '@nrwl/nx-plugin/testing';
 import { runNxProdCommandAsync, testGeneratedApp } from './utils';
 
-describe.skip('vue 2 e2e', () => {
+describe('vue 2 e2e', () => {
   describe('app', () => {
     beforeAll(() => {
       ensureNxProject('@nx-plus/vue', 'dist/libs/vue');
@@ -200,12 +200,12 @@ describe.skip('vue 2 e2e', () => {
       expect(() =>
         checkFilesExist(
           `dist/libs/${lib}/demo.html`,
-          `dist/libs/${lib}/${lib}.common.js`,
-          `dist/libs/${lib}/${lib}.common.js.map`,
-          `dist/libs/${lib}/${lib}.umd.js`,
-          `dist/libs/${lib}/${lib}.umd.js.map`,
-          `dist/libs/${lib}/${lib}.umd.min.js`,
-          `dist/libs/${lib}/${lib}.umd.min.js.map`,
+          `dist/libs/${lib}/build.common.js`,
+          `dist/libs/${lib}/build.common.js.map`,
+          `dist/libs/${lib}/build.umd.js`,
+          `dist/libs/${lib}/build.umd.js.map`,
+          `dist/libs/${lib}/build.umd.min.js`,
+          `dist/libs/${lib}/build.umd.min.js.map`,
           `dist/libs/${lib}/package.json`,
           `dist/libs/${lib}/README.md`
         )
@@ -228,16 +228,16 @@ describe.skip('vue 2 e2e', () => {
       );
       expect(() =>
         checkFilesExist(
-          `dist/libs/${lib}/${lib}.common.js`,
-          `dist/libs/${lib}/${lib}.common.js.map`
+          `dist/libs/${lib}/build.common.js`,
+          `dist/libs/${lib}/build.common.js.map`
         )
       ).not.toThrow();
       expect(() =>
         checkFilesExist(
-          `dist/libs/${lib}/${lib}.umd.js`,
-          `dist/libs/${lib}/${lib}.umd.js.map`,
-          `dist/libs/${lib}/${lib}.umd.min.js`,
-          `dist/libs/${lib}/${lib}.umd.min.js.map`
+          `dist/libs/${lib}/build.umd.js`,
+          `dist/libs/${lib}/build.umd.js.map`,
+          `dist/libs/${lib}/build.umd.min.js`,
+          `dist/libs/${lib}/build.umd.min.js.map`
         )
       ).toThrow();
     }, 300000);
@@ -255,12 +255,12 @@ describe.skip('vue 2 e2e', () => {
         expect(() =>
           checkFilesExist(
             `dist/libs/subdir/${lib}/demo.html`,
-            `dist/libs/subdir/${lib}/subdir-${lib}.common.js`,
-            `dist/libs/subdir/${lib}/subdir-${lib}.common.js.map`,
-            `dist/libs/subdir/${lib}/subdir-${lib}.umd.js`,
-            `dist/libs/subdir/${lib}/subdir-${lib}.umd.js.map`,
-            `dist/libs/subdir/${lib}/subdir-${lib}.umd.min.js`,
-            `dist/libs/subdir/${lib}/subdir-${lib}.umd.min.js.map`,
+            `dist/libs/subdir/${lib}/build.common.js`,
+            `dist/libs/subdir/${lib}/build.common.js.map`,
+            `dist/libs/subdir/${lib}/build.umd.js`,
+            `dist/libs/subdir/${lib}/build.umd.js.map`,
+            `dist/libs/subdir/${lib}/build.umd.min.js`,
+            `dist/libs/subdir/${lib}/build.umd.min.js.map`,
             `dist/libs/subdir/${lib}/package.json`
           )
         ).not.toThrow();

@@ -58,7 +58,7 @@ describe('docusaurus schematic', () => {
     await applicationGenerator(appTree, options);
 
     const config = readProjectConfiguration(appTree, 'my-app');
-    const { build, serve } = config.targets;
+    const { build, serve } = config.targets || {};
 
     expect(config.root).toBe('apps/my-app');
     expect(build.executor).toBe('@nx-plus/docusaurus:browser');
@@ -76,15 +76,13 @@ describe('docusaurus schematic', () => {
       .map((file) => `apps/my-app/${file}`)
       .forEach((path) => expect(appTree.exists(path)).toBeTruthy());
 
-    expect(appTree.read('.gitignore').toString()).toContain(stripIndents`
+    expect(appTree.read('.gitignore', 'utf-8')).toContain(stripIndents`
       # Generated Docusaurus files
       .docusaurus/
       .cache-loader/
     `);
 
-    expect(appTree.read('.prettierignore').toString()).toContain(
-      '.docusaurus/'
-    );
+    expect(appTree.read('.prettierignore', 'utf-8')).toContain('.docusaurus/');
   });
 
   describe('--directory', () => {
@@ -92,7 +90,7 @@ describe('docusaurus schematic', () => {
       await applicationGenerator(appTree, { ...options, directory: 'subdir' });
 
       const config = readProjectConfiguration(appTree, 'subdir-my-app');
-      const { build } = config.targets;
+      const { build } = config.targets || {};
 
       expect(config.root).toBe('apps/subdir/my-app');
       expect(build.options).toEqual({ outputPath: 'dist/apps/subdir/my-app' });
@@ -105,7 +103,7 @@ describe('docusaurus schematic', () => {
 
   describe('workspaceLayout', () => {
     beforeEach(() => {
-      const nxJson = JSON.parse(appTree.read('nx.json').toString());
+      const nxJson = JSON.parse(appTree.read('nx.json', 'utf-8') || '');
       const updateNxJson = {
         ...nxJson,
         workspaceLayout: { appsDir: 'custom-apps-dir' },
@@ -117,7 +115,7 @@ describe('docusaurus schematic', () => {
       await applicationGenerator(appTree, options);
 
       const config = readProjectConfiguration(appTree, 'my-app');
-      const { build } = config.targets;
+      const { build } = config.targets || {};
 
       expect(config.root).toBe('custom-apps-dir/my-app');
       expect(build.options).toEqual({

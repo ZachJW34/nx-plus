@@ -26,7 +26,7 @@
       "outputs": ["coverage/libs/nuxt"]
     },
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "options": {
         "outputPath": "dist/libs/nuxt",
         "tsConfig": "libs/nuxt/tsconfig.lib.json",
@@ -41,17 +41,17 @@
           },
           {
             "input": "./libs/nuxt",
-            "glob": "collection.json",
+            "glob": "generators.json",
             "output": "."
           },
           {
             "input": "./libs/nuxt",
-            "glob": "builders.json",
+            "glob": "executors.json",
             "output": "."
           },
           {
             "input": "./libs/nuxt",
-            "glob": "migrations.json",
+            "glob": "patch-nx-dep-graph.js",
             "output": "."
           }
         ],

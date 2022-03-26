@@ -37,6 +37,10 @@ function modifyChalk(options: LibraryExecutorSchema) {
   );
 }
 
+// Deal with this later
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ANY = any;
+
 export default async function* runExecutor(
   options: LibraryExecutorSchema,
   context: ExecutorContext
@@ -48,7 +52,7 @@ export default async function* runExecutor(
     const babelConfig = await getBabelConfig(projectRoot);
 
     const inlineOptions = {
-      chainWebpack: (config) => {
+      chainWebpack: (config: ANY) => {
         modifyTsConfigPaths(config, options, context);
         modifyCachePaths(config, context);
         modifyTypescriptAliases(config, options, context);
@@ -96,6 +100,7 @@ export default async function* runExecutor(
       await new Promise<{ success: boolean }>(() => {});
     }
   } catch (err) {
-    yield { success: false, error: err };
+    console.error(err);
+    yield { success: false };
   }
 }

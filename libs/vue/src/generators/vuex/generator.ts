@@ -53,7 +53,7 @@ export default createStore({
 });
 `;
   tree.write(
-    path.join(sourceRoot, 'store/index.ts'),
+    path.join(sourceRoot || '', 'store/index.ts'),
     options.isVue3 ? vue3Content : vue2Content
   );
 }
@@ -81,7 +81,7 @@ function getNewVueExpression(
 
 function getCreateAppCallExpression(
   sourceFile: ts.SourceFile
-): ts.CallExpression {
+): ts.CallExpression | undefined {
   const callExpressions = findNodes(
     sourceFile,
     ts.SyntaxKind.CallExpression
@@ -94,8 +94,8 @@ function getCreateAppCallExpression(
 
 function addStoreToMain(tree: DevkitTree, options: NormalizedSchema) {
   const { sourceRoot } = readProjectConfiguration(tree, options.project);
-  const mainPath = path.join(sourceRoot, 'main.ts');
-  const mainContent = tree.read(mainPath).toString();
+  const mainPath = path.join(sourceRoot || '', 'main.ts');
+  const mainContent = tree.read(mainPath, 'utf-8') || '';
 
   if (!tree.exists(mainPath)) {
     throw new Error(`Could not find ${mainPath}.`);
@@ -123,7 +123,7 @@ function addStoreToMain(tree: DevkitTree, options: NormalizedSchema) {
   } else {
     const newVueExpression = getNewVueExpression(mainSourceFile);
 
-    if (!newVueExpression) {
+    if (!newVueExpression || !newVueExpression.arguments?.[0]) {
       throw new Error(`Could not find Vue instantiation in ${mainPath}.`);
     }
 

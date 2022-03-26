@@ -21,9 +21,9 @@ export default async function* runExecutor(options: ViteBuildExecutorSchema) {
       await new Promise<{ success: boolean }>(() => {});
     }
   } catch (err) {
-    return {
+    console.error(err);
+    yield {
       success: false,
-      error: err,
     };
   }
 }

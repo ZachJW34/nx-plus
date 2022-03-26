@@ -17,6 +17,8 @@ export const options: ApplicationGeneratorSchema = {
 describe('application schematic', () => {
   let appTree: Tree;
 
+  const treeRead = (path: string) => appTree.read(path, 'utf-8') || '';
+
   beforeEach(() => {
     appTree = createTreeWithEmptyWorkspace();
   });
@@ -24,22 +26,18 @@ describe('application schematic', () => {
   it('should update workspace.json', async () => {
     await applicationGenerator(appTree, options);
 
-    const {
-      root,
-      sourceRoot,
-      targets: { build, serve, test, lint },
-    } = readProjectConfiguration(appTree, 'my-app');
+    const config = readProjectConfiguration(appTree, 'my-app');
 
-    expect(root).toBe('apps/my-app');
-    expect(sourceRoot).toBe('apps/my-app/src');
-    expect(build.executor).toBe('@nx-plus/vue:browser');
-    expect(build.options).toEqual({
+    expect(config.root).toBe('apps/my-app');
+    expect(config.sourceRoot).toBe('apps/my-app/src');
+    expect(config.targets?.build.executor).toBe('@nx-plus/vue:browser');
+    expect(config.targets?.build.options).toEqual({
       dest: 'dist/apps/my-app',
       index: 'apps/my-app/public/index.html',
       main: 'apps/my-app/src/main.ts',
       tsConfig: 'apps/my-app/tsconfig.app.json',
     });
-    expect(build.configurations.production).toEqual({
+    expect(config.targets?.build.configurations?.production).toEqual({
       mode: 'production',
       filenameHashing: true,
       productionSourceMap: true,
@@ -48,15 +46,15 @@ describe('application schematic', () => {
         sourceMap: false,
       },
     });
-    expect(serve.executor).toBe('@nx-plus/vue:dev-server');
-    expect(serve.options).toEqual({
+    expect(config.targets?.serve.executor).toBe('@nx-plus/vue:dev-server');
+    expect(config.targets?.serve.options).toEqual({
       browserTarget: 'my-app:build',
     });
-    expect(serve.configurations.production).toEqual({
+    expect(config.targets?.serve.configurations?.production).toEqual({
       browserTarget: 'my-app:build:production',
     });
-    expect(lint.executor).toBe('@nrwl/linter:eslint');
-    expect(test.executor).toBe('@nrwl/jest:jest');
+    expect(config.targets?.lint.executor).toBe('@nrwl/linter:eslint');
+    expect(config.targets?.test.executor).toBe('@nrwl/jest:jest');
 
     expect(readProjectConfiguration(appTree, 'my-app-e2e')).toBeDefined();
   });
@@ -82,16 +80,14 @@ describe('application schematic', () => {
     const tsconfigAppJson = readJson(appTree, 'apps/my-app/tsconfig.app.json');
     expect(tsconfigAppJson.exclude).toEqual(['**/*.spec.ts', '**/*.spec.tsx']);
 
-    const eslintConfig = JSON.parse(
-      appTree.read('apps/my-app/.eslintrc.json').toString()
-    );
+    const eslintConfig = JSON.parse(treeRead('apps/my-app/.eslintrc.json'));
     expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
-    expect(
-      appTree.read('apps/my-app-e2e/src/integration/app.spec.ts').toString()
-    ).toContain("'Welcome to Your Vue.js + TypeScript App'");
+    expect(treeRead('apps/my-app-e2e/src/integration/app.spec.ts')).toContain(
+      "'Welcome to Your Vue.js + TypeScript App'"
+    );
 
-    expect(appTree.read('apps/my-app/src/App.vue').toString()).toContain(`
+    expect(treeRead('apps/my-app/src/App.vue')).toContain(`
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -103,8 +99,7 @@ describe('application schematic', () => {
 }
 </style>`);
 
-    expect(appTree.read('apps/my-app/src/components/HelloWorld.vue').toString())
-      .toContain(`
+    expect(treeRead('apps/my-app/src/components/HelloWorld.vue')).toContain(`
 <style scoped>
 h3 {
   margin: 40px 0 0;
@@ -140,29 +135,29 @@ a {
     it('should generate a scss style block', async () => {
       await applicationGenerator(appTree, { ...options, style: 'scss' });
 
-      expect(appTree.read('apps/my-app/src/App.vue').toString()).toContain(
+      expect(treeRead('apps/my-app/src/App.vue')).toContain(
         '<style lang="scss">'
       );
-      expect(
-        appTree.read('apps/my-app/src/components/HelloWorld.vue').toString()
-      ).toContain('<style scoped lang="scss">');
+      expect(treeRead('apps/my-app/src/components/HelloWorld.vue')).toContain(
+        '<style scoped lang="scss">'
+      );
     });
 
     it('should generate a less style block', async () => {
       await applicationGenerator(appTree, { ...options, style: 'less' });
 
-      expect(appTree.read('apps/my-app/src/App.vue').toString()).toContain(
+      expect(treeRead('apps/my-app/src/App.vue')).toContain(
         '<style lang="less">'
       );
-      expect(
-        appTree.read('apps/my-app/src/components/HelloWorld.vue').toString()
-      ).toContain('<style scoped lang="less">');
+      expect(treeRead('apps/my-app/src/components/HelloWorld.vue')).toContain(
+        '<style scoped lang="less">'
+      );
     });
 
     it('should generate a stylus style block', async () => {
       await applicationGenerator(appTree, { ...options, style: 'stylus' });
 
-      expect(appTree.read('apps/my-app/src/App.vue').toString()).toContain(`
+      expect(treeRead('apps/my-app/src/App.vue')).toContain(`
 <style lang="stylus">
 #app
   font-family Avenir, Helvetica, Arial, sans-serif
@@ -173,9 +168,7 @@ a {
   margin-top 60px
 </style>`);
 
-      expect(
-        appTree.read('apps/my-app/src/components/HelloWorld.vue').toString()
-      ).toContain(`
+      expect(treeRead('apps/my-app/src/components/HelloWorld.vue')).toContain(`
 <style scoped lang="stylus">
 h3
   margin 40px 0 0
@@ -203,7 +196,7 @@ a
 
       const config = readProjectConfiguration(appTree, 'my-app');
 
-      expect(config.targets.test).toBeUndefined();
+      expect(config.targets?.test).toBeUndefined();
 
       [
         'apps/my-app/tsconfig.spec.json',
@@ -217,9 +210,7 @@ a
       );
       expect(tsconfigAppJson.exclude).toBeUndefined();
 
-      const eslintConfig = JSON.parse(
-        appTree.read('apps/my-app/.eslintrc.json').toString()
-      );
+      const eslintConfig = JSON.parse(treeRead('apps/my-app/.eslintrc.json'));
 
       const expected = getEslintConfigWithOffset('../../');
       delete expected.overrides;
@@ -258,7 +249,7 @@ a
         'apps/my-app/src/router/index.ts',
       ].forEach((path) => expect(appTree.exists(path)).toBeTruthy());
 
-      const main = appTree.read('apps/my-app/src/main.ts').toString();
+      const main = treeRead('apps/my-app/src/main.ts');
       expect(main).toContain("import router from './router';");
       expect(main).toContain(`
 new Vue({
@@ -266,14 +257,14 @@ new Vue({
   render: h => h(App)
 }).$mount('#app');`);
 
-      expect(appTree.read('apps/my-app/src/App.vue').toString()).toContain(`
+      expect(treeRead('apps/my-app/src/App.vue')).toContain(`
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view />`);
 
-      expect(appTree.read('apps/my-app/src/App.vue').toString()).toContain(`
+      expect(treeRead('apps/my-app/src/App.vue')).toContain(`
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -305,7 +296,7 @@ new Vue({
 
       expect(appTree.exists('apps/my-app/babel.config.js')).toBeTruthy();
 
-      const jestConfig = appTree.read('apps/my-app/jest.config.js').toString();
+      const jestConfig = treeRead('apps/my-app/jest.config.js');
       expect(jestConfig).toContain(`
     'vue-jest': {
       tsConfig: 'apps/my-app/tsconfig.spec.json',
@@ -318,24 +309,20 @@ new Vue({
     it('should update workspace.json', async () => {
       await applicationGenerator(appTree, { ...options, directory: 'subdir' });
 
-      const {
-        root,
-        sourceRoot,
-        targets: { build, serve },
-      } = readProjectConfiguration(appTree, 'subdir-my-app');
+      const config = readProjectConfiguration(appTree, 'subdir-my-app');
 
-      expect(root).toBe('apps/subdir/my-app');
-      expect(sourceRoot).toBe('apps/subdir/my-app/src');
-      expect(build.options).toEqual({
+      expect(config.root).toBe('apps/subdir/my-app');
+      expect(config.sourceRoot).toBe('apps/subdir/my-app/src');
+      expect(config.targets?.build.options).toEqual({
         dest: 'dist/apps/subdir/my-app',
         index: 'apps/subdir/my-app/public/index.html',
         main: 'apps/subdir/my-app/src/main.ts',
         tsConfig: 'apps/subdir/my-app/tsconfig.app.json',
       });
-      expect(serve.options).toEqual({
+      expect(config.targets?.serve.options).toEqual({
         browserTarget: 'subdir-my-app:build',
       });
-      expect(serve.configurations.production).toEqual({
+      expect(config.targets?.serve.configurations?.production).toEqual({
         browserTarget: 'subdir-my-app:build:production',
       });
     });
@@ -368,14 +355,12 @@ new Vue({
       ]);
 
       const eslintConfig = JSON.parse(
-        appTree.read('apps/subdir/my-app/.eslintrc.json').toString()
+        treeRead('apps/subdir/my-app/.eslintrc.json')
       );
       expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../../'));
 
       expect(
-        appTree
-          .read('apps/subdir/my-app-e2e/src/integration/app.spec.ts')
-          .toString()
+        treeRead('apps/subdir/my-app-e2e/src/integration/app.spec.ts')
       ).toContain("'Welcome to Your Vue.js + TypeScript App'");
 
       const tsConfigJson = readJson(
@@ -390,7 +375,7 @@ new Vue({
 
   describe('workspaceLayout', () => {
     beforeEach(() => {
-      const nxJson = JSON.parse(appTree.read('nx.json').toString());
+      const nxJson = JSON.parse(treeRead('nx.json'));
       const updateNxJson = {
         ...nxJson,
         workspaceLayout: { appsDir: 'custom-apps-dir' },
@@ -401,24 +386,20 @@ new Vue({
     it('should update workspace.json', async () => {
       await applicationGenerator(appTree, options);
 
-      const {
-        root,
-        sourceRoot,
-        targets: { build, serve },
-      } = readProjectConfiguration(appTree, 'my-app');
+      const config = readProjectConfiguration(appTree, 'my-app');
 
-      expect(root).toBe('custom-apps-dir/my-app');
-      expect(sourceRoot).toBe('custom-apps-dir/my-app/src');
-      expect(build.options).toEqual({
+      expect(config.root).toBe('custom-apps-dir/my-app');
+      expect(config.sourceRoot).toBe('custom-apps-dir/my-app/src');
+      expect(config.targets?.build.options).toEqual({
         dest: 'dist/custom-apps-dir/my-app',
         index: 'custom-apps-dir/my-app/public/index.html',
         main: 'custom-apps-dir/my-app/src/main.ts',
         tsConfig: 'custom-apps-dir/my-app/tsconfig.app.json',
       });
-      expect(serve.options).toEqual({
+      expect(config.targets?.serve.options).toEqual({
         browserTarget: 'my-app:build',
       });
-      expect(serve.configurations.production).toEqual({
+      expect(config.targets?.serve.configurations?.production).toEqual({
         browserTarget: 'my-app:build:production',
       });
     });
@@ -451,14 +432,12 @@ new Vue({
       ]);
 
       const eslintConfig = JSON.parse(
-        appTree.read('custom-apps-dir/my-app/.eslintrc.json').toString()
+        treeRead('custom-apps-dir/my-app/.eslintrc.json')
       );
       expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
       expect(
-        appTree
-          .read('custom-apps-dir/my-app-e2e/src/integration/app.spec.ts')
-          .toString()
+        treeRead('custom-apps-dir/my-app-e2e/src/integration/app.spec.ts')
       ).toContain("'Welcome to Your Vue.js + TypeScript App'");
 
       const tsConfigJson = readJson(
@@ -473,7 +452,7 @@ new Vue({
 });
 
 export function getEslintConfigWithOffset(offset: string) {
-  return {
+  const config = {
     extends: [
       `${offset}.eslintrc.json`,
       `plugin:vue/essential`,
@@ -494,4 +473,6 @@ export function getEslintConfigWithOffset(offset: string) {
       node: true,
     },
   };
+
+  return config as Partial<typeof config>;
 }

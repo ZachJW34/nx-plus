@@ -67,7 +67,9 @@ export async function addJest(tree: Tree, options: Options) {
     babelJest: false,
   });
   updateJson(tree, `${options.projectRoot}/tsconfig.spec.json`, (json) => {
-    json.include = json.include.filter((pattern) => !/\.jsx?$/.test(pattern));
+    json.include = json.include.filter(
+      (pattern: string) => !/\.jsx?$/.test(pattern)
+    );
     json.compilerOptions = {
       ...json.compilerOptions,
       jsx: 'preserve',
@@ -116,10 +118,14 @@ export async function addJest(tree: Tree, options: Options) {
     tree,
     {},
     {
-      '@vue/test-utils': '^2.0.0-0',
+      ...(options.isVue3
+        ? { '@vue/test-utils': '^2.0.0-0' }
+        : { '@vue/test-utils': '^1.1.3' }),
       'jest-serializer-vue': '^2.0.2',
       'jest-transform-stub': '^2.0.0',
-      'vue3-jest': '^27.0.0-alpha.1',
+      ...(options.isVue3
+        ? { 'vue3-jest': '^27.0.0-alpha.1' }
+        : { '@vue/vue2-jest': '^27.0.0-alpha.1' }),
     }
   );
   return [jestInitTask, jestTask, installTask];

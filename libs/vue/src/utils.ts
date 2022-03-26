@@ -22,7 +22,7 @@ const Module = require('module');
 export function getProjectRoot(context: ExecutorContext) {
   return path.join(
     context.root,
-    context.workspace.projects[context.projectName].root
+    context.workspace.projects[context.projectName || ''].root
   );
 }
 
@@ -73,7 +73,7 @@ export async function resolveConfigureWebpack(projectRoot: string) {
     : undefined;
 }
 
-export function loadModule(request, context, force = false) {
+export function loadModule(request: string, context: string, force = false) {
   try {
     return createRequire(path.resolve(context, 'package.json'))(request);
   } catch (e) {
@@ -94,7 +94,7 @@ export function loadModule(request, context, force = false) {
 const createRequire =
   Module.createRequire ||
   Module.createRequireFromPath ||
-  function (filename) {
+  function (filename: string) {
     const mod = new Module(filename, null);
     mod.filename = filename;
     mod.paths = Module._nodeModulePaths(path.dirname(filename));
@@ -104,7 +104,7 @@ const createRequire =
     return mod.exports;
   };
 
-function clearRequireCache(id, map = new Map()) {
+function clearRequireCache(id: string, map = new Map()) {
   const module = require.cache[id];
   if (module) {
     map.set(id, true);
@@ -117,7 +117,7 @@ function clearRequireCache(id, map = new Map()) {
 }
 
 export function checkPeerDeps(options: ApplicationGeneratorSchema): void {
-  const expectedVersion = '^12.0.0';
+  const expectedVersion = '^13.0.0';
   const unmetPeerDeps = [
     ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
     ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),

@@ -10,7 +10,7 @@ export default async function* runExecutor(
 ) {
   const projectRoot = path.join(
     context.root,
-    context.workspace.projects[context.projectName].root
+    context.workspace.projects[context.projectName ?? ''].root
   );
 
   try {
@@ -24,9 +24,9 @@ export default async function* runExecutor(
       success: true,
     };
   } catch (err) {
+    console.error(err);
     yield {
       success: false,
-      error: err,
     };
   }
 }

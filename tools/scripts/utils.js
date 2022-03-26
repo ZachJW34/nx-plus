@@ -7,7 +7,7 @@ function getPublishableLibNames(workspaceJson = readWorkspaceJson()) {
       projects[key].projectType === 'library' &&
       projects[key].targets &&
       projects[key].targets.build &&
-      projects[key].targets.build.executor === '@nrwl/node:package'
+      projects[key].targets.build.executor === '@nrwl/js:tsc'
   );
 }
 

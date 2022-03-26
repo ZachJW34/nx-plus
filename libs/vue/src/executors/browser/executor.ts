@@ -49,7 +49,7 @@ export default async function* runExecutor(
     const babelConfig = await getBabelConfig(projectRoot);
 
     const inlineOptions = {
-      chainWebpack: (config) => {
+      chainWebpack: (config: unknown) => {
         modifyIndexHtmlPath(config, options, context);
         modifyEntryPoint(config, options, context);
         modifyTsConfigPaths(config, options, context);
@@ -99,6 +99,7 @@ export default async function* runExecutor(
       await new Promise<{ success: boolean }>(() => {});
     }
   } catch (err) {
-    yield { success: false, error: err };
+    console.error(err);
+    yield { success: false };
   }
 }

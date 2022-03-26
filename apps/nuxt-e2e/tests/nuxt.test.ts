@@ -26,7 +26,7 @@ describe('nuxt e2e', () => {
       Snapshots:   0 total
     `);
 
-    const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e --headless`);
+    const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e`);
     expect(e2eResult.stdout).toContain('All specs passed!');
 
     await runNxCommandAsync(`build ${appName}`);
@@ -52,9 +52,7 @@ describe('nuxt e2e', () => {
       )
     ).not.toThrow();
 
-    const prodE2eResult = await runNxCommandAsync(
-      `e2e ${appName}-e2e --prod --headless`
-    );
+    const prodE2eResult = await runNxCommandAsync(`e2e ${appName}-e2e --prod`);
     expect(prodE2eResult.stdout).toContain('All specs passed!');
   }, 300000);
 
@@ -84,8 +82,7 @@ describe('nuxt e2e', () => {
         `dist/apps/${appName}/dist/.nojekyll`,
         `dist/apps/${appName}/dist/200.html`,
         `dist/apps/${appName}/dist/favicon.ico`,
-        `dist/apps/${appName}/dist/index.html`,
-        `dist/apps/${appName}/dist/README.md`
+        `dist/apps/${appName}/dist/index.html`
       )
     ).not.toThrow();
   }, 300000);
@@ -134,8 +131,7 @@ describe('nuxt e2e', () => {
           `dist/apps/subdir/${appName}/dist/.nojekyll`,
           `dist/apps/subdir/${appName}/dist/200.html`,
           `dist/apps/subdir/${appName}/dist/favicon.ico`,
-          `dist/apps/subdir/${appName}/dist/index.html`,
-          `dist/apps/subdir/${appName}/dist/README.md`
+          `dist/apps/subdir/${appName}/dist/index.html`
         )
       ).not.toThrow();
     }, 300000);

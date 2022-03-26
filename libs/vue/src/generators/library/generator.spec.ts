@@ -17,6 +17,8 @@ export const options: LibraryGeneratorSchema = {
 describe('library schematic', () => {
   let appTree: Tree;
 
+  const treeRead = (path: string) => appTree.read(path, 'utf-8') || '';
+
   beforeEach(() => {
     appTree = createTreeWithEmptyWorkspace();
   });
@@ -24,16 +26,12 @@ describe('library schematic', () => {
   it('should update workspace.json and tsconfig.base.json', async () => {
     await libraryGenerator(appTree, options);
 
-    const {
-      root,
-      sourceRoot,
-      targets: { test, lint },
-    } = readProjectConfiguration(appTree, 'my-lib');
+    const config = readProjectConfiguration(appTree, 'my-lib');
 
-    expect(root).toBe('libs/my-lib');
-    expect(sourceRoot).toBe('libs/my-lib/src');
-    expect(lint.executor).toBe('@nrwl/linter:eslint');
-    expect(test.executor).toBe('@nrwl/jest:jest');
+    expect(config.root).toBe('libs/my-lib');
+    expect(config.sourceRoot).toBe('libs/my-lib/src');
+    expect(config.targets?.lint.executor).toBe('@nrwl/linter:eslint');
+    expect(config.targets?.test.executor).toBe('@nrwl/jest:jest');
 
     const tsConfigBaseJson = readJson(appTree, 'tsconfig.base.json');
     expect(tsConfigBaseJson.compilerOptions.paths['@proj/my-lib']).toEqual([
@@ -60,9 +58,7 @@ describe('library schematic', () => {
     const tsconfigLibJson = readJson(appTree, 'libs/my-lib/tsconfig.lib.json');
     expect(tsconfigLibJson.exclude).toEqual(['**/*.spec.ts', '**/*.spec.tsx']);
 
-    const eslintConfig = JSON.parse(
-      appTree.read('libs/my-lib/.eslintrc.json').toString()
-    );
+    const eslintConfig = JSON.parse(treeRead('libs/my-lib/.eslintrc.json'));
     expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
     const tsConfigJson = readJson(appTree, 'libs/my-lib/tsconfig.json');
@@ -85,9 +81,7 @@ describe('library schematic', () => {
         tsConfig: `libs/my-lib/tsconfig.lib.json`,
       });
 
-      expect(
-        JSON.parse(appTree.read('libs/my-lib/package.json').toString())
-      ).toEqual({
+      expect(JSON.parse(treeRead('libs/my-lib/package.json'))).toEqual({
         name: '@proj/my-lib',
         version: '0.0.0',
       });
@@ -114,16 +108,14 @@ describe('library schematic', () => {
       );
       expect(tsconfigLibJson.exclude).toBeUndefined();
 
-      const eslintConfig = JSON.parse(
-        appTree.read('libs/my-lib/.eslintrc.json').toString()
-      );
+      const eslintConfig = JSON.parse(treeRead('libs/my-lib/.eslintrc.json'));
       const expected = getEslintConfigWithOffset('../../');
       delete expected.overrides;
       expect(eslintConfig).toEqual(expected);
 
-      expect(
-        appTree.read('libs/my-lib/.eslintrc.json').toString()
-      ).not.toContain('"overrides":');
+      expect(treeRead('libs/my-lib/.eslintrc.json')).not.toContain(
+        '"overrides":'
+      );
 
       const tsConfigJson = readJson(appTree, 'libs/my-lib/tsconfig.json');
       expect(tsConfigJson.references[1]).toBeUndefined();
@@ -136,7 +128,7 @@ describe('library schematic', () => {
 
       expect(appTree.exists('libs/my-lib/babel.config.js')).toBeTruthy();
 
-      const jestConfig = appTree.read('libs/my-lib/jest.config.js').toString();
+      const jestConfig = treeRead('libs/my-lib/jest.config.js');
       expect(jestConfig).toContain(`
     'vue-jest': {
       tsConfig: 'libs/my-lib/tsconfig.spec.json',
@@ -153,19 +145,15 @@ describe('library schematic', () => {
         publishable: true,
       });
 
-      const {
-        root,
-        sourceRoot,
-        targets: { build },
-      } = readProjectConfiguration(appTree, 'subdir-my-lib');
-      expect(build.options).toEqual({
+      const config = readProjectConfiguration(appTree, 'subdir-my-lib');
+      expect(config.targets?.build.options).toEqual({
         dest: `dist/libs/subdir/my-lib`,
         entry: `libs/subdir/my-lib/src/index.ts`,
         tsConfig: `libs/subdir/my-lib/tsconfig.lib.json`,
       });
 
-      expect(root).toBe('libs/subdir/my-lib');
-      expect(sourceRoot).toBe('libs/subdir/my-lib/src');
+      expect(config.root).toBe('libs/subdir/my-lib');
+      expect(config.sourceRoot).toBe('libs/subdir/my-lib/src');
 
       const tsConfigBaseJson = readJson(appTree, 'tsconfig.base.json');
       expect(
@@ -203,13 +191,11 @@ describe('library schematic', () => {
       ]);
 
       const eslintConfig = JSON.parse(
-        appTree.read('libs/subdir/my-lib/.eslintrc.json').toString()
+        treeRead('libs/subdir/my-lib/.eslintrc.json')
       );
       expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../../'));
 
-      expect(
-        JSON.parse(appTree.read('libs/subdir/my-lib/package.json').toString())
-      ).toEqual({
+      expect(JSON.parse(treeRead('libs/subdir/my-lib/package.json'))).toEqual({
         name: '@proj/my-lib',
         version: '0.0.0',
       });
@@ -226,7 +212,7 @@ describe('library schematic', () => {
 
   describe('workspaceLayout', () => {
     beforeEach(() => {
-      const nxJson = JSON.parse(appTree.read('nx.json').toString());
+      const nxJson = JSON.parse(treeRead('nx.json'));
       const updateNxJson = {
         ...nxJson,
         workspaceLayout: { libsDir: 'custom-libs-dir' },
@@ -284,7 +270,7 @@ describe('library schematic', () => {
       ]);
 
       const eslintConfig = JSON.parse(
-        appTree.read('custom-libs-dir/my-lib/.eslintrc.json').toString()
+        treeRead('custom-libs-dir/my-lib/.eslintrc.json')
       );
       expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 

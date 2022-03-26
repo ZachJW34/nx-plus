@@ -1,6 +1,6 @@
 {
   "name": "@nx-plus/docusaurus",
-  "version": "12.4.3",
+  "version": "13.0.0",
   "main": "src/index.js",
   "generators": "./generators.json",
   "executors": "./executors.json",
@@ -28,6 +28,6 @@
     "@nrwl/workspace": "^13.0.0"
   },
   "dependencies": {
-    "@nrwl/devkit": "^13.0.0"
+    "@nrwl/devkit": "^13.9.3"
   }
 }

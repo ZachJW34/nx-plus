@@ -1,10 +1,14 @@
 import { readProjectConfiguration, Tree } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { join } from 'path';
 import { applicationGenerator } from './generator';
 import { ApplicationGeneratorSchema } from './schema';
 
 describe('nuxt schematic', () => {
   let appTree: Tree;
+
+  const treeRead = (path: string) => appTree.read(path, 'utf-8') ?? '';
+
   const options: ApplicationGeneratorSchema = {
     name: 'my-app',
     unitTestRunner: 'jest',
@@ -12,36 +16,75 @@ describe('nuxt schematic', () => {
     skipFormat: false,
   };
 
+  const nuxtFiles = [
+    'tsconfig.json',
+    'nuxt.config.js',
+    '.eslintrc.json',
+    'static/favicon.ico',
+    'pages/index.vue',
+    'components/NuxtLogo.vue',
+    'components/NuxtTutorial.vue',
+  ];
+
+  const testFiles = [
+    'tsconfig.spec.json',
+    'jest.config.js',
+    'test/NuxtLogo.spec.js',
+  ];
+
+  const getGenFiles = (dir = 'apps/my-app') =>
+    [...nuxtFiles, ...testFiles].map((file) => join(dir, file));
+
+  const getGenTestFiles = (dir = 'apps/my-app') =>
+    testFiles.map((file) => join(dir, file));
+
+  const getEslintConfigWithOffset = (offset: string) => ({
+    env: {
+      browser: true,
+      node: true,
+    },
+    extends: [
+      `${offset}.eslintrc.json`,
+      '@nuxtjs/eslint-config-typescript',
+      'plugin:nuxt/recommended',
+      'prettier',
+    ],
+    parserOptions: {
+      extraFileExtensions: ['.vue'],
+    },
+    ignorePatterns: ['!**/*'],
+    rules: {},
+  });
+
   beforeEach(() => {
     appTree = createTreeWithEmptyWorkspace();
   });
 
   it('should update workspace.json', async () => {
     await applicationGenerator(appTree, options);
-    const {
-      root,
-      targets: { build, serve, test, lint, static: staticGenerate },
-    } = readProjectConfiguration(appTree, 'my-app');
+    const config = readProjectConfiguration(appTree, 'my-app');
 
-    expect(root).toBe('apps/my-app');
-    expect(build.executor).toBe('@nx-plus/nuxt:browser');
-    expect(build.options).toEqual({ buildDir: 'dist/apps/my-app' });
-    expect(build.configurations.production).toEqual({});
-    expect(serve.executor).toBe('@nx-plus/nuxt:server');
-    expect(serve.options).toEqual({
+    expect(config.root).toBe('apps/my-app');
+    expect(config.targets?.build.executor).toBe('@nx-plus/nuxt:browser');
+    expect(config.targets?.build.options).toEqual({
+      buildDir: 'dist/apps/my-app',
+    });
+    expect(config.targets?.build.configurations?.production).toEqual({});
+    expect(config.targets?.serve.executor).toBe('@nx-plus/nuxt:server');
+    expect(config.targets?.serve.options).toEqual({
       browserTarget: 'my-app:build',
       dev: true,
     });
-    expect(serve.configurations.production).toEqual({
+    expect(config.targets?.serve.configurations?.production).toEqual({
       browserTarget: 'my-app:build:production',
       dev: false,
     });
-    expect(staticGenerate.executor).toBe('@nx-plus/nuxt:static');
-    expect(staticGenerate.options).toEqual({
+    expect(config.targets?.static.executor).toBe('@nx-plus/nuxt:static');
+    expect(config.targets?.static.options).toEqual({
       browserTarget: 'my-app:build:production',
     });
-    expect(lint.executor).toBe('@nrwl/linter:eslint');
-    expect(test.executor).toBe('@nrwl/jest:jest');
+    expect(config.targets?.lint.executor).toBe('@nrwl/linter:eslint');
+    expect(config.targets?.test.executor).toBe('@nrwl/jest:jest');
 
     expect(readProjectConfiguration(appTree, 'my-app-e2e')).toBeDefined();
   });
@@ -49,27 +92,16 @@ describe('nuxt schematic', () => {
   it('should generate files', async () => {
     await applicationGenerator(appTree, options);
 
-    [
-      'apps/my-app/tsconfig.spec.json',
-      'apps/my-app/tsconfig.json',
-      'apps/my-app/nuxt.config.js',
-      'apps/my-app/jest.config.js',
-      'apps/my-app/.eslintrc.json',
-      'apps/my-app/test/Logo.spec.js',
-      'apps/my-app/static/favicon.ico',
-      'apps/my-app/pages/index.vue',
-      'apps/my-app/layouts/default.vue',
-      'apps/my-app/components/Logo.vue',
-    ].forEach((path) => expect(appTree.exists(path)).toBeTruthy());
+    getGenFiles().forEach((path) => expect(appTree.exists(path)).toBeTruthy());
 
     const eslintConfig = JSON.parse(
-      appTree.read('apps/my-app/.eslintrc.json').toString()
+      appTree.read('apps/my-app/.eslintrc.json', 'utf-8') ?? ''
     );
     expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
-    expect(
-      appTree.read('apps/my-app-e2e/src/integration/app.spec.ts').toString()
-    ).toContain("'my-app'");
+    expect(treeRead('apps/my-app-e2e/src/integration/app.spec.ts')).toContain(
+      "'my-app'"
+    );
   });
 
   describe('--unitTestRunner none', () => {
@@ -79,17 +111,13 @@ describe('nuxt schematic', () => {
         unitTestRunner: 'none',
       });
 
-      const {
-        targets: { test },
-      } = readProjectConfiguration(appTree, 'my-app');
+      const config = readProjectConfiguration(appTree, 'my-app');
 
-      expect(test).toBeUndefined();
+      expect(config.targets?.test).toBeUndefined();
 
-      [
-        'apps/my-app/tsconfig.spec.json',
-        'apps/my-app/jest.config.js',
-        'apps/my-app/test/Logo.spec.js',
-      ].forEach((path) => expect(appTree.exists(path)).toBeFalsy());
+      getGenTestFiles().forEach((path) =>
+        expect(appTree.exists(path)).toBeFalsy()
+      );
     });
   });
 
@@ -111,30 +139,29 @@ describe('nuxt schematic', () => {
     it('should update workspace.json', async () => {
       await applicationGenerator(appTree, { ...options, directory: 'subdir' });
 
-      const {
-        root,
-        targets: { build, serve, test, lint, static: staticGenerate },
-      } = readProjectConfiguration(appTree, 'subdir-my-app');
+      const config = readProjectConfiguration(appTree, 'subdir-my-app');
 
-      expect(root).toBe('apps/subdir/my-app');
-      expect(build.executor).toBe('@nx-plus/nuxt:browser');
-      expect(build.options).toEqual({ buildDir: 'dist/apps/subdir/my-app' });
-      expect(build.configurations.production).toEqual({});
-      expect(serve.executor).toBe('@nx-plus/nuxt:server');
-      expect(serve.options).toEqual({
+      expect(config.root).toBe('apps/subdir/my-app');
+      expect(config.targets?.build.executor).toBe('@nx-plus/nuxt:browser');
+      expect(config.targets?.build.options).toEqual({
+        buildDir: 'dist/apps/subdir/my-app',
+      });
+      expect(config.targets?.build.configurations?.production).toEqual({});
+      expect(config.targets?.serve.executor).toBe('@nx-plus/nuxt:server');
+      expect(config.targets?.serve.options).toEqual({
         browserTarget: 'subdir-my-app:build',
         dev: true,
       });
-      expect(serve.configurations.production).toEqual({
+      expect(config.targets?.serve.configurations?.production).toEqual({
         browserTarget: 'subdir-my-app:build:production',
         dev: false,
       });
-      expect(staticGenerate.executor).toBe('@nx-plus/nuxt:static');
-      expect(staticGenerate.options).toEqual({
+      expect(config.targets?.static.executor).toBe('@nx-plus/nuxt:static');
+      expect(config.targets?.static.options).toEqual({
         browserTarget: 'subdir-my-app:build:production',
       });
-      expect(lint.executor).toBe('@nrwl/linter:eslint');
-      expect(test.executor).toBe('@nrwl/jest:jest');
+      expect(config.targets?.lint.executor).toBe('@nrwl/linter:eslint');
+      expect(config.targets?.test.executor).toBe('@nrwl/jest:jest');
 
       expect(
         readProjectConfiguration(appTree, 'subdir-my-app-e2e')
@@ -147,35 +174,24 @@ describe('nuxt schematic', () => {
         directory: 'subdir',
       });
 
-      [
-        'apps/subdir/my-app/tsconfig.spec.json',
-        'apps/subdir/my-app/tsconfig.json',
-        'apps/subdir/my-app/nuxt.config.js',
-        'apps/subdir/my-app/jest.config.js',
-        'apps/subdir/my-app/.eslintrc.json',
-        'apps/subdir/my-app/test/Logo.spec.js',
-        'apps/subdir/my-app/static/favicon.ico',
-        'apps/subdir/my-app/pages/index.vue',
-        'apps/subdir/my-app/layouts/default.vue',
-        'apps/subdir/my-app/components/Logo.vue',
-      ].forEach((path) => expect(appTree.exists(path)).toBeTruthy());
+      getGenFiles('apps/subdir/my-app').forEach((path) =>
+        expect(appTree.exists(path)).toBeTruthy()
+      );
 
       const eslintConfig = JSON.parse(
-        appTree.read('apps/subdir/my-app/.eslintrc.json').toString()
+        treeRead('apps/subdir/my-app/.eslintrc.json')
       );
       expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../../'));
 
       expect(
-        appTree
-          .read('apps/subdir/my-app-e2e/src/integration/app.spec.ts')
-          .toString()
+        treeRead('apps/subdir/my-app-e2e/src/integration/app.spec.ts')
       ).toContain("'subdir-my-app'");
     });
   });
 
   describe('workspaceLayout', () => {
     beforeEach(() => {
-      const nxJson = JSON.parse(appTree.read('nx.json').toString());
+      const nxJson = JSON.parse(treeRead('nx.json'));
       const updateNxJson = {
         ...nxJson,
         workspaceLayout: { appsDir: 'custom-apps-dir' },
@@ -185,20 +201,17 @@ describe('nuxt schematic', () => {
 
     it('should update workspace.json', async () => {
       await applicationGenerator(appTree, options);
-      const {
-        root,
-        targets: { build, serve },
-      } = readProjectConfiguration(appTree, 'my-app');
+      const config = readProjectConfiguration(appTree, 'my-app');
 
-      expect(root).toBe('custom-apps-dir/my-app');
-      expect(build.options).toEqual({
+      expect(config.root).toBe('custom-apps-dir/my-app');
+      expect(config.targets?.build.options).toEqual({
         buildDir: 'dist/custom-apps-dir/my-app',
       });
-      expect(serve.options).toEqual({
+      expect(config.targets?.serve.options).toEqual({
         browserTarget: 'my-app:build',
         dev: true,
       });
-      expect(serve.configurations.production).toEqual({
+      expect(config.targets?.serve.configurations?.production).toEqual({
         browserTarget: 'my-app:build:production',
         dev: false,
       });
@@ -207,48 +220,18 @@ describe('nuxt schematic', () => {
     it('should generate files', async () => {
       await applicationGenerator(appTree, options);
 
-      [
-        'custom-apps-dir/my-app/tsconfig.spec.json',
-        'custom-apps-dir/my-app/tsconfig.json',
-        'custom-apps-dir/my-app/nuxt.config.js',
-        'custom-apps-dir/my-app/jest.config.js',
-        'custom-apps-dir/my-app/.eslintrc.json',
-        'custom-apps-dir/my-app/test/Logo.spec.js',
-        'custom-apps-dir/my-app/static/favicon.ico',
-        'custom-apps-dir/my-app/pages/index.vue',
-        'custom-apps-dir/my-app/layouts/default.vue',
-        'custom-apps-dir/my-app/components/Logo.vue',
-      ].forEach((path) => expect(appTree.exists(path)).toBeTruthy());
+      getGenFiles('custom-apps-dir/my-app').forEach((path) =>
+        expect(appTree.exists(path)).toBeTruthy()
+      );
 
       const eslintConfig = JSON.parse(
-        appTree.read('custom-apps-dir/my-app/.eslintrc.json').toString()
+        treeRead('custom-apps-dir/my-app/.eslintrc.json')
       );
       expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
       expect(
-        appTree
-          .read('custom-apps-dir/my-app-e2e/src/integration/app.spec.ts')
-          .toString()
+        treeRead('custom-apps-dir/my-app-e2e/src/integration/app.spec.ts')
       ).toContain("'my-app'");
     });
   });
 });
-
-function getEslintConfigWithOffset(offset: string) {
-  return {
-    env: {
-      browser: true,
-      node: true,
-    },
-    extends: [
-      `${offset}.eslintrc.json`,
-      '@nuxtjs/eslint-config-typescript',
-      'plugin:nuxt/recommended',
-      'prettier',
-    ],
-    parserOptions: {
-      extraFileExtensions: ['.vue'],
-    },
-    ignorePatterns: ['!**/*'],
-  };
-}

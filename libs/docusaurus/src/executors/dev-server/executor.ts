@@ -9,7 +9,7 @@ export default async function* runExecutor(
 ) {
   const projectRoot = path.join(
     context.root,
-    context.workspace.projects[context.projectName].root
+    context.workspace.projects[context.projectName ?? ''].root
   );
   const port = options.port.toString();
 

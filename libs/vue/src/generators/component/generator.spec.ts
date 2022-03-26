@@ -1,6 +1,5 @@
-import { readJson, readProjectConfiguration, Tree } from '@nrwl/devkit';
+import { names, readJson, readProjectConfiguration, Tree } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import { toClassName } from '@nrwl/workspace';
 import { applicationGenerator } from '../application/generator';
 import { options as _appOptions } from '../application/generator.spec';
 import { libraryGenerator } from '../library/generator';
@@ -11,6 +10,8 @@ import { ComponentGeneratorSchema } from './schema';
 const appOptions = { ..._appOptions, vueVersion: 3 };
 const libOptions = { ..._libraryOptions, vueVersion: 3 };
 const styles = ['scss', 'stylus', 'less'] as const;
+
+const toClassName = (name: string) => names(name).className;
 
 describe('component schematic', () => {
   let appTree: Tree;
@@ -40,7 +41,7 @@ describe('component schematic', () => {
 
         const componentPath = `${sourceRoot}/${toClassName(options.name)}.vue`;
 
-        const fileEntry = appTree.read(componentPath).toString();
+        const fileEntry = appTree.read(componentPath, 'utf-8');
 
         expect(fileEntry).toContain(`lang="${style}"`);
       });
@@ -64,7 +65,7 @@ describe('component schematic', () => {
           options.name
         )}.vue`;
 
-        const fileEntry = appTree.read(componentPath).toString();
+        const fileEntry = appTree.read(componentPath, 'utf-8');
 
         expect(fileEntry).toMatchSnapshot();
       });
@@ -98,7 +99,7 @@ describe('component schematic', () => {
           options.name
         )}.vue`;
 
-        const fileEntry = appTree.read(componentPath).toString();
+        const fileEntry = appTree.read(componentPath, 'utf-8');
 
         expect(fileEntry).toContain(`lang="${style}"`);
       });

@@ -10,5 +10,7 @@
         "jestConfig": "apps/vite-e2e/jest.config.js"
       }
     }
-  }
+  },
+  "tags": [],
+  "implicitDependencies": ["vite"]
 }

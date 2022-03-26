@@ -41,10 +41,11 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
 
   const fileChanges = tree.listChanges();
   if (options.unitTestRunner === 'none') {
-    const { path } = fileChanges.find(({ path }) =>
-      path.includes('example.spec.ts')
-    );
-    tree.delete(path);
+    const { path } =
+      fileChanges.find(({ path }) => path.includes('example.spec.ts')) || {};
+    if (path) {
+      tree.delete(path);
+    }
   }
 
   if (!options.routing) {
@@ -59,10 +60,12 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
   }
 
   if (options.isVue3) {
-    const { path } = fileChanges.find(({ path }) =>
-      path.includes('/src/shims-tsx.d.ts')
-    );
-    tree.delete(path);
+    const { path } =
+      fileChanges.find(({ path }) => path.includes('/src/shims-tsx.d.ts')) ||
+      {};
+    if (path) {
+      tree.delete(path);
+    }
   }
 }
 
@@ -71,7 +74,7 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
     '@nrwl/cypress'
   );
   const { Linter } = await import('@nrwl/linter');
-  const cypressInitTask = await cypressInitGenerator(tree);
+  const cypressInitTask = await cypressInitGenerator(tree, {});
   const cypressTask = await cypressProjectGenerator(tree, {
     project: options.projectName,
     name: options.name + '-e2e',
@@ -83,13 +86,13 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
   const appSpecPath = options.projectRoot + '-e2e/src/integration/app.spec.ts';
   tree.write(
     appSpecPath,
-    tree
-      .read(appSpecPath)
-      .toString('utf-8')
-      .replace(
-        `Welcome to ${options.projectName}!`,
-        'Welcome to Your Vue.js + TypeScript App'
-      )
+    `describe('${options.projectName}', () => {
+  it('should display welcome message', () => {
+    cy.visit('/')
+    cy.contains('h1', 'Welcome to Your Vue.js + TypeScript App')
+  });
+});
+`
   );
 
   return [cypressInitTask, cypressTask];

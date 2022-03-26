@@ -4,13 +4,15 @@ import {
   parseTargetString,
   readTargetOptions,
 } from '@nrwl/devkit';
-import { build, loadNuxt } from 'nuxt';
 import { getProjectRoot } from '../../utils';
 import { modifyTypescriptAliases } from '../../webpack';
 import { ServerExecutorSchema } from './schema';
 import * as path from 'path';
 
-const serverBuilderOverriddenKeys = [];
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { build, loadNuxt } = require('nuxt');
+
+const serverBuilderOverriddenKeys: string[] = [];
 
 export default async function* runExecutor(
   options: ServerExecutorSchema,
@@ -18,12 +20,12 @@ export default async function* runExecutor(
 ) {
   const browserTarget = parseTargetString(options.browserTarget);
   const rawBrowserOptions = readTargetOptions(browserTarget, context);
-  const overrides = Object.keys(options)
+  const overrides = Object.entries(options)
     .filter(
-      (key) =>
-        options[key] !== undefined && serverBuilderOverriddenKeys.includes(key)
+      ([key, val]) =>
+        val !== undefined && serverBuilderOverriddenKeys.includes(key)
     )
-    .reduce((previous, key) => ({ ...previous, [key]: options[key] }), {});
+    .reduce((previous, [key, val]) => ({ ...previous, [key]: val }), {});
   const browserOptions = { ...rawBrowserOptions, ...overrides };
 
   const projectRoot = await getProjectRoot(context);
@@ -34,7 +36,7 @@ export default async function* runExecutor(
     configOverrides: {
       buildDir: path.join(context.root, browserOptions.buildDir, '.nuxt'),
       build: {
-        extend(config, ctx) {
+        extend(config: Record<string, unknown>, ctx: Record<string, unknown>) {
           modifyTypescriptAliases(config, projectRoot);
 
           // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -54,8 +56,6 @@ export default async function* runExecutor(
   if (options.dev) {
     await build(nuxt);
   }
-
-  console.log(nuxt);
 
   const result = await nuxt.listen(nuxt.options.server.port);
   const baseUrl = options.dev ? nuxt.server.listeners[0].url : result.url;

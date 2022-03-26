@@ -66,10 +66,8 @@ function updateGitIgnore(host: Tree) {
 
   if (!host.exists(gitIgnorePath)) return;
 
-  const gitIgnoreSource = host
-    .read(gitIgnorePath)
-    .toString('utf-8')
-    .trimRight();
+  const gitIgnoreSource = host.read(gitIgnorePath, 'utf-8')?.trimRight() ?? '';
+
   const ignorePatterns = ['.docusaurus/', '.cache-loader/'].filter(
     (ip) => !gitIgnoreSource.includes(ip)
   );
@@ -95,10 +93,9 @@ function updatePrettierIgnore(host: Tree) {
 
   if (!host.exists(prettierIgnorePath)) return;
 
-  const prettierIgnoreSource = host
-    .read(prettierIgnorePath)
-    .toString('utf-8')
-    .trimRight();
+  const prettierIgnoreSource =
+    host.read(prettierIgnorePath, 'utf-8')?.trimRight() ?? '';
+
   const ignorePattern = '.docusaurus/';
 
   if (prettierIgnoreSource.includes(ignorePattern)) return;
