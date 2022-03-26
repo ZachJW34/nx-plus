@@ -25,7 +25,7 @@ describe('vite e2e', () => {
     `);
 
     disableHashing(appName);
-    const buildResult = await runNxCommandAsync(`build ${appName}`);
+    await runNxCommandAsync(`build ${appName}`);
     checkFilesExist(
       `dist/apps/${appName}/index.html`,
       `dist/apps/${appName}/assets/index.css`,
@@ -33,9 +33,6 @@ describe('vite e2e', () => {
       `dist/apps/${appName}/assets/vendor.js`,
       `dist/apps/${appName}/assets/logo.png`
     );
-    // Cannot disable hashing for assets
-    // see: https://github.com/vitejs/vite/issues/2944
-    expect(buildResult.stdout).toContain(`dist/apps/${appName}/assets/logo`);
 
     const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e`);
     expect(e2eResult.stdout).toContain('All specs passed!');
