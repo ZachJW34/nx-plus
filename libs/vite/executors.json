@@ -14,9 +14,9 @@
   },
   "builders": {
     "build": {
-      "implementation": "./src/executors/browser/compat",
-      "schema": "./src/executors/browser/schema.json",
-      "description": "browser builder"
+      "implementation": "./src/executors/build/compat",
+      "schema": "./src/executors/build/schema.json",
+      "description": "build builder"
     },
     "server": {
       "implementation": "./src/executors/server/compat",

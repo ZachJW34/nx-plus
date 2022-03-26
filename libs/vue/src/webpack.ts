@@ -1,60 +1,58 @@
-import { BuilderContext } from '@angular-devkit/architect';
-import { getSystemPath, join, normalize, Path } from '@angular-devkit/core';
+import { ExecutorContext } from '@nrwl/devkit';
+import * as path from 'path';
 import * as semver from 'semver';
-import { BrowserBuilderSchema } from './builders/browser/schema';
-import { LibraryBuilderSchema } from './builders/library/schema';
+import { BrowserExecutorSchema } from './executors/browser/schema';
+import { LibraryExecutorSchema } from './executors/library/schema';
 import { loadModule } from './utils';
 
+// Deal with this later
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ANY = any;
+
 export function modifyIndexHtmlPath(
-  config,
-  options: BrowserBuilderSchema,
-  context: BuilderContext
+  config: ANY,
+  options: BrowserExecutorSchema,
+  context: ExecutorContext
 ): void {
-  config.plugin('html').tap((args) => {
-    args[0].template = getSystemPath(
-      join(normalize(context.workspaceRoot), options.index)
-    );
+  config.plugin('html').tap((args: ANY) => {
+    args[0].template = path.join(context.root, options.index);
     return args;
   });
 }
 
 export function modifyEntryPoint(
-  config,
-  options: BrowserBuilderSchema,
-  context: BuilderContext
+  config: ANY,
+  options: BrowserExecutorSchema,
+  context: ExecutorContext
 ): void {
   config.entry('app').clear();
-  config
-    .entry('app')
-    .add(getSystemPath(join(normalize(context.workspaceRoot), options.main)));
+  config.entry('app').add(path.join(context.root, options.main));
 }
 
 export function modifyTsConfigPaths(
-  config,
-  options: BrowserBuilderSchema | LibraryBuilderSchema,
-  context: BuilderContext
+  config: ANY,
+  options: BrowserExecutorSchema | LibraryExecutorSchema,
+  context: ExecutorContext
 ): void {
-  const tsConfigPath = getSystemPath(
-    join(normalize(context.workspaceRoot), options.tsConfig)
-  );
-  const vue = loadModule('vue', context.workspaceRoot);
+  const tsConfigPath = path.join(context.root, options.tsConfig);
+  const vue = loadModule('vue', context.root);
   const isVue3 = semver.major(vue.version) === 3;
 
   config.module
     .rule('ts')
     .use('ts-loader')
-    .tap((loaderOptions) => {
+    .tap((loaderOptions: ANY) => {
       loaderOptions.configFile = tsConfigPath;
       return loaderOptions;
     });
   config.module
     .rule('tsx')
     .use('ts-loader')
-    .tap((loaderOptions) => {
+    .tap((loaderOptions: ANY) => {
       loaderOptions.configFile = tsConfigPath;
       return loaderOptions;
     });
-  config.plugin('fork-ts-checker').tap((args) => {
+  config.plugin('fork-ts-checker').tap((args: ANY) => {
     if (isVue3) {
       args[0].typescript.configFile = tsConfigPath;
     } else {
@@ -64,52 +62,52 @@ export function modifyTsConfigPaths(
   });
 }
 
-export function modifyCachePaths(config, context: BuilderContext): void {
-  const vueLoaderCachePath = getSystemPath(
-    join(normalize(context.workspaceRoot), 'node_modules/.cache/vue-loader')
+export function modifyCachePaths(config: ANY, context: ExecutorContext): void {
+  const vueLoaderCachePath = path.join(
+    context.root,
+    'node_modules/.cache/vue-loader'
   );
-  const tsLoaderCachePath = getSystemPath(
-    join(normalize(context.workspaceRoot), 'node_modules/.cache/ts-loader')
+  const tsLoaderCachePath = path.join(
+    context.root,
+    'node_modules/.cache/ts-loader'
   );
 
   config.module
     .rule('vue')
     .use('cache-loader')
-    .tap((options) => {
+    .tap((options: ANY) => {
       options.cacheDirectory = vueLoaderCachePath;
       return options;
     });
   config.module
     .rule('vue')
     .use('vue-loader')
-    .tap((options) => {
+    .tap((options: ANY) => {
       options.cacheDirectory = vueLoaderCachePath;
       return options;
     });
   config.module
     .rule('ts')
     .use('cache-loader')
-    .tap((options) => {
+    .tap((options: ANY) => {
       options.cacheDirectory = tsLoaderCachePath;
       return options;
     });
   config.module
     .rule('tsx')
     .use('cache-loader')
-    .tap((options) => {
+    .tap((options: ANY) => {
       options.cacheDirectory = tsLoaderCachePath;
       return options;
     });
 }
 
 export function modifyTypescriptAliases(
-  config,
-  options: BrowserBuilderSchema | LibraryBuilderSchema,
-  context: BuilderContext
+  config: ANY,
+  options: BrowserExecutorSchema | LibraryExecutorSchema,
+  context: ExecutorContext
 ) {
-  const tsConfigPath = getSystemPath(
-    join(normalize(context.workspaceRoot), options.tsConfig)
-  );
+  const tsConfigPath = path.join(context.root, options.tsConfig);
   const extensions = [
     '.tsx',
     '.ts',
@@ -133,15 +131,15 @@ export function modifyTypescriptAliases(
 }
 
 export function modifyCopyAssets(
-  config,
-  options: LibraryBuilderSchema,
-  context: BuilderContext,
-  projectRoot: Path
+  config: ANY,
+  options: LibraryExecutorSchema,
+  context: ExecutorContext,
+  projectRoot: string
 ): void {
   const transformedAssetPatterns = ['package.json', 'README.md'].map(
     (file) => ({
-      from: getSystemPath(join(projectRoot, file)),
-      to: getSystemPath(join(normalize(context.workspaceRoot), options.dest)),
+      from: path.join(projectRoot, file),
+      to: path.join(context.root, options.dest),
     })
   );
 
@@ -152,27 +150,28 @@ export function modifyCopyAssets(
 }
 
 export function modifyBabelLoader(
-  config,
+  config: ANY,
   babelConfig: string,
-  context: BuilderContext
+  context: ExecutorContext
 ) {
   ['js', 'ts', 'tsx'].forEach((ext) =>
     config.module
       .rule(ext)
       .use('babel-loader')
-      .tap((options) => ({
+      .tap((options: ANY) => ({
         ...options,
         configFile: babelConfig,
       }))
   );
 
-  const babelLoaderCachePath = getSystemPath(
-    join(normalize(context.workspaceRoot), 'node_modules/.cache/babel-loader')
+  const babelLoaderCachePath = path.join(
+    context.root,
+    'node_modules/.cache/babel-loader'
   );
   config.module
     .rule('js')
     .use('cache-loader')
-    .tap((options) => {
+    .tap((options: ANY) => {
       options.cacheDirectory = babelLoaderCachePath;
       return options;
     });

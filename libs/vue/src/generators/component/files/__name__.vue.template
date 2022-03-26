@@ -1,0 +1,17 @@
+<template>
+  <p>Welcome to <%= name %></p>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: '<%= fileName %>',
+});
+</script>
+
+<% if (style == 'css') { %>
+<style scoped></style>
+<% } else { %>
+<style scoped lang="<%= style %>"></style>
+<% } %>

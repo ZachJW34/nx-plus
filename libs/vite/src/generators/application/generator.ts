@@ -24,21 +24,21 @@ interface NormalizedSchema extends ApplicationGeneratorSchema {
 }
 
 function normalizeOptions(
-  host: Tree,
-  options: ApplicationGeneratorSchema
+  tree: Tree,
+  schema: ApplicationGeneratorSchema
 ): NormalizedSchema {
-  const name = names(options.name).fileName;
-  const projectDirectory = options.directory
-    ? `${names(options.directory).fileName}/${name}`
+  const name = names(schema.name).fileName;
+  const projectDirectory = schema.directory
+    ? `${names(schema.directory).fileName}/${name}`
     : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
-  const projectRoot = `${getWorkspaceLayout(host).appsDir}/${projectDirectory}`;
-  const parsedTags = options.tags
-    ? options.tags.split(',').map((s) => s.trim())
+  const projectRoot = `${getWorkspaceLayout(tree).appsDir}/${projectDirectory}`;
+  const parsedTags = schema.tags
+    ? schema.tags.split(',').map((s) => s.trim())
     : [];
 
   return {
-    ...options,
+    ...schema,
     name,
     projectName,
     projectRoot,
@@ -47,7 +47,7 @@ function normalizeOptions(
   };
 }
 
-function addFiles(host: Tree, options: NormalizedSchema) {
+function addFiles(tree: Tree, options: NormalizedSchema) {
   const templateOptions = {
     ...options,
     ...names(options.name),
@@ -55,16 +55,19 @@ function addFiles(host: Tree, options: NormalizedSchema) {
     template: '',
   };
   generateFiles(
-    host,
+    tree,
     path.join(__dirname, 'files'),
     options.projectRoot,
     templateOptions
   );
   if (options.unitTestRunner === 'none') {
-    const { path } = host
-      .listChanges()
-      .find(({ path }) => path.includes('example.spec.ts'));
-    host.delete(path);
+    const { path } =
+      tree.listChanges().find(({ path }) => path.includes('example.spec.ts')) ||
+      {};
+
+    if (path) {
+      tree.delete(path);
+    }
   }
 }
 
@@ -136,7 +139,7 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
     '@nrwl/cypress'
   );
   const { Linter } = await import('@nrwl/linter');
-  const cypressInitTask = await cypressInitGenerator(tree);
+  const cypressInitTask = await cypressInitGenerator(tree, {});
   const cypressTask = await cypressProjectGenerator(tree, {
     project: options.projectName,
     name: options.name + '-e2e',
@@ -148,13 +151,13 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
   const appSpecPath = options.projectRoot + '-e2e/src/integration/app.spec.ts';
   tree.write(
     appSpecPath,
-    tree
-      .read(appSpecPath)
-      .toString('utf-8')
-      .replace(
-        `Welcome to ${options.projectName}!`,
-        'Hello Vue 3 + TypeScript + Vite'
-      )
+    `describe('${options.projectName}', () => {
+  it('should display welcome message', () => {
+    cy.visit('/')
+    cy.contains('h1', 'Hello Vue 3 + TypeScript + Vite')
+  });
+});
+`
   );
 
   return [cypressInitTask, cypressTask];
@@ -174,7 +177,9 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
     babelJest: false,
   });
   updateJson(tree, `${options.projectRoot}/tsconfig.spec.json`, (json) => {
-    json.include = json.include.filter((pattern) => !/\.jsx?$/.test(pattern));
+    json.include = json.include.filter(
+      (pattern: string) => !/\.jsx?$/.test(pattern)
+    );
     json.compilerOptions = {
       ...json.compilerOptions,
       jsx: 'preserve',
@@ -222,8 +227,8 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
   return [jestInitTask, jestTask, installTask];
 }
 
-function addPostInstall(host: Tree) {
-  return updateJson(host, 'package.json', (json) => {
+function addPostInstall(tree: Tree) {
+  return updateJson(tree, 'package.json', (json) => {
     const vuePostInstall =
       'node node_modules/@nx-plus/vite/patch-nx-dep-graph.js';
     const { postinstall } = json.scripts || {};
@@ -241,53 +246,49 @@ function addPostInstall(host: Tree) {
 }
 
 export async function applicationGenerator(
-  host: Tree,
-  options: ApplicationGeneratorSchema
+  tree: Tree,
+  schema: ApplicationGeneratorSchema
 ) {
-  checkPeerDeps(host, options);
-  const normalizedOptions = normalizeOptions(host, options);
-  addProjectConfiguration(host, normalizedOptions.projectName, {
-    root: normalizedOptions.projectRoot,
+  checkPeerDeps(schema);
+  const options = normalizeOptions(tree, schema);
+  addProjectConfiguration(tree, options.projectName, {
+    root: options.projectRoot,
     projectType: 'application',
-    sourceRoot: `${normalizedOptions.projectRoot}/src`,
+    sourceRoot: `${options.projectRoot}/src`,
     targets: {
       build: {
         executor: '@nx-plus/vite:build',
         options: {
-          config: `${normalizedOptions.projectRoot}/vite.config.ts`,
+          config: `${options.projectRoot}/vite.config.ts`,
         },
       },
       serve: {
         executor: '@nx-plus/vite:server',
         options: {
-          config: `${normalizedOptions.projectRoot}/vite.config.ts`,
+          config: `${options.projectRoot}/vite.config.ts`,
         },
       },
     },
-    tags: normalizedOptions.parsedTags,
+    tags: options.parsedTags,
   });
-  addFiles(host, normalizedOptions);
-  const lintTasks = await addEsLint(host, normalizedOptions);
+  addFiles(tree, options);
+  const lintTasks = await addEsLint(tree, options);
   const cypressTasks =
-    options.e2eTestRunner === 'cypress'
-      ? await addCypress(host, normalizedOptions)
-      : [];
+    schema.e2eTestRunner === 'cypress' ? await addCypress(tree, options) : [];
   const jestTasks =
-    options.unitTestRunner === 'jest'
-      ? await addJest(host, normalizedOptions)
-      : [];
+    schema.unitTestRunner === 'jest' ? await addJest(tree, options) : [];
   const installTask = addDependenciesToPackageJson(
-    host,
+    tree,
     { vue: '^3.0.5' },
     {
       '@vitejs/plugin-vue': '^2.0.0',
       typescript: '^4.4.4',
-      vite: '^2.7.1',
+      vite: '^2.8.6',
     }
   );
-  addPostInstall(host);
-  if (!normalizedOptions.skipFormat) {
-    await formatFiles(host);
+  addPostInstall(tree);
+  if (!options.skipFormat) {
+    await formatFiles(tree);
   }
 
   return runTasksInSerial(

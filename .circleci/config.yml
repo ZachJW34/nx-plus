@@ -4,7 +4,7 @@ orbs:
 jobs:
   all:
     docker:
-      - image: cypress/base:14.17.3
+      - image: cypress/base:16.14.0
     steps:
       - checkout
       - node/install-packages:
@@ -17,7 +17,7 @@ jobs:
           no_output_timeout: 40m
   affected:
     docker:
-      - image: cypress/base:14.17.3
+      - image: cypress/base:16.14.0
     steps:
       - checkout
       - node/install-packages:

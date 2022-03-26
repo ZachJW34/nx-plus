@@ -160,12 +160,12 @@ describe('vue 3 e2e', () => {
       expect(() =>
         checkFilesExist(
           `dist/libs/${lib}/demo.html`,
-          `dist/libs/${lib}/${lib}.common.js`,
-          `dist/libs/${lib}/${lib}.common.js.map`,
-          `dist/libs/${lib}/${lib}.umd.js`,
-          `dist/libs/${lib}/${lib}.umd.js.map`,
-          `dist/libs/${lib}/${lib}.umd.min.js`,
-          `dist/libs/${lib}/${lib}.umd.min.js.map`,
+          `dist/libs/${lib}/build.common.js`,
+          `dist/libs/${lib}/build.common.js.map`,
+          `dist/libs/${lib}/build.umd.js`,
+          `dist/libs/${lib}/build.umd.js.map`,
+          `dist/libs/${lib}/build.umd.min.js`,
+          `dist/libs/${lib}/build.umd.min.js.map`,
           `dist/libs/${lib}/package.json`,
           `dist/libs/${lib}/README.md`
         )
@@ -188,16 +188,16 @@ describe('vue 3 e2e', () => {
       );
       expect(() =>
         checkFilesExist(
-          `dist/libs/${lib}/${lib}.common.js`,
-          `dist/libs/${lib}/${lib}.common.js.map`
+          `dist/libs/${lib}/build.common.js`,
+          `dist/libs/${lib}/build.common.js.map`
         )
       ).not.toThrow();
       expect(() =>
         checkFilesExist(
-          `dist/libs/${lib}/${lib}.umd.js`,
-          `dist/libs/${lib}/${lib}.umd.js.map`,
-          `dist/libs/${lib}/${lib}.umd.min.js`,
-          `dist/libs/${lib}/${lib}.umd.min.js.map`
+          `dist/libs/${lib}/build.umd.js`,
+          `dist/libs/${lib}/build.umd.js.map`,
+          `dist/libs/${lib}/build.umd.min.js`,
+          `dist/libs/${lib}/build.umd.min.js.map`
         )
       ).toThrow();
     }, 300000);

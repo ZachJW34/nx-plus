@@ -1,9 +1,9 @@
 {
   "name": "@nx-plus/docusaurus",
-  "version": "12.2.0",
+  "version": "13.0.0",
   "main": "src/index.js",
-  "schematics": "./collection.json",
-  "builders": "./builders.json",
+  "generators": "./generators.json",
+  "executors": "./executors.json",
   "description": "Docusaurus plugin for Nx",
   "repository": {
     "type": "git",
@@ -25,16 +25,9 @@
   },
   "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/docusaurus#readme",
   "peerDependencies": {
-    "@nrwl/workspace": "^12.0.0"
+    "@nrwl/workspace": "^13.0.0"
   },
   "dependencies": {
-    "@angular-devkit/architect": "0.1201.0",
-    "@angular-devkit/core": "12.1.0",
-    "@angular-devkit/schematics": "12.1.0",
-    "rxjs": "6.5.5",
-    "typescript": "4.3.5"
-  },
-  "ng-update": {
-    "migrations": "./migrations.json"
+    "@nrwl/devkit": "^13.9.3"
   }
 }

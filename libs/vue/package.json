@@ -1,9 +1,9 @@
 {
   "name": "@nx-plus/vue",
-  "version": "12.2.0",
+  "version": "13.0.0",
   "main": "src/index.js",
-  "schematics": "./collection.json",
-  "builders": "./builders.json",
+  "generators": "./generators.json",
+  "executors": "./executors.json",
   "description": "Vue plugin for Nx",
   "repository": {
     "type": "git",
@@ -27,29 +27,26 @@
   },
   "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/vue#readme",
   "peerDependencies": {
-    "@nrwl/cypress": "^12.6.0",
-    "@nrwl/jest": "^12.6.0",
-    "@nrwl/linter": "^12.6.0",
-    "@nrwl/workspace": "^12.6.0"
+    "@nrwl/cypress": "^13.9.3",
+    "@nrwl/jest": "^13.9.3",
+    "@nrwl/linter": "^13.9.3",
+    "@nrwl/workspace": "^13.9.3"
   },
   "dependencies": {
-    "@angular-devkit/architect": "0.1201.0",
-    "@angular-devkit/core": "12.1.0",
-    "@angular-devkit/schematics": "12.1.0",
-    "@nrwl/devkit": "^12.6.0",
-    "@vue/cli-shared-utils": "~4.5.0",
+    "@nrwl/devkit": "^13.9.3",
+    "@vue/cli-shared-utils": "~4.5.15",
     "copy-webpack-plugin": "^5.1.1",
-    "fs-extra": "^9.0.1",
+    "fs-extra": "^10.0.0",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
-    "rxjs": "6.5.5",
+    "rxjs": "7.5.1",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
-    "semver": "^7.3.2",
+    "semver": "^7.3.5",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "tsconfig-paths-webpack-plugin": "3.3.0",
-    "typescript": "4.3.5"
+    "tsconfig-paths-webpack-plugin": "3.5.2",
+    "typescript": "4.5.4"
   },
   "ng-update": {
     "migrations": "./migrations.json"

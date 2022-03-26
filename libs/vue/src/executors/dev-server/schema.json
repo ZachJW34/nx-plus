@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "title": "DevServer executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "open": {
+      "type": "boolean",
+      "description": "Open browser on server start.",
+      "default": false
+    },
+    "copy": {
+      "type": "boolean",
+      "description": "Copy url to clipboard on server start.",
+      "default": false
+    },
+    "stdin": {
+      "type": "boolean",
+      "description": "Close when stdin ends."
+    },
+    "mode": {
+      "type": "string",
+      "description": "Specify env mode (default: development)."
+    },
+    "host": {
+      "type": "string",
+      "description": "Specify host (default: 0.0.0.0).",
+      "default": "0.0.0.0"
+    },
+    "port": {
+      "type": "number",
+      "description": "Specify port (default: 8080).",
+      "default": 8080
+    },
+    "https": {
+      "type": "boolean",
+      "description": "Use https (default: false).",
+      "default": false
+    },
+    "public": {
+      "type": "string",
+      "description": "Specify the public network URL for the HMR client."
+    },
+    "skipPlugins": {
+      "type": "string",
+      "description": "Comma-separated list of plugin names to skip for this run."
+    },
+    "browserTarget": {
+      "type": "string",
+      "description": "Target to serve.",
+      "pattern": "^[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
+    },
+    "watch": {
+      "type": "boolean",
+      "description": "Watch for changes.",
+      "default": true
+    },
+    "publicPath": {
+      "type": "string",
+      "description": "The base URL your application bundle will be deployed at."
+    },
+    "css": {
+      "type": "object",
+      "properties": {
+        "requireModuleExtension": {
+          "type": "boolean",
+          "description": "By default, only files that ends in *.module.[ext] are treated as CSS modules. Setting this to false will allow you to drop .module in the filenames and treat all *.(css|scss|sass|less|styl(us)?) files as CSS modules."
+        },
+        "extract": {
+          "description": "Whether to extract CSS in your components into a standalone CSS files (instead of inlined in JavaScript and injected dynamically).",
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        },
+        "sourceMap": {
+          "type": "boolean",
+          "description": "Whether to enable source maps for CSS. Setting this to true may affect build performance."
+        },
+        "loaderOptions": {
+          "type": "object",
+          "description": "Pass options to CSS-related loaders."
+        }
+      },
+      "additionalProperties": false
+    },
+    "devServer": {
+      "type": "object",
+      "description": "All options for webpack-dev-server are supported.",
+      "default": {}
+    },
+    "transpileDependencies": {
+      "type": "array",
+      "description": "By default babel-loader ignores all files inside node_modules. If you want to explicitly transpile a dependency with Babel, you can list it in this option.",
+      "default": []
+    }
+  },
+  "required": ["browserTarget"],
+  "additionalProperties": false
+}

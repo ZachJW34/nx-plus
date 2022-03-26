@@ -1,30 +1,28 @@
-import { BuilderContext } from '@angular-devkit/architect';
-import {
-  getSystemPath,
-  join,
-  normalize,
-  Path,
-  resolve,
-  virtualFs,
-} from '@angular-devkit/core';
-import { NodeJsSyncHost } from '@angular-devkit/core/node';
-import { SchematicContext } from '@angular-devkit/schematics';
+import { ExecutorContext, logger } from '@nrwl/devkit';
+import { constants as FS_CONSTANTS } from 'fs';
+import { access, readFile } from 'fs/promises';
 import * as path from 'path';
 import * as semver from 'semver';
 import { appRootPath } from './app-root';
+import { ApplicationGeneratorSchema } from './generators/application/schema';
+
+const readFileToString = (path: string) =>
+  readFile(path).then((res) => res.toString());
+
+const exists = (path: string) =>
+  access(path, FS_CONSTANTS.F_OK)
+    .then(() => true)
+    .catch(() => false);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { chalk } = require('@vue/cli-shared-utils');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Module = require('module');
 
-export async function getProjectRoot(context: BuilderContext): Promise<Path> {
-  const projectMetadata = await context.getProjectMetadata(
-    context.target.project
-  );
-  return resolve(
-    normalize(context.workspaceRoot),
-    normalize((projectMetadata.root as string) || '')
+export function getProjectRoot(context: ExecutorContext) {
+  return path.join(
+    context.root,
+    context.workspace.projects[context.projectName || ''].root
   );
 }
 
@@ -43,22 +41,20 @@ export function modifyChalkOutput(
   });
 }
 
-export function checkUnsupportedConfig(
-  context: BuilderContext,
-  projectRoot: Path
-): void {
-  const host = new virtualFs.SyncDelegateHost(new NodeJsSyncHost());
+export async function checkUnsupportedConfig(
+  context: ExecutorContext,
+  projectRoot: string
+) {
   const packageJson = JSON.parse(
-    virtualFs.fileBufferToString(
-      host.read(join(normalize(context.workspaceRoot), 'package.json'))
-    )
+    await readFileToString(path.join(context.root, 'package.json'))
   );
   const vueConfigExists =
-    host.exists(join(projectRoot, 'vue.config.js')) ||
-    host.exists(join(projectRoot, 'vue.config.cjs'));
-  const workspaceFileName = host.exists(
-    join(normalize(context.workspaceRoot), 'workspace.json')
-  )
+    (await exists(path.join(projectRoot, 'vue.config.js'))) ||
+    (await exists(path.join(projectRoot, 'vue.config.cjs')));
+
+  const workspaceFileName = (await exists(
+    path.join(context.root, 'workspace.json')
+  ))
     ? 'workspace.json'
     : 'angular.json';
 
@@ -69,19 +65,15 @@ export function checkUnsupportedConfig(
   }
 }
 
-export function resolveConfigureWebpack(projectRoot: string) {
-  const configureWebpackPath = join(
-    normalize(projectRoot),
-    'configure-webpack.js'
-  );
-  const host = new virtualFs.SyncDelegateHost(new NodeJsSyncHost());
+export async function resolveConfigureWebpack(projectRoot: string) {
+  const configureWebpackPath = path.join(projectRoot, 'configure-webpack.js');
 
-  return host.exists(configureWebpackPath)
-    ? require(getSystemPath(configureWebpackPath))
+  return (await exists(configureWebpackPath))
+    ? require(configureWebpackPath)
     : undefined;
 }
 
-export function loadModule(request, context, force = false) {
+export function loadModule(request: string, context: string, force = false) {
   try {
     return createRequire(path.resolve(context, 'package.json'))(request);
   } catch (e) {
@@ -102,7 +94,7 @@ export function loadModule(request, context, force = false) {
 const createRequire =
   Module.createRequire ||
   Module.createRequireFromPath ||
-  function (filename) {
+  function (filename: string) {
     const mod = new Module(filename, null);
     mod.filename = filename;
     mod.paths = Module._nodeModulePaths(path.dirname(filename));
@@ -112,7 +104,7 @@ const createRequire =
     return mod.exports;
   };
 
-function clearRequireCache(id, map = new Map()) {
+function clearRequireCache(id: string, map = new Map()) {
   const module = require.cache[id];
   if (module) {
     map.set(id, true);
@@ -124,8 +116,8 @@ function clearRequireCache(id, map = new Map()) {
   }
 }
 
-export function checkPeerDeps(context: SchematicContext, options): void {
-  const expectedVersion = '^12.6.0';
+export function checkPeerDeps(options: ApplicationGeneratorSchema): void {
+  const expectedVersion = '^13.0.0';
   const unmetPeerDeps = [
     ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
     ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),
@@ -141,7 +133,7 @@ export function checkPeerDeps(context: SchematicContext, options): void {
   });
 
   if (unmetPeerDeps.length) {
-    context.logger.warn(`
+    logger.warn(`
 You have the following unmet peer dependencies:
 
 ${unmetPeerDeps
@@ -149,14 +141,15 @@ ${unmetPeerDeps
   .join()
   .split(',')
   .join('')}
-@nx-plus/vue may not work as expected.
+@nx-plus/vite may not work as expected.
     `);
   }
 }
 
-export function getBabelConfig(projectRoot: string) {
-  const babelConfig = join(normalize(projectRoot), 'babel.config.js');
-  const host = new virtualFs.SyncDelegateHost(new NodeJsSyncHost());
+export async function getBabelConfig(
+  projectRoot: string
+): Promise<string | null> {
+  const babelConfig = path.join(projectRoot, 'babel.config.js');
 
-  return host.exists(babelConfig) ? getSystemPath(babelConfig) : undefined;
+  return (await exists(babelConfig)) ? babelConfig : null;
 }

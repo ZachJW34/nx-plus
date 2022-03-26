@@ -1,0 +1,59 @@
+{
+  "root": "libs/docusaurus",
+  "sourceRoot": "libs/docusaurus/src",
+  "projectType": "library",
+  "generators": {},
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/docusaurus/**/*.ts",
+          "libs/docusaurus/**/*.spec.ts",
+          "libs/docusaurus/**/*.spec.tsx",
+          "libs/docusaurus/**/*.spec.js",
+          "libs/docusaurus/**/*.spec.jsx",
+          "libs/docusaurus/**/*.d.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "libs/docusaurus/jest.config.js",
+        "passWithNoTests": true
+      },
+      "outputs": ["coverage/libs/docusaurus"]
+    },
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "options": {
+        "outputPath": "dist/libs/docusaurus",
+        "tsConfig": "libs/docusaurus/tsconfig.lib.json",
+        "packageJson": "libs/docusaurus/package.json",
+        "main": "libs/docusaurus/src/index.ts",
+        "assets": [
+          "libs/docusaurus/*.md",
+          {
+            "input": "./libs/docusaurus/src",
+            "glob": "**/*.!(ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/docusaurus",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/docusaurus",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ],
+        "srcRootForCompilationRoot": "libs/docusaurus"
+      },
+      "outputs": ["{options.outputPath}"]
+    }
+  },
+  "tags": []
+}

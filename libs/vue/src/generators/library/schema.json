@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "Library",
+  "cli": "nx",
+  "title": "Create a Vue Library",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Library name",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the library?"
+    },
+    "directory": {
+      "type": "string",
+      "description": "A directory where the lib is placed"
+    },
+    "unitTestRunner": {
+      "type": "string",
+      "enum": ["jest", "none"],
+      "description": "Test runner to use for unit tests",
+      "default": "jest"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Add tags to the library (used for linting)"
+    },
+    "skipFormat": {
+      "description": "Skip formatting files",
+      "type": "boolean",
+      "default": false
+    },
+    "skipTsConfig": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not update tsconfig.json for development experience."
+    },
+    "publishable": {
+      "type": "boolean",
+      "default": false,
+      "description": "Create a buildable library."
+    },
+    "vueVersion": {
+      "description": "The version of Vue.js that you want to start the project with.",
+      "type": "number",
+      "default": 0,
+      "x-prompt": {
+        "message": "Which version of Vue.js would you like to use?",
+        "type": "list",
+        "items": [
+          {
+            "value": 2,
+            "label": "2.x"
+          },
+          {
+            "value": 3,
+            "label": "3.x"
+          }
+        ]
+      }
+    },
+    "babel": {
+      "type": "boolean",
+      "description": "Add Babel support.",
+      "default": false,
+      "x-prompt": "Use Babel alongside TypeScript?"
+    }
+  },
+  "required": ["name"],
+  "additionalProperties": false
+}

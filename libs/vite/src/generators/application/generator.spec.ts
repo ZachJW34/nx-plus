@@ -12,6 +12,8 @@ describe('application generator', () => {
     e2eTestRunner: 'cypress',
   };
 
+  const treeRead = (path: string) => appTree.read(path, 'utf-8') ?? '';
+
   beforeEach(() => {
     appTree = createTreeWithEmptyWorkspace();
   });
@@ -23,17 +25,17 @@ describe('application generator', () => {
 
     expect(config.root).toBe('apps/my-app');
     expect(config.sourceRoot).toBe('apps/my-app/src');
-    expect(config.targets.build.executor).toBe('@nx-plus/vite:build');
-    expect(config.targets.build.options).toEqual({
+    expect(config.targets?.build.executor).toBe('@nx-plus/vite:build');
+    expect(config.targets?.build.options).toEqual({
       config: 'apps/my-app/vite.config.ts',
     });
-    expect(config.targets.serve.executor).toBe('@nx-plus/vite:server');
-    expect(config.targets.serve.options).toEqual({
+    expect(config.targets?.serve.executor).toBe('@nx-plus/vite:server');
+    expect(config.targets?.serve.options).toEqual({
       config: 'apps/my-app/vite.config.ts',
     });
 
-    expect(config.targets.lint.executor).toBe('@nrwl/linter:eslint');
-    expect(config.targets.test.executor).toBe('@nrwl/jest:jest');
+    expect(config.targets?.lint.executor).toBe('@nrwl/linter:eslint');
+    expect(config.targets?.test.executor).toBe('@nrwl/jest:jest');
 
     const e2eConfig = readProjectConfiguration(appTree, 'my-app-e2e');
     expect(e2eConfig).toBeDefined();
@@ -73,7 +75,7 @@ describe('application generator', () => {
       });
       const config = readProjectConfiguration(appTree, 'my-app');
 
-      expect(config.targets.test).toBeUndefined();
+      expect(config.targets?.test).toBeUndefined();
 
       [
         'apps/my-app/tsconfig.spec.json',
@@ -87,9 +89,7 @@ describe('application generator', () => {
       );
       expect(tsconfigAppJson.exclude).toBeUndefined();
 
-      expect(appTree.read('apps/my-app/.eslintrc.js').toString()).not.toContain(
-        'overrides:'
-      );
+      expect(treeRead('apps/my-app/.eslintrc.js')).not.toContain('overrides:');
 
       const tsConfigJson = readJson(appTree, 'apps/my-app/tsconfig.json');
       expect(tsConfigJson.references[1]).toBeUndefined();
