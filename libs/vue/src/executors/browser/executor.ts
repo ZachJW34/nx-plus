@@ -63,7 +63,7 @@ export default async function* runExecutor(
       filenameHashing: options.filenameHashing,
       productionSourceMap: options.productionSourceMap,
       css: options.css,
-      configureWebpack: resolveConfigureWebpack(projectRoot),
+      configureWebpack: await resolveConfigureWebpack(projectRoot),
       transpileDependencies: options.transpileDependencies,
     };
 

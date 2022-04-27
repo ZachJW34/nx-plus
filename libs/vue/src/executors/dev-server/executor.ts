@@ -113,7 +113,7 @@ export default async function* runExecutor(
     publicPath: browserOptions.publicPath,
     filenameHashing: browserOptions.filenameHashing,
     css: browserOptions.css,
-    configureWebpack: resolveConfigureWebpack(projectRoot),
+    configureWebpack: await resolveConfigureWebpack(projectRoot),
     devServer: options.devServer,
     transpileDependencies: options.transpileDependencies,
   };
