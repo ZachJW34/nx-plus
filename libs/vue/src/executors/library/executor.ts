@@ -62,7 +62,7 @@ export default async function* runExecutor(
         }
       },
       css: options.css,
-      configureWebpack: resolveConfigureWebpack(projectRoot),
+      configureWebpack: await resolveConfigureWebpack(projectRoot),
     };
 
     checkUnsupportedConfig(context, projectRoot);
