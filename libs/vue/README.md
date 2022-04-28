@@ -16,32 +16,51 @@
 - [Modify the Webpack Configuration](#modify-the-webpack-configuration)
 - [Updating Nx Plus Vue](#updating-nx-plus-vue)
 
-## Prerequisite
+## Getting Started
+
+This section assumes you don't already have an Nx Workspace or solution. If you do, then you already understand Nx and should be able to pick and choose the steps below.
+Here are the steps for those with a no repo or a non-monorepo looking to get started with Nx for Vue.
 
 ### Nx Workspace
 
-If you have not already, [create an Nx workspace](https://github.com/nrwl/nx#creating-an-nx-workspace) with the following:
+Assuming you don't already have an Nx mono repo, you are going to have to [create an Nx workspace](https://github.com/nrwl/nx#creating-an-nx-workspace) with the following:
 
 ```
-npx create-nx-workspace@^13.0.0
+npx create-nx-workspace@13.9.7
 ```
+
+It is important to use version 13.9.7. At this current time, that is the latest version that is supported. See the note below.
+
+You will enter a top level name for your repo. Most advise that this should be your organization name.
+
+After you enter your name, you will select a preset. Since you are interested in Vue, the best choice is apps (an empty layout suitable for building apps).
+
+Once this completes, the next commands need to be run inside the workspace directory that was just created, cd into that directory.
 
 ### Peer Dependencies
 
-If you have not already, install peer dependencies with the following:
+The Nx-plus/vue plugin will setup cypress, lint and jest for you, but they need to be installed.
 
 ```
 # npm
-npm install @nrwl/cypress@^13.0.0 @nrwl/jest@^13.0.0 @nrwl/linter@^13.0.0 --save-dev
+npm install @nrwl/cypress@13.9.7 @nrwl/jest@13.9.7 @nrwl/linter@13.9.7 --save-dev
 
 # yarn
-yarn add @nrwl/cypress@^13.0.0 @nrwl/jest@^13.0.0 @nrwl/linter@^13.0.0 --dev
+yarn add @nrwl/cypress@13.9.7 @nrwl/jest@13.9.7 @nrwl/linter@13.9.7 --dev
 ```
 
-## Getting Started
+Make sure to install the version of these plugins that match the create workspace command. For Nx to work properly, all the versions have to match. If you get to the point where running jest tests fails, it is likely because the versions don't match. 
+
+You can ensure that all the versions match by running:
+
+```
+nx migrate 13.9.7
+```
+and then follow the instructions when it is done.
 
 ### Install Plugin
 
+Now that you have a workspace setup, you can install the plugin
 ```
 # npm
 npm install @nx-plus/vue --save-dev
@@ -51,6 +70,8 @@ yarn add @nx-plus/vue --dev
 ```
 
 ### Generate Your App
+
+The plugin provides a number of generators (see Application section below). This one creates an app under the apps directory.
 
 ```
 nx g @nx-plus/vue:app my-app
@@ -62,6 +83,33 @@ nx g @nx-plus/vue:app my-app
 nx serve my-app
 ```
 
+### Configuring Vue
+
+If you followed along above, you will have a Vue app running inside an Nx monorepo. The next thing you will want to do is understand how to configure that application because there is no vue.config.js file under the app. Instead there are Nx ways of configuring the app.
+
+#### **Wepback**
+
+In a vue-cli app, your webpack config is stored in vue.config.js under configureWebpack, or chainWebpack. You can move this configuration to the `configure-webpack.js` file under the app directory.
+
+Modify the webpack config by exporting an Object or Function from your project's `configure-webpack.js` file as explained in the Vue documentation.
+
+> If your project does not have a `configure-webpack.js` file, then simply add it at the root of your project.
+
+If the value is an Object, it will be merged into the final config using [`webpack-merge`](https://github.com/survivejs/webpack-merge).
+
+If the value is a function, it will receive the resolved config as the argument. The function can either mutate the config and return nothing, OR return a cloned or merged version of the config.
+
+For more information see the [Vue CLI documentation](https://cli.vuejs.org/config/#configurewebpack).
+
+#### **Source Aliases**
+
+In a vue-cli app, you have to put source aliases (configuration for where import files @xxx directories) in three locations, your webpack config, your `tsconf.json` file and your jest configuration. With Nx-plus/vue, these get configured in the `tsconfig.base.json` file in the workspace directory. They are then propagated automatically to the other configuration areas.
+
+#### **Public Path, transpileDependencies and devServer settings**
+
+These items get configured in each app's `project.json` file under the "serve" and "build" sections.
+Where you might have done some conditional setting of these values based on production or development, you now have "configurations" where you can specify overrides.
+
 ## Nx Dependency Graph Support
 
 **Nx's dep-graph does not support `.vue` files.** To patch support for `.vue` files, add the following npm script to your `package.json`:
@@ -71,6 +119,8 @@ nx serve my-app
 ```
 
 **Help us!** We dislike this hack just as much as you do. Please give this Nx [issue](https://github.com/nrwl/nx/issues/2960) a 👍 so that we can remove this hack in the future.
+
+**Update** This issue has been resolved in v14 but we now have to do some work on our end
 
 ## Schematics (i.e. code generation)
 
@@ -245,18 +295,6 @@ We use `@nrwl/jest` for unit testing, so the options are as documented [here](ht
 `nx e2e <name> [options]`
 
 We use `@nrwl/cypress` for e2e testing, so the options are as documented [here](https://github.com/nrwl/nx/tree/master/packages/cypress).
-
-## Modify the Webpack Configuration
-
-Modify the webpack config by exporting an Object or Function from your project's `configure-webpack.js` file.
-
-> If your project does not have a `configure-webpack.js` file, then simply add it at the root of your project.
-
-If the value is an Object, it will be merged into the final config using [`webpack-merge`](https://github.com/survivejs/webpack-merge).
-
-If the value is a function, it will receive the resolved config as the argument. The function can either mutate the config and return nothing, OR return a cloned or merged version of the config.
-
-For more information see the [Vue CLI documentation](https://cli.vuejs.org/config/#configurewebpack).
 
 ## Updating Nx Plus Vue
 
