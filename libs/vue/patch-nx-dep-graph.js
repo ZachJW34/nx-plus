@@ -6,23 +6,19 @@ const path = require('path');
  * @see https://github.com/nrwl/nx/issues/2960
  */
 function patchNxDepGraph() {
-  const filePath = path.join(
-    process.env.INIT_CWD || '',
-    'node_modules/@nrwl/workspace/src/core/project-graph/build-dependencies/typescript-import-locator.js'
-  );
+  const file = 'node_modules/nx/src/project-graph/build-dependencies/typescript-import-locator.js';
   try {
-    const fileContent = fs.readFileSync(filePath).toString('utf-8');
-    const replacement = "extension !== '.ts' && extension !== '.vue'";
-    if (fileContent.includes(replacement)) {
+    const data = String(fs.readFileSync(path.resolve(file)));
+    const replacement = 'extension !== \'.ts\' && extension !== \'.vue\' &&';
+    if (data.indexOf(replacement) !== -1) {
+      console.log('NX dep-graph for vue file support ALREADY patched');
       return;
     }
-    fs.writeFileSync(
-      filePath,
-      fileContent.replace("extension !== '.ts'", replacement)
-    );
-    console.log('Successfully patched Nx dep-graph for Vue support.');
+    const patched = data.replace('extension !== \'.ts\' &&', 'extension !== \'.ts\' && extension !== \'.vue\' &&');
+    fs.writeFileSync(file, patched);
+    console.log('NX dep-graph for vue file support patched');
   } catch (err) {
-    console.error('Failed to patch Nx dep-graph for Vue support.', err);
+    console.error('Failed to patch dep-graph for vue file support', err);
   }
 }
 
