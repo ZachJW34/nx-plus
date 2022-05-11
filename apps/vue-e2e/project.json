@@ -1,13 +1,12 @@
 {
   "projectType": "application",
-  "root": "apps/vue-e2e",
   "sourceRoot": "apps/vue-e2e/src",
   "targets": {
     "e2e": {
       "executor": "@nrwl/nx-plugin:e2e",
       "options": {
         "target": "vue:build",
-        "jestConfig": "apps/vue-e2e/jest.config.js"
+        "jestConfig": "apps/vue-e2e/jest.config.ts"
       }
     }
   },

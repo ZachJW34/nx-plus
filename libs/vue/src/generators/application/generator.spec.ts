@@ -66,7 +66,7 @@ describe('application schematic', () => {
       'apps/my-app/tsconfig.spec.json',
       'apps/my-app/tsconfig.json',
       'apps/my-app/tsconfig.app.json',
-      'apps/my-app/jest.config.js',
+      'apps/my-app/jest.config.ts',
       'apps/my-app/.eslintrc.json',
       'apps/my-app/tests/unit/example.spec.ts',
       'apps/my-app/src/shims-vue.d.ts',
@@ -200,7 +200,7 @@ a
 
       [
         'apps/my-app/tsconfig.spec.json',
-        'apps/my-app/jest.config.js',
+        'apps/my-app/jest.config.ts',
         'apps/my-app/tests/unit/example.spec.ts',
       ].forEach((path) => expect(appTree.exists(path)).toBeFalsy());
 
@@ -296,7 +296,7 @@ new Vue({
 
       expect(appTree.exists('apps/my-app/babel.config.js')).toBeTruthy();
 
-      const jestConfig = treeRead('apps/my-app/jest.config.js');
+      const jestConfig = treeRead('apps/my-app/jest.config.ts');
       expect(jestConfig).toContain(`
     'vue-jest': {
       tsConfig: 'apps/my-app/tsconfig.spec.json',
@@ -334,7 +334,7 @@ new Vue({
         'apps/subdir/my-app/tsconfig.spec.json',
         'apps/subdir/my-app/tsconfig.json',
         'apps/subdir/my-app/tsconfig.app.json',
-        'apps/subdir/my-app/jest.config.js',
+        'apps/subdir/my-app/jest.config.ts',
         'apps/subdir/my-app/.eslintrc.json',
         'apps/subdir/my-app/tests/unit/example.spec.ts',
         'apps/subdir/my-app/src/shims-vue.d.ts',
@@ -411,7 +411,7 @@ new Vue({
         'custom-apps-dir/my-app/tsconfig.spec.json',
         'custom-apps-dir/my-app/tsconfig.json',
         'custom-apps-dir/my-app/tsconfig.app.json',
-        'custom-apps-dir/my-app/jest.config.js',
+        'custom-apps-dir/my-app/jest.config.ts',
         'custom-apps-dir/my-app/.eslintrc.json',
         'custom-apps-dir/my-app/tests/unit/example.spec.ts',
         'custom-apps-dir/my-app/src/shims-vue.d.ts',

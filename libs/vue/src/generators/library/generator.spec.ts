@@ -46,7 +46,7 @@ describe('library schematic', () => {
       'libs/my-lib/tsconfig.spec.json',
       'libs/my-lib/tsconfig.json',
       'libs/my-lib/tsconfig.lib.json',
-      'libs/my-lib/jest.config.js',
+      'libs/my-lib/jest.config.ts',
       'libs/my-lib/.eslintrc.json',
       'libs/my-lib/tests/unit/example.spec.ts',
       'libs/my-lib/src/shims-tsx.d.ts',
@@ -98,7 +98,7 @@ describe('library schematic', () => {
 
       [
         'libs/my-lib/tsconfig.spec.json',
-        'libs/my-lib/jest.config.js',
+        'libs/my-lib/jest.config.ts',
         'libs/my-lib/tests/unit/example.spec.ts',
       ].forEach((path) => expect(appTree.exists(path)).toBeFalsy());
 
@@ -128,7 +128,7 @@ describe('library schematic', () => {
 
       expect(appTree.exists('libs/my-lib/babel.config.js')).toBeTruthy();
 
-      const jestConfig = treeRead('libs/my-lib/jest.config.js');
+      const jestConfig = treeRead('libs/my-lib/jest.config.ts');
       expect(jestConfig).toContain(`
     'vue-jest': {
       tsConfig: 'libs/my-lib/tsconfig.spec.json',
@@ -172,7 +172,7 @@ describe('library schematic', () => {
         'libs/subdir/my-lib/tsconfig.spec.json',
         'libs/subdir/my-lib/tsconfig.json',
         'libs/subdir/my-lib/tsconfig.lib.json',
-        'libs/subdir/my-lib/jest.config.js',
+        'libs/subdir/my-lib/jest.config.ts',
         'libs/subdir/my-lib/.eslintrc.json',
         'libs/subdir/my-lib/tests/unit/example.spec.ts',
         'libs/subdir/my-lib/src/shims-tsx.d.ts',
@@ -251,7 +251,7 @@ describe('library schematic', () => {
         'custom-libs-dir/my-lib/tsconfig.spec.json',
         'custom-libs-dir/my-lib/tsconfig.json',
         'custom-libs-dir/my-lib/tsconfig.lib.json',
-        'custom-libs-dir/my-lib/jest.config.js',
+        'custom-libs-dir/my-lib/jest.config.ts',
         'custom-libs-dir/my-lib/.eslintrc.json',
         'custom-libs-dir/my-lib/tests/unit/example.spec.ts',
         'custom-libs-dir/my-lib/src/shims-tsx.d.ts',

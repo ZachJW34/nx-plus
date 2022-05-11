@@ -1,13 +1,12 @@
 {
   "projectType": "application",
-  "root": "apps/vite-e2e",
   "sourceRoot": "apps/vite-e2e/src",
   "targets": {
     "e2e": {
       "executor": "@nrwl/nx-plugin:e2e",
       "options": {
         "target": "vite:build",
-        "jestConfig": "apps/vite-e2e/jest.config.js"
+        "jestConfig": "apps/vite-e2e/jest.config.ts"
       }
     }
   },

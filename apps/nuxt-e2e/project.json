@@ -1,13 +1,12 @@
 {
   "projectType": "application",
-  "root": "apps/nuxt-e2e",
   "sourceRoot": "apps/nuxt-e2e/src",
   "targets": {
     "e2e": {
       "executor": "@nrwl/nx-plugin:e2e",
       "options": {
         "target": "nuxt:build",
-        "jestConfig": "apps/nuxt-e2e/jest.config.js"
+        "jestConfig": "apps/nuxt-e2e/jest.config.ts"
       }
     }
   },

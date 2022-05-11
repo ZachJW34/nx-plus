@@ -1,13 +1,12 @@
 {
   "projectType": "application",
-  "root": "apps/docusaurus-e2e",
   "sourceRoot": "apps/docusaurus-e2e/src",
   "targets": {
     "e2e": {
       "executor": "@nrwl/nx-plugin:e2e",
       "options": {
         "target": "docusaurus:build",
-        "jestConfig": "apps/docusaurus-e2e/jest.config.js"
+        "jestConfig": "apps/docusaurus-e2e/jest.config.ts"
       }
     }
   },

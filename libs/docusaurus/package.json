@@ -25,9 +25,9 @@
   },
   "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/docusaurus#readme",
   "peerDependencies": {
-    "@nrwl/workspace": "^13.0.0"
+    "@nrwl/workspace": "^14.0.0"
   },
   "dependencies": {
-    "@nrwl/devkit": "^13.9.3"
+    "@nrwl/devkit": "^14.1.4"
   }
 }

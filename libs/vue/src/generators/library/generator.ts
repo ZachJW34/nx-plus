@@ -6,10 +6,10 @@ import {
   generateFiles,
   names,
   offsetFromRoot,
+  readWorkspaceConfiguration,
   Tree,
   updateJson,
 } from '@nrwl/devkit';
-import { readNxJson } from '@nrwl/devkit/src/generators/project-configuration';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 import {
   addBabel,
@@ -54,7 +54,7 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
 }
 
 function addPublishable(tree: Tree, options: NormalizedSchema) {
-  const npmScope = readNxJson(tree)?.npmScope;
+  const npmScope = readWorkspaceConfiguration(tree)?.npmScope;
 
   tree.write(
     `${options.projectRoot}/package.json`,
@@ -66,7 +66,7 @@ function addPublishable(tree: Tree, options: NormalizedSchema) {
 }
 
 function updateTsConfig(tree: Tree, options: NormalizedSchema) {
-  const nxJson = readNxJson(tree);
+  const nxJson = readWorkspaceConfiguration(tree);
 
   updateJson(tree, 'tsconfig.base.json', (json) => {
     const c = json.compilerOptions;
