@@ -28,9 +28,9 @@ describe('vite e2e', () => {
     await runNxCommandAsync(`build ${appName}`);
     checkFilesExist(
       `dist/apps/${appName}/index.html`,
+      `dist/apps/${appName}/favicon.ico`,
       `dist/apps/${appName}/assets/index.css`,
       `dist/apps/${appName}/assets/index.js`,
-      `dist/apps/${appName}/assets/vendor.js`,
       `dist/apps/${appName}/assets/logo.png`
     );
 
