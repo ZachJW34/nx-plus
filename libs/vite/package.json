@@ -1,6 +1,6 @@
 {
   "name": "@nx-plus/vite",
-  "version": "13.0.2",
+  "version": "14.0.0",
   "main": "src/index.js",
   "generators": "./generators.json",
   "executors": "./executors.json",
