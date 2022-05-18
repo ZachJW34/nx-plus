@@ -190,7 +190,7 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
   });
   const content = `module.exports = {
   displayName: '${options.projectName}',
-  preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
+  preset: '${offsetFromRoot(options.projectRoot)}jest.preset.ts',
   transform: {
     '^.+\\.vue$': 'vue3-jest',
     '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':
@@ -212,7 +212,7 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
   },
 };
 `;
-  tree.write(`${options.projectRoot}/jest.config.js`, content);
+  tree.write(`${options.projectRoot}/jest.config.ts`, content);
 
   const installTask = addDependenciesToPackageJson(
     tree,

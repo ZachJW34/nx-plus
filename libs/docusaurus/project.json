@@ -1,5 +1,4 @@
 {
-  "root": "libs/docusaurus",
   "sourceRoot": "libs/docusaurus/src",
   "projectType": "library",
   "generators": {},
@@ -20,7 +19,7 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "options": {
-        "jestConfig": "libs/docusaurus/jest.config.js",
+        "jestConfig": "libs/docusaurus/jest.config.ts",
         "passWithNoTests": true
       },
       "outputs": ["coverage/libs/docusaurus"]

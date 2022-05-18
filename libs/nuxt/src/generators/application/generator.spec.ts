@@ -28,7 +28,7 @@ describe('nuxt schematic', () => {
 
   const testFiles = [
     'tsconfig.spec.json',
-    'jest.config.js',
+    'jest.config.ts',
     'test/NuxtLogo.spec.js',
   ];
 

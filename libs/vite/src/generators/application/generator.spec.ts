@@ -79,7 +79,7 @@ describe('application generator', () => {
 
       [
         'apps/my-app/tsconfig.spec.json',
-        'apps/my-app/jest.config.js',
+        'apps/my-app/jest.config.ts',
         'apps/my-app/tests/unit/example.spec.ts',
       ].forEach((path) => expect(appTree.exists(path)).toBeFalsy());
 

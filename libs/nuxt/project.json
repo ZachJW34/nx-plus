@@ -1,5 +1,4 @@
 {
-  "root": "libs/nuxt",
   "sourceRoot": "libs/nuxt/src",
   "projectType": "library",
   "generators": {},
@@ -20,7 +19,7 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "options": {
-        "jestConfig": "libs/nuxt/jest.config.js",
+        "jestConfig": "libs/nuxt/jest.config.ts",
         "passWithNoTests": true
       },
       "outputs": ["coverage/libs/nuxt"]
