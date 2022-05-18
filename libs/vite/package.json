@@ -2,6 +2,9 @@
   "name": "@nx-plus/vite",
   "version": "14.0.0",
   "main": "src/index.js",
+  "bin": {
+    "patch-nx-dep-graph": "patch-nx-dep-graph.js"
+  },
   "generators": "./generators.json",
   "executors": "./executors.json",
   "description": "Vite plugin for Nx",
