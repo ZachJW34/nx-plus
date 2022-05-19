@@ -93,7 +93,7 @@ export async function addJest(tree: Tree, options: Options) {
   }',
   snapshotSerializers: ['jest-serializer-vue'],
   globals: {
-    'ts-jest': { 
+    'ts-jest': {
       tsconfig: '${options.projectRoot}/tsconfig.spec.json',
       ${
         options.babel
@@ -190,8 +190,7 @@ export async function addEsLint(tree: Tree, options: Options) {
 
 export function addPostInstall(tree: Tree) {
   return updateJson(tree, 'package.json', (json) => {
-    const vuePostInstall =
-      'node node_modules/@nx-plus/vue/patch-nx-dep-graph.js';
+    const vuePostInstall = 'patch-nx-dep-graph';
     const { postinstall } = json.scripts || {};
     if (postinstall) {
       if (postinstall !== vuePostInstall) {

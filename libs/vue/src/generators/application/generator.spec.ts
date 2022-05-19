@@ -127,7 +127,7 @@ a {
     await applicationGenerator(appTree, options);
 
     expect(readJson(appTree, 'package.json').scripts.postinstall).toBe(
-      'node node_modules/@nx-plus/vue/patch-nx-dep-graph.js'
+      'patch-nx-dep-graph'
     );
   });
 

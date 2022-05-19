@@ -203,7 +203,7 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
   }',
   snapshotSerializers: ['jest-serializer-vue'],
   globals: {
-    'ts-jest': { 
+    'ts-jest': {
       tsconfig: '${options.projectRoot}/tsconfig.spec.json',
     },
     'vue-jest': {
@@ -229,8 +229,7 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
 
 function addPostInstall(tree: Tree) {
   return updateJson(tree, 'package.json', (json) => {
-    const vuePostInstall =
-      'node node_modules/@nx-plus/vite/patch-nx-dep-graph.js';
+    const vuePostInstall = 'patch-nx-dep-graph';
     const { postinstall } = json.scripts || {};
     if (postinstall) {
       if (postinstall !== vuePostInstall) {
