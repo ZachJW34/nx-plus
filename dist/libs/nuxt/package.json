@@ -1,0 +1,47 @@
+{
+  "name": "@nx-plus/nuxt",
+  "version": "14.0.0",
+  "main": "src/index.js",
+  "generators": "./generators.json",
+  "executors": "./executors.json",
+  "description": "Nuxt plugin for Nx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZachJW34/nx-plus.git"
+  },
+  "keywords": [
+    "nx",
+    "nuxt",
+    "vuex",
+    "jest",
+    "cypress",
+    "monorepo"
+  ],
+  "author": "Bucky Maler <maler.bucky@gmail.com> (http://buckymaler.com/)",
+  "contributors": [
+    "Zachary Williams <zachjw34@gmail.com> (https://github.com/ZachJW34/)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ZachJW34/nx-plus/issues"
+  },
+  "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/nuxt#readme",
+  "peerDependencies": {
+    "@nrwl/cypress": "^14.1.4",
+    "@nrwl/jest": "^14.1.4",
+    "@nrwl/linter": "^14.1.4",
+    "@nrwl/workspace": "^14.1.4"
+  },
+  "dependencies": {
+    "@nrwl/devkit": "^14.1.4",
+    "fs-extra": "^10.0.0",
+    "rxjs": "7.5.1",
+    "semver": "^7.3.5",
+    "tsconfig-paths-webpack-plugin": "3.5.2",
+    "typescript": "4.5.4"
+  },
+  "ng-update": {
+    "migrations": "./migrations.json"
+  },
+  "typings": "./src/index.d.ts"
+}

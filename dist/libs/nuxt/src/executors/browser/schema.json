@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "title": "Browser executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "buildDir": {
+      "type": "string",
+      "description": "Define the dist directory for your Nuxt.js application."
+    }
+  },
+  "required": ["buildDir"],
+  "additionalProperties": false
+}

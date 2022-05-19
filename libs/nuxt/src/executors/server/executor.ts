@@ -29,12 +29,13 @@ export default async function* runExecutor(
   const browserOptions = { ...rawBrowserOptions, ...overrides };
 
   const projectRoot = await getProjectRoot(context);
+  const buildDir = options.buildDir || path.join(context.root, browserOptions.buildDir || '', '.nuxt')
 
   const nuxt = await loadNuxt({
     for: options.dev ? 'dev' : 'start',
     rootDir: projectRoot,
     configOverrides: {
-      buildDir: path.join(context.root, browserOptions.buildDir, '.nuxt'),
+      buildDir,
       build: {
         extend(config: Record<string, unknown>, ctx: Record<string, unknown>) {
           modifyTypescriptAliases(config, projectRoot);
