@@ -2,11 +2,11 @@ import { tags } from '@angular-devkit/core';
 import {
   checkFilesExist,
   ensureNxProject,
-  runNxCommandAsync,
   uniq,
   updateFile,
 } from '@nrwl/nx-plugin/testing';
 import { runNxProdCommandAsync, testGeneratedApp } from './utils';
+import { runNxCommandAsyncStripped } from '@nx-plus/test-utils';
 
 describe('vue 2 e2e', () => {
   describe('app', () => {
@@ -16,7 +16,7 @@ describe('vue 2 e2e', () => {
 
     it('should generate app', async () => {
       const appName = uniq('app');
-      await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
+      await runNxCommandAsyncStripped(`generate @nx-plus/vue:app ${appName}`);
 
       await testGeneratedApp(appName, {
         lint: true,
@@ -30,7 +30,7 @@ describe('vue 2 e2e', () => {
     describe('--routing', () => {
       it('should generate app with routing', async () => {
         const appName = uniq('app');
-        await runNxCommandAsync(
+        await runNxCommandAsyncStripped(
           `generate @nx-plus/vue:app ${appName} --routing`
         );
 
@@ -54,7 +54,7 @@ describe('vue 2 e2e', () => {
     describe('--style', () => {
       it('should generate app with scss', async () => {
         const appName = uniq('app');
-        await runNxCommandAsync(
+        await runNxCommandAsyncStripped(
           `generate @nx-plus/vue:app ${appName} --style scss`
         );
 
@@ -69,7 +69,7 @@ describe('vue 2 e2e', () => {
 
       it('should generate app with stylus', async () => {
         const appName = uniq('app');
-        await runNxCommandAsync(
+        await runNxCommandAsyncStripped(
           `generate @nx-plus/vue:app ${appName} --style stylus`
         );
 
@@ -84,7 +84,7 @@ describe('vue 2 e2e', () => {
 
       it('should generate app with less', async () => {
         const appName = uniq('app');
-        await runNxCommandAsync(
+        await runNxCommandAsyncStripped(
           `generate @nx-plus/vue:app ${appName} --style less`
         );
 
@@ -101,8 +101,10 @@ describe('vue 2 e2e', () => {
     describe('vuex', () => {
       it('should generate app and add vuex', async () => {
         const appName = uniq('app');
-        await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
-        await runNxCommandAsync(`generate @nx-plus/vue:vuex ${appName}`);
+        await runNxCommandAsyncStripped(`generate @nx-plus/vue:app ${appName}`);
+        await runNxCommandAsyncStripped(
+          `generate @nx-plus/vue:vuex ${appName}`
+        );
 
         await testGeneratedApp(appName, {
           lint: true,
@@ -116,8 +118,10 @@ describe('vue 2 e2e', () => {
 
     it('should generate app with routing and add vuex', async () => {
       const appName = uniq('app');
-      await runNxCommandAsync(`generate @nx-plus/vue:app ${appName} --routing`);
-      await runNxCommandAsync(`generate @nx-plus/vue:vuex ${appName}`);
+      await runNxCommandAsyncStripped(
+        `generate @nx-plus/vue:app ${appName} --routing`
+      );
+      await runNxCommandAsyncStripped(`generate @nx-plus/vue:vuex ${appName}`);
 
       await testGeneratedApp(appName, {
         lint: true,
@@ -137,14 +141,14 @@ describe('vue 2 e2e', () => {
 
     it('should report lint error in App.vue', async () => {
       const appName = uniq('app');
-      await runNxCommandAsync(`generate @nx-plus/vue:app ${appName}`);
+      await runNxCommandAsyncStripped(`generate @nx-plus/vue:app ${appName}`);
 
       updateFile(
         `apps/${appName}/src/App.vue`,
         '<script lang="ts">let myVar: {}</script>'
       );
 
-      const result = await runNxCommandAsync(`lint ${appName}`, {
+      const result = await runNxCommandAsyncStripped(`lint ${appName}`, {
         silenceError: true,
       });
       expect(result.stderr).toContain('Lint errors found in the listed files.');
@@ -153,11 +157,13 @@ describe('vue 2 e2e', () => {
     describe('--directory subdir', () => {
       it('should generate app', async () => {
         const appName = uniq('app');
-        await runNxCommandAsync(
+        await runNxCommandAsyncStripped(
           `generate @nx-plus/vue:app ${appName} --directory subdir`
         );
 
-        const result = await runNxCommandAsync(`build subdir-${appName}`);
+        const result = await runNxCommandAsyncStripped(
+          `build subdir-${appName}`
+        );
         expect(result.stdout).toContain('Build complete.');
         expect(() =>
           checkFilesExist(
@@ -178,12 +184,12 @@ describe('vue 2 e2e', () => {
 
     it('should generate lib', async () => {
       const lib = uniq('lib');
-      await runNxCommandAsync(`generate @nx-plus/vue:lib ${lib}`);
+      await runNxCommandAsyncStripped(`generate @nx-plus/vue:lib ${lib}`);
 
-      const lintResult = await runNxCommandAsync(`lint ${lib}`);
+      const lintResult = await runNxCommandAsyncStripped(`lint ${lib}`);
       expect(lintResult.stdout).toContain('All files pass linting.');
 
-      const testResult = await runNxCommandAsync(`test ${lib}`);
+      const testResult = await runNxCommandAsyncStripped(`test ${lib}`);
       expect(testResult.stderr).toContain(tags.stripIndent`
       Test Suites: 1 passed, 1 total
       Tests:       1 passed, 1 total
@@ -193,7 +199,9 @@ describe('vue 2 e2e', () => {
 
     it('should generate publishable lib', async () => {
       const lib = uniq('lib');
-      await runNxCommandAsync(`generate @nx-plus/vue:lib ${lib} --publishable`);
+      await runNxCommandAsyncStripped(
+        `generate @nx-plus/vue:lib ${lib} --publishable`
+      );
 
       let buildResult = await runNxProdCommandAsync(`build ${lib}`);
       expect(buildResult.stdout).toContain('Compiled successfully');
@@ -245,7 +253,7 @@ describe('vue 2 e2e', () => {
     describe('--directory subdir', () => {
       it('should generate publishable lib', async () => {
         const lib = uniq('lib');
-        await runNxCommandAsync(
+        await runNxCommandAsyncStripped(
           `generate @nx-plus/vue:lib ${lib} --directory subdir --publishable`
         );
 

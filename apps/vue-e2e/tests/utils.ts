@@ -1,10 +1,7 @@
 import { tags } from '@angular-devkit/core';
-import {
-  checkFilesExist,
-  runNxCommandAsync,
-  tmpProjPath,
-} from '@nrwl/nx-plugin/testing';
+import { checkFilesExist, tmpProjPath } from '@nrwl/nx-plugin/testing';
 import * as cp from 'child_process';
+import { runNxCommandAsyncStripped } from '@nx-plus/test-utils';
 
 export async function testGeneratedApp(
   appName: string,
@@ -17,12 +14,12 @@ export async function testGeneratedApp(
   }
 ): Promise<void> {
   if (options.lint) {
-    const lintResult = await runNxCommandAsync(`lint ${appName}`);
+    const lintResult = await runNxCommandAsyncStripped(`lint ${appName}`);
     expect(lintResult.stdout).toContain('All files pass linting.');
   }
 
   if (options.test) {
-    const testResult = await runNxCommandAsync(`test ${appName}`);
+    const testResult = await runNxCommandAsyncStripped(`test ${appName}`);
     expect(testResult.stderr).toContain(tags.stripIndent`
       Test Suites: 1 passed, 1 total
       Tests:       1 passed, 1 total
@@ -31,12 +28,12 @@ export async function testGeneratedApp(
   }
 
   if (options.e2e) {
-    const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e`);
+    const e2eResult = await runNxCommandAsyncStripped(`e2e ${appName}-e2e`);
     expect(e2eResult.stdout).toContain('All specs passed!');
   }
 
   if (options.build) {
-    const buildResult = await runNxCommandAsync(`build ${appName}`);
+    const buildResult = await runNxCommandAsyncStripped(`build ${appName}`);
     expect(buildResult.stdout).toContain('Build complete.');
     expect(() =>
       checkFilesExist(

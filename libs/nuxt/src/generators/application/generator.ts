@@ -132,7 +132,7 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
   const content = `
 module.exports = {
   displayName: '${options.projectName}',
-  preset: '${offsetFromRoot(options.projectRoot)}jest.preset.ts',
+  preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
   transform: {
     '.*\\.(vue)$': '@vue/vue2-jest',
     '^.+\\.ts$': 'ts-jest',

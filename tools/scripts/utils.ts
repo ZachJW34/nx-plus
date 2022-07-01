@@ -1,6 +1,4 @@
-const { readWorkspaceJson } = require('@nrwl/workspace');
-
-function getPublishableLibNames(workspaceJson = readWorkspaceJson()) {
+export function getPublishableLibNames(workspaceJson: any) {
   const { projects } = workspaceJson;
   return Object.keys(projects).filter(
     (key) =>
@@ -11,12 +9,8 @@ function getPublishableLibNames(workspaceJson = readWorkspaceJson()) {
   );
 }
 
-module.exports.getPublishableLibNames = getPublishableLibNames;
-
-function tmpProjPath(path) {
+export function tmpProjPath(path?: string) {
   return path
     ? `${process.cwd()}/tmp/nx-playground/proj/${path}`
     : `${process.cwd()}/tmp/nx-playground/proj`;
 }
-
-module.exports.tmpProjPath = tmpProjPath;

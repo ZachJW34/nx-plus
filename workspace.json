@@ -5,9 +5,11 @@
     "docusaurus-e2e": "apps/docusaurus-e2e",
     "nuxt": "libs/nuxt",
     "nuxt-e2e": "apps/nuxt-e2e",
+    "test-utils": "libs/test-utils",
     "vite": "libs/vite",
     "vite-e2e": "apps/vite-e2e",
     "vue": "libs/vue",
     "vue-e2e": "apps/vue-e2e"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
