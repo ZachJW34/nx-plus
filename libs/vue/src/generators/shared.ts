@@ -80,7 +80,7 @@ export async function addJest(tree: Tree, options: Options) {
   });
   const content = `module.exports = {
   displayName: '${options.projectName}',
-  preset: '${offsetFromRoot(options.projectRoot)}jest.preset.ts',
+  preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
   transform: {
     '^.+\\.vue$': '${options.isVue3 ? 'vue3-jest' : '@vue/vue2-jest'}',
     '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':

@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'vite-e2e',
+/* eslint-disable */
+export default {
+  displayName: 'test-utils',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/vite-e2e',
+  coverageDirectory: '../../coverage/libs/test-utils',
 };

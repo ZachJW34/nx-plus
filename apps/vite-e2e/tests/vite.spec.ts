@@ -2,22 +2,22 @@ import { tags } from '@angular-devkit/core';
 import {
   checkFilesExist,
   ensureNxProject,
-  runNxCommandAsync,
   uniq,
   updateFile,
 } from '@nrwl/nx-plugin/testing';
 import { join } from 'path';
+import { runNxCommandAsyncStripped } from '@nx-plus/test-utils';
 
 describe('vite e2e', () => {
   it('should create vite app', async () => {
     const appName = uniq('vite');
     ensureNxProject('@nx-plus/vite', 'dist/libs/vite');
-    await runNxCommandAsync(`generate @nx-plus/vite:app ${appName}`);
+    await runNxCommandAsyncStripped(`generate @nx-plus/vite:app ${appName}`);
 
-    const lintResult = await runNxCommandAsync(`lint ${appName}`);
+    const lintResult = await runNxCommandAsyncStripped(`lint ${appName}`);
     expect(lintResult.stdout).toContain('All files pass linting.');
 
-    const testResult = await runNxCommandAsync(`test ${appName}`);
+    const testResult = await runNxCommandAsyncStripped(`test ${appName}`);
     expect(testResult.stderr).toContain(tags.stripIndent`
       Test Suites: 1 passed, 1 total
       Tests:       1 passed, 1 total
@@ -25,7 +25,7 @@ describe('vite e2e', () => {
     `);
 
     disableHashing(appName);
-    await runNxCommandAsync(`build ${appName}`);
+    await runNxCommandAsyncStripped(`build ${appName}`);
     checkFilesExist(
       `dist/apps/${appName}/index.html`,
       `dist/apps/${appName}/favicon.ico`,
@@ -34,7 +34,7 @@ describe('vite e2e', () => {
       `dist/apps/${appName}/assets/logo.png`
     );
 
-    const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e`);
+    const e2eResult = await runNxCommandAsyncStripped(`e2e ${appName}-e2e`);
     expect(e2eResult.stdout).toContain('All specs passed!');
   }, 200000);
 });

@@ -2,11 +2,11 @@ import { tags } from '@angular-devkit/core';
 import {
   checkFilesExist,
   ensureNxProject,
-  runNxCommandAsync,
   uniq,
   updateFile,
 } from '@nrwl/nx-plugin/testing';
 import { runNxProdCommandAsync, testGeneratedApp } from './utils';
+import { runNxCommandAsyncStripped } from '@nx-plus/test-utils';
 
 describe('vue 3 e2e', () => {
   describe('app', () => {
@@ -16,7 +16,7 @@ describe('vue 3 e2e', () => {
 
     it('should generate app', async () => {
       const appName = uniq('app');
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/vue:app ${appName} --vueVersion 3`
       );
 
@@ -32,7 +32,7 @@ describe('vue 3 e2e', () => {
     describe('--routing', () => {
       it('should generate app with routing', async () => {
         const appName = uniq('app');
-        await runNxCommandAsync(
+        await runNxCommandAsyncStripped(
           `generate @nx-plus/vue:app ${appName} --vueVersion 3 --routing`
         );
 
@@ -56,10 +56,12 @@ describe('vue 3 e2e', () => {
     describe('vuex', () => {
       it('should generate app and add vuex', async () => {
         const appName = uniq('app');
-        await runNxCommandAsync(
+        await runNxCommandAsyncStripped(
           `generate @nx-plus/vue:app ${appName} --vueVersion 3`
         );
-        await runNxCommandAsync(`generate @nx-plus/vue:vuex ${appName}`);
+        await runNxCommandAsyncStripped(
+          `generate @nx-plus/vue:vuex ${appName}`
+        );
 
         await testGeneratedApp(appName, {
           lint: true,
@@ -73,10 +75,10 @@ describe('vue 3 e2e', () => {
 
     it('should generate app with routing and add vuex', async () => {
       const appName = uniq('app');
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/vue:app ${appName} --vueVersion 3 --routing`
       );
-      await runNxCommandAsync(`generate @nx-plus/vue:vuex ${appName}`);
+      await runNxCommandAsyncStripped(`generate @nx-plus/vue:vuex ${appName}`);
 
       await testGeneratedApp(appName, {
         lint: true,
@@ -96,7 +98,7 @@ describe('vue 3 e2e', () => {
 
     it('should report lint error in App.vue', async () => {
       const appName = uniq('app');
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/vue:app ${appName} --vueVersion 3`
       );
 
@@ -105,7 +107,7 @@ describe('vue 3 e2e', () => {
         '<script lang="ts">let myVar: {}</script>'
       );
 
-      const result = await runNxCommandAsync(`lint ${appName}`, {
+      const result = await runNxCommandAsyncStripped(`lint ${appName}`, {
         silenceError: true,
       });
       expect(result.stderr).toContain('Lint errors found in the listed files.');
@@ -113,11 +115,11 @@ describe('vue 3 e2e', () => {
 
     it('should generate component', async () => {
       const appName = uniq('app');
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/vue:app ${appName} --vueVersion 3`
       );
 
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/vue:component my-component --project ${appName}`
       );
 
@@ -134,14 +136,14 @@ describe('vue 3 e2e', () => {
 
     it('should generate lib', async () => {
       const lib = uniq('lib');
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/vue:lib ${lib} --vueVersion 3`
       );
 
-      const lintResult = await runNxCommandAsync(`lint ${lib}`);
+      const lintResult = await runNxCommandAsyncStripped(`lint ${lib}`);
       expect(lintResult.stdout).toContain('All files pass linting.');
 
-      const testResult = await runNxCommandAsync(`test ${lib}`);
+      const testResult = await runNxCommandAsyncStripped(`test ${lib}`);
       expect(testResult.stderr).toContain(tags.stripIndent`
       Test Suites: 1 passed, 1 total
       Tests:       1 passed, 1 total
@@ -151,7 +153,7 @@ describe('vue 3 e2e', () => {
 
     it('should generate publishable lib', async () => {
       const lib = uniq('lib');
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/vue:lib ${lib} --vueVersion 3 --publishable`
       );
 
@@ -204,11 +206,11 @@ describe('vue 3 e2e', () => {
 
     it('should generate component', async () => {
       const libName = uniq('lib');
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/vue:lib ${libName} --vueVersion 3`
       );
 
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/vue:component my-component --project ${libName}`
       );
 

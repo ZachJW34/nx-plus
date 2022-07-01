@@ -2,10 +2,10 @@ import { tags } from '@angular-devkit/core';
 import {
   checkFilesExist,
   ensureNxProject,
-  runNxCommandAsync,
   uniq,
   updateFile,
 } from '@nrwl/nx-plugin/testing';
+import { runNxCommandAsyncStripped } from '@nx-plus/test-utils';
 
 describe('nuxt e2e', () => {
   beforeAll(() => {
@@ -14,22 +14,22 @@ describe('nuxt e2e', () => {
 
   it('should generate app', async () => {
     const appName = uniq('app');
-    await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
+    await runNxCommandAsyncStripped(`generate @nx-plus/nuxt:app ${appName}`);
 
-    const lintResult = await runNxCommandAsync(`lint ${appName}`);
+    const lintResult = await runNxCommandAsyncStripped(`lint ${appName}`);
     expect(lintResult.stdout).toContain('All files pass linting.');
 
-    const testResult = await runNxCommandAsync(`test ${appName}`);
+    const testResult = await runNxCommandAsyncStripped(`test ${appName}`);
     expect(testResult.stderr).toContain(tags.stripIndent`
       Test Suites: 1 passed, 1 total
       Tests:       1 passed, 1 total
       Snapshots:   0 total
     `);
 
-    const e2eResult = await runNxCommandAsync(`e2e ${appName}-e2e`);
+    const e2eResult = await runNxCommandAsyncStripped(`e2e ${appName}-e2e`);
     expect(e2eResult.stdout).toContain('All specs passed!');
 
-    await runNxCommandAsync(`build ${appName}`);
+    await runNxCommandAsyncStripped(`build ${appName}`);
     expect(() =>
       checkFilesExist(
         `dist/apps/${appName}/.nuxt/utils.js`,
@@ -52,20 +52,22 @@ describe('nuxt e2e', () => {
       )
     ).not.toThrow();
 
-    const prodE2eResult = await runNxCommandAsync(`e2e ${appName}-e2e --prod`);
+    const prodE2eResult = await runNxCommandAsyncStripped(
+      `e2e ${appName}-e2e --prod`
+    );
     expect(prodE2eResult.stdout).toContain('All specs passed!');
   }, 300000);
 
   it('should report lint error in index.vue', async () => {
     const appName = uniq('app');
-    await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
+    await runNxCommandAsyncStripped(`generate @nx-plus/nuxt:app ${appName}`);
 
     updateFile(
       `apps/${appName}/pages/index.vue`,
       '<script lang="ts">{}</script>'
     );
 
-    const result = await runNxCommandAsync(`lint ${appName}`, {
+    const result = await runNxCommandAsyncStripped(`lint ${appName}`, {
       silenceError: true,
     });
     expect(result.stderr).toContain('Lint errors found in the listed files.');
@@ -73,9 +75,9 @@ describe('nuxt e2e', () => {
 
   it('should generate static app', async () => {
     const appName = uniq('app');
-    await runNxCommandAsync(`generate @nx-plus/nuxt:app ${appName}`);
+    await runNxCommandAsyncStripped(`generate @nx-plus/nuxt:app ${appName}`);
 
-    await runNxCommandAsync(`static ${appName}`);
+    await runNxCommandAsyncStripped(`static ${appName}`);
     expect(() =>
       checkFilesExist(
         `dist/apps/${appName}/dist/_nuxt`,
@@ -90,11 +92,11 @@ describe('nuxt e2e', () => {
   describe('--directory subdir', () => {
     it('should generate app', async () => {
       const appName = uniq('app');
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/nuxt:app ${appName} --directory subdir`
       );
 
-      await runNxCommandAsync(`build subdir-${appName}`);
+      await runNxCommandAsyncStripped(`build subdir-${appName}`);
       expect(() =>
         checkFilesExist(
           `dist/apps/subdir/${appName}/.nuxt/utils.js`,
@@ -120,11 +122,11 @@ describe('nuxt e2e', () => {
 
     it('should generate static app', async () => {
       const appName = uniq('app');
-      await runNxCommandAsync(
+      await runNxCommandAsyncStripped(
         `generate @nx-plus/nuxt:app ${appName} --directory subdir`
       );
 
-      await runNxCommandAsync(`static subdir-${appName}`);
+      await runNxCommandAsyncStripped(`static subdir-${appName}`);
       expect(() =>
         checkFilesExist(
           `dist/apps/subdir/${appName}/dist/_nuxt`,
