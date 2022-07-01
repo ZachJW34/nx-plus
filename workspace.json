@@ -9,5 +9,6 @@
     "vite-e2e": "apps/vite-e2e",
     "vue": "libs/vue",
     "vue-e2e": "apps/vue-e2e"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

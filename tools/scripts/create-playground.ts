@@ -1,19 +1,21 @@
-const { readWorkspaceJson } = require('@nrwl/workspace');
-const { appRootPath } = require('@nrwl/workspace/src/utils/app-root');
-const { execSync } = require('child_process');
-const {
+import { readWorkspaceConfig } from '@nrwl/workspace';
+import { workspaceRoot } from '@nrwl/workspace/src/utils/app-root';
+import { execSync } from 'child_process';
+
+import {
   ensureDirSync,
   readFileSync,
   removeSync,
   writeFileSync,
-} = require('fs-extra');
-const { dirname } = require('path');
-const { getPublishableLibNames, tmpProjPath } = require('./utils');
+} from 'fs-extra';
+import { dirname } from 'path';
+import { getPublishableLibNames, tmpProjPath } from './utils';
 
 console.log('\nCreating playground. This may take a few minutes.');
 
-const workspaceJson = readWorkspaceJson();
-const publishableLibNames = getPublishableLibNames(workspaceJson);
+const workspaceConfig = readWorkspaceConfig({ format: 'nx' });
+
+const publishableLibNames = getPublishableLibNames(workspaceConfig);
 
 execSync(`yarn nx run-many --target build --projects ${publishableLibNames}`);
 
@@ -30,11 +32,11 @@ execSync(
 
 publishableLibNames.forEach((pubLibName) => {
   const { outputPath, packageJson } =
-    workspaceJson.projects[pubLibName].targets.build.options;
+    workspaceConfig.projects[pubLibName].targets.build.options;
   const p = JSON.parse(readFileSync(tmpProjPath('package.json')).toString());
   p.devDependencies[
-    require(`${appRootPath}/${packageJson}`).name
-  ] = `file:${appRootPath}/${outputPath}`;
+    require(`${workspaceRoot}/${packageJson}`).name
+  ] = `file:${workspaceRoot}/${outputPath}`;
   writeFileSync(tmpProjPath('package.json'), JSON.stringify(p, null, 2));
 });
 
