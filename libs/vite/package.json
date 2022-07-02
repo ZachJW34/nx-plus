@@ -1,6 +1,6 @@
 {
   "name": "@nx-plus/vite",
-  "version": "14.0.0",
+  "version": "14.1.0",
   "main": "src/index.js",
   "generators": "./generators.json",
   "executors": "./executors.json",
@@ -25,13 +25,13 @@
   },
   "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/vite#readme",
   "peerDependencies": {
-    "@nrwl/cypress": "^14.1.4",
-    "@nrwl/jest": "^14.1.4",
-    "@nrwl/linter": "^14.1.4",
-    "@nrwl/workspace": "^14.1.4"
+    "@nrwl/cypress": "^14.3.6",
+    "@nrwl/jest": "^14.3.6",
+    "@nrwl/linter": "^14.3.6",
+    "@nrwl/workspace": "^14.3.6"
   },
   "dependencies": {
-    "@nrwl/devkit": "^14.1.4",
+    "@nrwl/devkit": "^14.3.6",
     "semver": "^7.3.5"
   }
 }
