@@ -5,7 +5,7 @@ import {
   uniq,
   updateFile,
 } from '@nrwl/nx-plugin/testing';
-import { runNxCommandAsyncStripped } from '@nx-plus/test-utils';
+import { runNxCommandAsyncStripped } from '@nx-plus/shared/testing';
 
 describe('nuxt e2e', () => {
   beforeAll(() => {

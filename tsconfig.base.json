@@ -34,7 +34,7 @@
     "paths": {
       "@nx-plus/docusaurus": ["libs/docusaurus/src/index.ts"],
       "@nx-plus/nuxt": ["libs/nuxt/src/index.ts"],
-      "@nx-plus/test-utils": ["libs/test-utils/src/index.ts"],
+      "@nx-plus/shared/testing": ["libs/shared/testing/src/index.ts"],
       "@nx-plus/vite": ["libs/vite/src/index.ts"],
       "@nx-plus/vue": ["libs/vue/src/index.ts"]
     }

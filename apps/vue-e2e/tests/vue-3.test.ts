@@ -6,7 +6,7 @@ import {
   updateFile,
 } from '@nrwl/nx-plugin/testing';
 import { runNxProdCommandAsync, testGeneratedApp } from './utils';
-import { runNxCommandAsyncStripped } from '@nx-plus/test-utils';
+import { runNxCommandAsyncStripped } from '@nx-plus/shared/testing';
 
 describe('vue 3 e2e', () => {
   describe('app', () => {
