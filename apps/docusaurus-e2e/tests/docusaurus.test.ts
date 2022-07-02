@@ -1,5 +1,5 @@
 import { ensureNxProject, uniq } from '@nrwl/nx-plugin/testing';
-import { runNxCommandAsyncStripped } from '@nx-plus/test-utils';
+import { runNxCommandAsyncStripped } from '@nx-plus/shared/testing';
 
 describe('docusaurus e2e', () => {
   it('should create and build docusaurus', async () => {

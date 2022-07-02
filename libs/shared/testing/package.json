@@ -1,5 +1,5 @@
 {
-  "name": "@nx-plus/test-utils",
+  "name": "@nx-plus/shared/testing",
   "version": "0.0.1",
   "type": "commonjs"
 }

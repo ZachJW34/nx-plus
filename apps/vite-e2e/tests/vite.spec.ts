@@ -6,7 +6,7 @@ import {
   updateFile,
 } from '@nrwl/nx-plugin/testing';
 import { join } from 'path';
-import { runNxCommandAsyncStripped } from '@nx-plus/test-utils';
+import { runNxCommandAsyncStripped } from '@nx-plus/shared/testing';
 
 describe('vite e2e', () => {
   it('should create vite app', async () => {
