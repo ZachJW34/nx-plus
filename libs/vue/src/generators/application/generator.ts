@@ -165,8 +165,8 @@ export async function applicationGenerator(
         : {}),
     },
     {
-      '@vue/cli-plugin-typescript': '~4.5.0',
-      '@vue/cli-service': '~4.5.0',
+      '@vue/cli-plugin-typescript': '~5.0.8',
+      '@vue/cli-service': '~5.0.8',
       ...(options.isVue3 ? { '@vue/compiler-sfc': '^3.0.0' } : {}),
       '@vue/eslint-config-typescript': '^5.0.2',
       'eslint-plugin-vue': '^7.8.0',

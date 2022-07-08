@@ -15,8 +15,6 @@ const exists = (path: string) =>
     .catch(() => false);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { chalk } = require('@vue/cli-shared-utils');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const Module = require('module');
 
 export function getProjectRoot(context: ExecutorContext) {
@@ -24,21 +22,6 @@ export function getProjectRoot(context: ExecutorContext) {
     context.root,
     context.workspace.projects[context.projectName || ''].root
   );
-}
-
-export function modifyChalkOutput(
-  method: string,
-  transform: (arg: string) => string
-) {
-  const originalChalkFn = chalk[method];
-  Object.defineProperty(chalk, method, {
-    get() {
-      const newChalkFn = (...args: string[]) =>
-        originalChalkFn(...args.map(transform));
-      Object.setPrototypeOf(newChalkFn, originalChalkFn);
-      return newChalkFn;
-    },
-  });
 }
 
 export async function checkUnsupportedConfig(

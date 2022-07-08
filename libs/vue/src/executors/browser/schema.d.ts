@@ -13,7 +13,6 @@ export interface BrowserExecutorSchema {
   filenameHashing: boolean;
   productionSourceMap: boolean;
   css: {
-    requireModuleExtension: boolean;
     // eslint-disable-next-line @typescript-eslint/ban-types
     extract: boolean | object;
     sourceMap: boolean;

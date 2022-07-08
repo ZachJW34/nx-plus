@@ -12,7 +12,6 @@ export interface DevServerExecutorSchema {
   watch: boolean;
   publicPath?: string;
   css: {
-    requireModuleExtension?: boolean;
     // eslint-disable-next-line @typescript-eslint/ban-types
     extract?: boolean | object;
     sourceMap?: boolean;

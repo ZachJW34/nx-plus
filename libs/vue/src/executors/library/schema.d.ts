@@ -9,7 +9,6 @@ export interface LibraryExecutorSchema {
   tsConfig: string;
   inlineVue: boolean;
   css: {
-    requireModuleExtension: boolean;
     // eslint-disable-next-line @typescript-eslint/ban-types
     extract: boolean | object;
     sourceMap: boolean;

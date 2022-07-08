@@ -93,7 +93,7 @@ export async function addJest(tree: Tree, options: Options) {
   }',
   snapshotSerializers: ['jest-serializer-vue'],
   globals: {
-    'ts-jest': { 
+    'ts-jest': {
       tsconfig: '${options.projectRoot}/tsconfig.spec.json',
       ${
         options.babel
@@ -218,7 +218,7 @@ export async function addBabel(tree: Tree, options: Options) {
   const installTask = addDependenciesToPackageJson(
     tree,
     { 'core-js': '^3.6.5' },
-    { '@vue/cli-plugin-babel': '~4.5.0' }
+    { '@vue/cli-plugin-babel': '~5.0.8' }
   );
 
   return [installTask];
