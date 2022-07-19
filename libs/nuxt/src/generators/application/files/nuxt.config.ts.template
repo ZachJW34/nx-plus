@@ -19,7 +19,7 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
       ]
     },
-  }
+  },
 
   // Global CSS: https://v3.nuxtjs.org/api/configuration/nuxt.config#css
   css: [

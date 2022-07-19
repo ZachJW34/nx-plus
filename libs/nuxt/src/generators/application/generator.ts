@@ -63,7 +63,7 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
     const { path } =
       tree
         .listChanges()
-        .find(({ path }) => path.includes('test/NuxtLogo.spec.js')) || {};
+        .find(({ path }) => path.includes('test/Example.spec.js')) || {};
     if (path) {
       tree.delete(path);
     }

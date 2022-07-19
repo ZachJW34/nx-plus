@@ -20,14 +20,13 @@ describe('nuxt schematic', () => {
     'tsconfig.json',
     'nuxt.config.ts',
     '.eslintrc.json',
-    'static/favicon.ico',
-    'pages/index.vue',
+    'public/favicon.ico',
   ];
 
   const testFiles = [
     'tsconfig.spec.json',
     'jest.config.ts',
-    'test/NuxtLogo.spec.js',
+    'test/Example.spec.js',
   ];
 
   const getGenFiles = (dir = 'apps/my-app') =>

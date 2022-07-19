@@ -28,7 +28,7 @@ export default async function* runExecutor(
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const { default: nuxtConfig } = require(path.join(
               projectRoot,
-              'nuxt.config.js'
+              'nuxt.config.ts'
             ));
 
             if (nuxtConfig.build && nuxtConfig.build.extend) {

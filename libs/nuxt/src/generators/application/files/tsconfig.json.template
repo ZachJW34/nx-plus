@@ -1,16 +1,4 @@
-// {
-  // https://v3.nuxtjs.org/concepts/typescript
- // "extends": "./.nuxt/tsconfig.json"
-// }
 {
-  "extends": "<%= offsetFromRoot %>tsconfig.base.json",
-  "compilerOptions": {
-    "esModuleInterop": false,
-    "allowJs": true,
-    "noEmit": true,
-    "types": [
-      "node",
-      "@nuxt/types"
-    ]
-  },
+  // https://v3.nuxtjs.org/concepts/typescript
+ "extends": "./.nuxt/tsconfig.json"
 }
