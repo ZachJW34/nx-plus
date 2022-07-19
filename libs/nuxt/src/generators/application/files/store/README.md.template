@@ -2,9 +2,14 @@
 
 **This directory is not required, you can delete it if you don't want to use it.**
 
-This directory contains your Vuex Store files.
-Vuex Store option is implemented in the Nuxt.js framework.
+## Pinia (new official Vue recommendation)
+Pinia, which has built-in Nuxt support via a Nuxt module. (https://pinia.vuejs.org/) [Find out more about pinia here].
 
-Creating a file in this directory automatically activates the option in the framework.
+This directory contains your Pinia Store files.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/guide/vuex-store).
+
+## Vuex (deprecated)
+https://v3.nuxtjs.org/migration/configuration#vuex
+
+If you want to keep using Vuex, you can manually migrate to Vuex 4 following these steps
+https://vuex.vuejs.org/guide/migrating-to-4-0-from-3-x.html.

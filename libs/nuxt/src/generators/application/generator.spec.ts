@@ -18,12 +18,10 @@ describe('nuxt schematic', () => {
 
   const nuxtFiles = [
     'tsconfig.json',
-    'nuxt.config.js',
+    'nuxt.config.ts',
     '.eslintrc.json',
     'static/favicon.ico',
     'pages/index.vue',
-    'components/NuxtLogo.vue',
-    'components/NuxtTutorial.vue',
   ];
 
   const testFiles = [

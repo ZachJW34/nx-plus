@@ -1,7 +1,11 @@
+// {
+  // https://v3.nuxtjs.org/concepts/typescript
+ // "extends": "./.nuxt/tsconfig.json"
+// }
 {
   "extends": "<%= offsetFromRoot %>tsconfig.base.json",
   "compilerOptions": {
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "allowJs": true,
     "noEmit": true,
     "types": [
@@ -9,9 +13,4 @@
       "@nuxt/types"
     ]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.js",
-    "**/*.vue"
-  ]
 }
