@@ -32,7 +32,21 @@ describe('nuxt e2e', () => {
     await runNxCommandAsyncStripped(`build ${appName}`);
     expect(() =>
       checkFilesExist(
-        `dist/apps/${appName}/.nuxt/utils.js`,
+        `dist/apps/${appName}/.nuxt/client/manifest.json`,
+        `dist/apps/${appName}/.nuxt/server/client.manifest.json`,
+        `dist/apps/${appName}/.nuxt/server/client.manifest.mjs`,
+        `dist/apps/${appName}/.nuxt/server/server.mjs`,
+        `dist/apps/${appName}/.nuxt/components.d.ts`,
+        `dist/apps/${appName}/.nuxt/imports.d.ts`,
+        `dist/apps/${appName}/.nuxt/nuxt.d.ts`,
+        `dist/apps/${appName}/.nuxt/tsconfig.json`,
+        `dist/apps/${appName}/.nuxt/.output`,
+        `dist/apps/${appName}/.nuxt/.output/server`,
+        `dist/apps/${appName}/.nuxt/.output/nitro.json`,
+        `dist/apps/${appName}/.nuxt/.output/server/index.mjs`,
+        `dist/apps/${appName}/.nuxt/views`,
+        `dist/apps/${appName}/.nuxt/types`
+        /*         `dist/apps/${appName}/.nuxt/utils.js`,
         `dist/apps/${appName}/.nuxt/server.js`,
         `dist/apps/${appName}/.nuxt/routes.json`,
         `dist/apps/${appName}/.nuxt/router.scrollBehavior.js`,
@@ -48,7 +62,7 @@ describe('nuxt e2e', () => {
         `dist/apps/${appName}/.nuxt/vetur`,
         `dist/apps/${appName}/.nuxt/mixins`,
         `dist/apps/${appName}/.nuxt/dist`,
-        `dist/apps/${appName}/.nuxt/components`
+        `dist/apps/${appName}/.nuxt/components` */
       )
     ).not.toThrow();
 
