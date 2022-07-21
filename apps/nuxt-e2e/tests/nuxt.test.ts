@@ -76,10 +76,7 @@ describe('nuxt e2e', () => {
     const appName = uniq('app');
     await runNxCommandAsyncStripped(`generate @nx-plus/nuxt:app ${appName}`);
 
-    updateFile(
-      `apps/${appName}/pages/index.vue`,
-      '<script lang="ts">{}</script>'
-    );
+    updateFile(`apps/${appName}/app.vue`, '<script lang="ts">{}</script>');
 
     const result = await runNxCommandAsyncStripped(`lint ${appName}`, {
       silenceError: true,

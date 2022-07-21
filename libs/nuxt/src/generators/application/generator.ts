@@ -134,7 +134,7 @@ module.exports = {
   displayName: '${options.projectName}',
   preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
   transform: {
-    '.*\\.(vue)$': '@vue/vue2-jest',
+    '.*\\.(vue)$': '@vue/vue3-jest',
     '^.+\\.ts$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
@@ -160,9 +160,8 @@ module.exports = {
     tree,
     {},
     {
-      '@vue/test-utils': '^1.0.3',
-      'babel-core': '^7.0.0-bridge.0',
-      '@vue/vue2-jest': '^27.0.0-alpha.1',
+      '@vue/test-utils': '^2.0.2',
+      '@vue/vue3-jest': '^28.0.1',
     }
   );
 
@@ -272,15 +271,11 @@ export async function applicationGenerator(
   const installTask = addDependenciesToPackageJson(
     tree,
     {
-      'core-js': '^3.15.1',
-      nuxt: '^2.15.7',
+      nuxt: '^3.0.0-rc.6',
     },
     {
-      '@nuxtjs/eslint-config-typescript': '^9.0.0',
-      '@nuxt/types': '^2.15.7',
-      '@nuxt/typescript-build': '^2.1.0',
+      '@nuxtjs/eslint-config-typescript': '^10.0.0',
       'eslint-plugin-nuxt': '^3.2.0',
-      'ts-loader': '^8.3.0',
     }
   );
 
