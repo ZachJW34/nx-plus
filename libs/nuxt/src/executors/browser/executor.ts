@@ -5,7 +5,7 @@ import { ExecutorContext } from '@nrwl/devkit';
 import * as path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { build, loadNuxt } = require('nuxt');
+import { build, loadNuxt } from 'nuxt';
 
 export default async function* runExecutor(
   options: BrowserExecutorSchema,
@@ -14,11 +14,10 @@ export default async function* runExecutor(
   try {
     const projectRoot = await getProjectRoot(context);
     const nuxt = await loadNuxt({
-      for: 'build',
       rootDir: projectRoot,
-      configOverrides: {
+      config: {
         buildDir: path.join(context.root, options.buildDir, '.nuxt'),
-        build: {
+        /*         build: {
           extend(
             config: Record<string, unknown>,
             ctx: Record<string, unknown>
@@ -35,7 +34,7 @@ export default async function* runExecutor(
               nuxtConfig.build.extend(config, ctx);
             }
           },
-        },
+        }, */
       },
     });
 

@@ -10,7 +10,7 @@ import { ServerExecutorSchema } from './schema';
 import * as path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { build, loadNuxt } = require('nuxt');
+import { build, loadNuxt } from 'nuxt';
 
 const serverBuilderOverriddenKeys: string[] = [];
 
@@ -31,25 +31,25 @@ export default async function* runExecutor(
   const projectRoot = await getProjectRoot(context);
 
   const nuxt = await loadNuxt({
-    for: options.dev ? 'dev' : 'start',
+    dev: options.dev,
     rootDir: projectRoot,
-    configOverrides: {
+    config: {
       buildDir: path.join(context.root, browserOptions.buildDir, '.nuxt'),
-      build: {
+      /*       build: {
         extend(config: Record<string, unknown>, ctx: Record<string, unknown>) {
           modifyTypescriptAliases(config, projectRoot);
 
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           const { default: nuxtConfig } = require(path.join(
             projectRoot,
-            'nuxt.config.js'
+            'nuxt.config.ts'
           ));
 
           if (nuxtConfig.build && nuxtConfig.build.extend) {
             nuxtConfig.build.extend(config, ctx);
           }
         },
-      },
+      }, */
     },
   });
 
@@ -57,7 +57,7 @@ export default async function* runExecutor(
     await build(nuxt);
   }
 
-  const result = await nuxt.listen(nuxt.options.server.port);
+  const result = await nuxt.server();
   const baseUrl = options.dev ? nuxt.server.listeners[0].url : result.url;
 
   logger.info(`\nListening on: ${baseUrl}\n`);

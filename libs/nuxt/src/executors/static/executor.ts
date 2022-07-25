@@ -10,7 +10,8 @@ import { default as browserExecutor } from '../browser/executor';
 import { StaticExecutorSchema } from './schema';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Builder, Generator, loadNuxtConfig, Nuxt } = require('nuxt');
+import { loadNuxt } from 'nuxt';
+// import { Builder, Generator, loadNuxt, Nuxt } from 'nuxt';
 
 const serverBuilderOverriddenKeys: string[] = [];
 
@@ -33,15 +34,15 @@ export default async function* runExecutor(
 
     const projectRoot = await getProjectRoot(context);
 
-    const config = await loadNuxtConfig({
+    const config = await loadNuxt({
       rootDir: projectRoot,
-      configOverrides: {
+      config: {
         dev: false,
         buildDir: path.join(context.root, browserOptions.buildDir, '.nuxt'),
         generate: {
           dir: path.join(context.root, browserOptions.buildDir, 'dist'),
         },
-        build: {
+        /*         build: {
           extend(
             config: Record<string, unknown>,
             ctx: Record<string, unknown>
@@ -58,16 +59,16 @@ export default async function* runExecutor(
               nuxtConfig.build.extend(config, ctx);
             }
           },
-        },
+        }, */
       },
     });
 
-    const nuxt = new Nuxt(config);
-    await nuxt.ready();
-    const builder = new Builder(nuxt);
-    const generator = new Generator(nuxt, builder);
+    //const nuxt = new Nuxt(config);
+    // await nuxt.ready();
+    // const builder = new Builder(nuxt);
+    // const generator = new Generator(nuxt, builder);
 
-    await generator.generate({ build: false });
+    // await generator.generate({ build: false });
 
     yield {
       success: true,
