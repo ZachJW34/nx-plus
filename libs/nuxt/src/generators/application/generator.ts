@@ -14,7 +14,7 @@ import {
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 import { checkPeerDeps } from '../../utils';
 import { ApplicationGeneratorSchema } from './schema';
-import path = require('path');
+import * as path from 'path';
 
 interface NormalizedSchema extends ApplicationGeneratorSchema {
   projectName: string;

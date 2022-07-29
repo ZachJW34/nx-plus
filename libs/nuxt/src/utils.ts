@@ -13,6 +13,7 @@ export function getProjectRoot(context: ExecutorContext) {
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Module = require('module');
+// import Module from 'module';
 
 export function loadModule(request: string, context: string, force = false) {
   try {

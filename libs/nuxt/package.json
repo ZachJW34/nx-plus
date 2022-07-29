@@ -2,6 +2,7 @@
   "name": "@nx-plus/nuxt",
   "version": "14.1.0",
   "main": "src/index.js",
+  "type": "module",
   "generators": "./generators.json",
   "executors": "./executors.json",
   "description": "Nuxt plugin for Nx",

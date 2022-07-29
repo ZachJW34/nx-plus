@@ -10,7 +10,7 @@ import { ServerExecutorSchema } from './schema';
 import * as path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-import { build, loadNuxt } from 'nuxt';
+const { build, loadNuxt } = await import('nuxt');
 
 const serverBuilderOverriddenKeys: string[] = [];
 
