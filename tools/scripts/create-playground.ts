@@ -1,5 +1,5 @@
 import { readWorkspaceConfig } from '@nrwl/workspace';
-import { workspaceRoot } from '@nrwl/workspace/src/utils/app-root';
+import { workspaceRoot } from '@nrwl/devkit';
 import { execSync } from 'child_process';
 
 import {
@@ -32,7 +32,7 @@ execSync(
 
 publishableLibNames.forEach((pubLibName) => {
   const { outputPath, packageJson } =
-    workspaceConfig.projects[pubLibName].targets.build.options;
+    workspaceConfig.projects[pubLibName].targets?.build.options;
   const p = JSON.parse(readFileSync(tmpProjPath('package.json')).toString());
   p.devDependencies[
     require(`${workspaceRoot}/${packageJson}`).name

@@ -23,7 +23,7 @@
         "jestConfig": "libs/docusaurus/jest.config.ts",
         "passWithNoTests": true
       },
-      "outputs": ["coverage/libs/docusaurus"]
+      "outputs": ["{workspaceRoot}/coverage/libs/docusaurus"]
     },
     "build": {
       "executor": "@nrwl/js:tsc",

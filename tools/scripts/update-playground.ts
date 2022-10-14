@@ -1,5 +1,5 @@
 import { readWorkspaceConfig } from '@nrwl/workspace';
-import { workspaceRoot } from '@nrwl/workspace/src/utils/app-root';
+import { workspaceRoot } from '@nrwl/devkit';
 import { execSync } from 'child_process';
 import { copySync, removeSync } from 'fs-extra';
 import { getPublishableLibNames, tmpProjPath } from './utils';

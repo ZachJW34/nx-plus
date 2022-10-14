@@ -23,7 +23,7 @@
         "jestConfig": "libs/vue/jest.config.ts",
         "passWithNoTests": true
       },
-      "outputs": ["coverage/libs/vue"]
+      "outputs": ["{workspaceRoot}/coverage/libs/vue"]
     },
     "build": {
       "executor": "@nrwl/js:tsc",

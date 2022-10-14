@@ -23,7 +23,7 @@
         "jestConfig": "libs/nuxt/jest.config.ts",
         "passWithNoTests": true
       },
-      "outputs": ["coverage/libs/nuxt"]
+      "outputs": ["{workspaceRoot}/coverage/libs/nuxt"]
     },
     "build": {
       "executor": "@nrwl/js:tsc",
