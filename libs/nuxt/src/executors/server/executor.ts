@@ -10,7 +10,8 @@ import { ServerExecutorSchema } from './schema';
 import * as path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { build, loadNuxt } = await import('nuxt');
+// const { build, loadNuxt } = await import('nuxt');
+const dynamicImport = new Function('specifier', 'return import(specifier)');
 
 const serverBuilderOverriddenKeys: string[] = [];
 
@@ -18,6 +19,9 @@ export default async function* runExecutor(
   options: ServerExecutorSchema,
   context: ExecutorContext
 ) {
+  const { loadNuxt, build } = (await dynamicImport(
+    'nuxt'
+  )) as typeof import('nuxt');
   const browserTarget = parseTargetString(options.browserTarget);
   const rawBrowserOptions = readTargetOptions(browserTarget, context);
   const overrides = Object.entries(options)

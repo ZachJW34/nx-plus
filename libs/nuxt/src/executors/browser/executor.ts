@@ -5,7 +5,8 @@ import { ExecutorContext } from '@nrwl/devkit';
 import * as path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-import { build, loadNuxt } from 'nuxt';
+// import { build, loadNuxt } from 'nuxt';
+const dynamicImport = new Function('specifier', 'return import(specifier)');
 
 export default async function* runExecutor(
   options: BrowserExecutorSchema,
@@ -13,6 +14,9 @@ export default async function* runExecutor(
 ) {
   try {
     const projectRoot = await getProjectRoot(context);
+    const { loadNuxt, build } = (await dynamicImport(
+      'nuxt'
+    )) as typeof import('nuxt');
     const nuxt = await loadNuxt({
       rootDir: projectRoot,
       config: {

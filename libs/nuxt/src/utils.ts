@@ -12,7 +12,12 @@ export function getProjectRoot(context: ExecutorContext) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const Module = require('module');
+
+const dynamicImport = new Function('specifier', 'return import(specifier)');
+
+const Module = (await dynamicImport('module')) as typeof import('module');
+
+// const Module = require('module');
 // import Module from 'module';
 
 export function loadModule(request: string, context: string, force = false) {
@@ -29,22 +34,7 @@ export function loadModule(request: string, context: string, force = false) {
   }
 }
 
-// https://github.com/benmosher/eslint-plugin-import/pull/1591
-// https://github.com/benmosher/eslint-plugin-import/pull/1602
-// Polyfill Node's `Module.createRequireFromPath` if not present (added in Node v10.12.0)
-// Use `Module.createRequire` if available (added in Node v12.2.0)
-const createRequire =
-  Module.createRequire ||
-  Module.createRequireFromPath ||
-  function (filename: string) {
-    const mod = new Module(filename, null);
-    mod.filename = filename;
-    mod.paths = Module._nodeModulePaths(path.dirname(filename));
-
-    mod._compile(`module.exports = require;`, filename);
-
-    return mod.exports;
-  };
+const createRequire = Module.createRequire;
 
 function clearRequireCache(id: string, map = new Map()) {
   const module = require.cache[id];

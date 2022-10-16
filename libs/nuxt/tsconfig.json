@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "ESNext",
-    "target": "ESNext",
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2017"
   },
   "include": [],
   "files": [],
