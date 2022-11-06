@@ -219,7 +219,7 @@ export async function applicationGenerator(
   tree: Tree,
   schema: ApplicationGeneratorSchema
 ) {
-  checkPeerDeps(schema);
+  await checkPeerDeps(schema);
   const options = normalizeOptions(tree, schema);
   addProjectConfiguration(tree, options.projectName, {
     root: options.projectRoot,
@@ -271,11 +271,11 @@ export async function applicationGenerator(
   const installTask = addDependenciesToPackageJson(
     tree,
     {
-      nuxt: '^3.0.0-rc.6',
+      nuxt: '^3.0.0-rc.12',
     },
     {
       '@nuxtjs/eslint-config-typescript': '^10.0.0',
-      'eslint-plugin-nuxt': '^3.2.0',
+      'eslint-plugin-nuxt': '^4.0.0',
     }
   );
 

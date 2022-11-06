@@ -15,12 +15,17 @@ export function getProjectRoot(context: ExecutorContext) {
 
 const dynamicImport = new Function('specifier', 'return import(specifier)');
 
-const Module = (await dynamicImport('module')) as typeof import('module');
-
 // const Module = require('module');
 // import Module from 'module';
 
-export function loadModule(request: string, context: string, force = false) {
+export async function loadModule(
+  request: string,
+  context: string,
+  force = false
+) {
+  const Module = (await dynamicImport('module')) as typeof import('module');
+  const createRequire = Module.createRequire;
+
   try {
     return createRequire(path.resolve(context, 'package.json'))(request);
   } catch (e) {
@@ -34,8 +39,6 @@ export function loadModule(request: string, context: string, force = false) {
   }
 }
 
-const createRequire = Module.createRequire;
-
 function clearRequireCache(id: string, map = new Map()) {
   const module = require.cache[id];
   if (module) {
@@ -48,16 +51,22 @@ function clearRequireCache(id: string, map = new Map()) {
   }
 }
 
-export function checkPeerDeps(options: ApplicationGeneratorSchema): void {
+export async function checkPeerDeps(
+  options: ApplicationGeneratorSchema
+): Promise<void> {
   const expectedVersion = '^14.0.0';
   const unmetPeerDeps = [
     ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
     ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),
     '@nrwl/linter',
     '@nrwl/workspace',
-  ].filter((dep) => {
+  ].filter(async (dep) => {
     try {
-      const { version } = loadModule(`${dep}/package.json`, appRootPath, true);
+      const { version } = await loadModule(
+        `${dep}/package.json`,
+        appRootPath,
+        true
+      );
       return !semver.satisfies(version, expectedVersion);
     } catch (err) {
       return true;
