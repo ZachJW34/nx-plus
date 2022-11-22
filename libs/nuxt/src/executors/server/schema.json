@@ -19,6 +19,11 @@
       "type": "boolean",
       "description": "Define the development or production mode of Nuxt.js.",
       "default": true
+    },
+    "port": {
+      "type": "number",
+      "description": "Specify port (default: 8080).",
+      "default": 8080
     }
   },
   "required": ["browserTarget"],
