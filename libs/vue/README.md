@@ -1,5 +1,9 @@
 # Nx Plus Vue
 
+This is a fork of @nx-plus/vue to support Node >=18 while waiting for [this PR](https://github.com/ZachJW34/nx-plus/pull/278) to get merged in.  
+Can be installed via `yarn add nx-plus-vue-node-18`.  
+NPM: https://www.npmjs.com/package/nx-plus-vue-node-18
+
 > First class support for [Vue](https://vuejs.org/) in your [Nx](https://nx.dev/) workspace.
 
 <div align="center">
