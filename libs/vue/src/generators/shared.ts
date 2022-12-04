@@ -82,7 +82,7 @@ export async function addJest(tree: Tree, options: Options) {
   displayName: '${options.projectName}',
   preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
   transform: {
-    '^.+\\.vue$': '${options.isVue3 ? 'vue3-jest' : '@vue/vue2-jest'}',
+    '^.+\\.vue$': '${options.isVue3 ? '@vue/vue3-jest' : '@vue/vue2-jest'}',
     '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':
       'jest-transform-stub',
     '^.+\\.tsx?$': 'ts-jest',
@@ -124,8 +124,8 @@ export async function addJest(tree: Tree, options: Options) {
       'jest-serializer-vue': '^2.0.2',
       'jest-transform-stub': '^2.0.0',
       ...(options.isVue3
-        ? { 'vue3-jest': '^27.0.0-alpha.1' }
-        : { '@vue/vue2-jest': '^27.0.0-alpha.1' }),
+        ? { '@vue/vue3-jest': '^28.0.0' }
+        : { '@vue/vue2-jest': '^28.0.0' }),
     }
   );
   return [jestInitTask, jestTask, installTask];

@@ -11,13 +11,18 @@ import {
 import { dirname } from 'path';
 import { getPublishableLibNames, tmpProjPath } from './utils';
 
+const nrwlVersion =
+  require('../../package.json').devDependencies['@nrwl/workspace'];
+
 console.log('\nCreating playground. This may take a few minutes.');
 
 const workspaceConfig = readWorkspaceConfig({ format: 'nx' });
 
 const publishableLibNames = getPublishableLibNames(workspaceConfig);
 
-execSync(`yarn nx run-many --target build --projects ${publishableLibNames}`);
+execSync(`yarn nx run-many --target build --projects ${publishableLibNames}`, {
+  stdio: 'inherit',
+});
 
 ensureDirSync(tmpProjPath());
 
@@ -27,7 +32,7 @@ execSync(
   `node ${require.resolve('@nrwl/tao')} new proj --nx-workspace-root=${dirname(
     tmpProjPath()
   )} --no-interactive --skip-install --collection=@nrwl/workspace --npmScope=proj --preset=empty --package-manager=yarn`,
-  { cwd: dirname(tmpProjPath()) }
+  { cwd: dirname(tmpProjPath()), stdio: 'inherit' }
 );
 
 publishableLibNames.forEach((pubLibName) => {
@@ -40,9 +45,13 @@ publishableLibNames.forEach((pubLibName) => {
   writeFileSync(tmpProjPath('package.json'), JSON.stringify(p, null, 2));
 });
 
-execSync('yarn install', {
+const peerDeps = ['@nrwl/cypress', '@nrwl/cypress', '@nrwl/linter'].map(
+  (dep) => `${dep}@${nrwlVersion}`
+);
+
+execSync(`yarn add -D ${peerDeps.join(' ')}`, {
   cwd: tmpProjPath(),
-  stdio: ['ignore', 'ignore', 'ignore'],
+  stdio: 'inherit',
 });
 
-console.log(`\nCreated playground at ${tmpProjPath()}.`);
+console.log(`\nCreated playground at ${tmpProjPath()}`);

@@ -5,7 +5,9 @@ export function getPublishableLibNames(workspaceJson: any) {
       projects[key].projectType === 'library' &&
       projects[key].targets &&
       projects[key].targets.build &&
-      projects[key].targets.build.executor === '@nrwl/js:tsc'
+      projects[key].targets.build.executor === '@nrwl/js:tsc' &&
+      // tmp
+      key !== 'nuxt'
   );
 }
 
