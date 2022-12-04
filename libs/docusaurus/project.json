@@ -55,5 +55,6 @@
       "outputs": ["{options.outputPath}"]
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "docusaurus"
 }

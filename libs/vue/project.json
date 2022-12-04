@@ -60,5 +60,6 @@
       "outputs": ["{options.outputPath}"]
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "vue"
 }

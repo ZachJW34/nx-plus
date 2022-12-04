@@ -12,5 +12,6 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["docusaurus"]
+  "implicitDependencies": ["docusaurus"],
+  "name": "docusaurus-e2e"
 }
