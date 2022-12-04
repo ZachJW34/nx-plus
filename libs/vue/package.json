@@ -1,13 +1,13 @@
 {
-  "name": "@nx-plus/vue",
-  "version": "14.1.0",
+  "name": "nx-plus-vue-node-18",
+  "version": "14.1.1",
   "main": "src/index.js",
   "generators": "./generators.json",
   "executors": "./executors.json",
   "description": "Vue plugin for Nx",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ZachJW34/nx-plus.git"
+    "url": "git+https://github.com/Nakroma/nx-plus.git"
   },
   "keywords": [
     "nx",
@@ -23,9 +23,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ZachJW34/nx-plus/issues"
+    "url": "https://github.com/Nakroma/nx-plus/issues"
   },
-  "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/vue#readme",
+  "homepage": "https://github.com/Nakroma/nx-plus/tree/master/libs/vue#readme",
   "peerDependencies": {
     "@nrwl/cypress": "^14.3.6",
     "@nrwl/jest": "^14.3.6",
