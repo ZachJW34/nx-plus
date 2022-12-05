@@ -119,13 +119,13 @@ export async function addJest(tree: Tree, options: Options) {
     {},
     {
       ...(options.isVue3
-        ? { '@vue/test-utils': '^2.0.0-0' }
-        : { '@vue/test-utils': '^1.1.3' }),
-      'jest-serializer-vue': '^2.0.2',
+        ? { '@vue/test-utils': '^2.2.0' }
+        : { '@vue/test-utils': '^1.3.0' }),
+      'jest-serializer-vue': '^3.0.0',
       'jest-transform-stub': '^2.0.0',
       ...(options.isVue3
-        ? { '@vue/vue3-jest': '^28.0.0' }
-        : { '@vue/vue2-jest': '^28.0.0' }),
+        ? { '@vue/vue3-jest': '^28.1.0' }
+        : { '@vue/vue2-jest': '^28.1.0' }),
     }
   );
   return [jestInitTask, jestTask, installTask];
@@ -178,10 +178,10 @@ export async function addEsLint(tree: Tree, options: Options) {
     tree,
     {},
     {
-      '@vue/eslint-config-prettier': '6.0.0',
-      '@vue/eslint-config-typescript': '^5.0.2',
-      'eslint-plugin-prettier': '^3.1.3',
-      'eslint-plugin-vue': '^7.0.0-0',
+      '@vue/eslint-config-prettier': '7.0.0',
+      '@vue/eslint-config-typescript': '^11.0.0',
+      'eslint-plugin-prettier': '^4.2.0',
+      'eslint-plugin-vue': '^9.8.0',
     }
   );
 

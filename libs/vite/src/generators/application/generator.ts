@@ -124,10 +124,10 @@ async function addEsLint(tree: Tree, options: NormalizedSchema) {
     tree,
     {},
     {
-      '@vue/eslint-config-prettier': '6.0.0',
-      '@vue/eslint-config-typescript': '^5.0.2',
-      'eslint-plugin-prettier': '^3.1.3',
-      'eslint-plugin-vue': '^7.0.0-0',
+      '@vue/eslint-config-prettier': '7.0.0',
+      '@vue/eslint-config-typescript': '^11.0.0',
+      'eslint-plugin-prettier': '^4.2.0',
+      'eslint-plugin-vue': '^9.8.0',
     }
   );
 
@@ -148,7 +148,7 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
     js: false,
   });
 
-  const appSpecPath = options.projectRoot + '-e2e/src/integration/app.spec.ts';
+  const appSpecPath = options.projectRoot + '-e2e/src/e2e/app.cy.ts';
   tree.write(
     appSpecPath,
     `describe('${options.projectName}', () => {
@@ -192,7 +192,7 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
   displayName: '${options.projectName}',
   preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
   transform: {
-    '^.+\\.vue$': 'vue3-jest',
+    '^.+\\.vue$': '@vue/vue3-jest',
     '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':
       'jest-transform-stub',
     '^.+\\.tsx?$': 'ts-jest',
@@ -218,10 +218,10 @@ async function addJest(tree: Tree, options: NormalizedSchema) {
     tree,
     {},
     {
-      '@vue/test-utils': '^2.0.0-0',
-      'jest-serializer-vue': '^2.0.2',
+      '@vue/test-utils': '^2.2.0',
+      'jest-serializer-vue': '^3.0.0',
       'jest-transform-stub': '^2.0.0',
-      'vue3-jest': '^27.0.0-alpha.1',
+      '@vue/vue3-jest': '^28.1.0',
     }
   );
   return [jestInitTask, jestTask, installTask];
@@ -279,11 +279,11 @@ export async function applicationGenerator(
     schema.unitTestRunner === 'jest' ? await addJest(tree, options) : [];
   const installTask = addDependenciesToPackageJson(
     tree,
-    { vue: '^3.0.5' },
+    { vue: '^3.2.0' },
     {
-      '@vitejs/plugin-vue': '^2.0.0',
-      typescript: '^4.4.4',
-      vite: '^2.8.6',
+      '@vitejs/plugin-vue': '^3.2.0',
+      typescript: '^4.7.4',
+      vite: '^3.2.0',
     }
   );
   addPostInstall(tree);
