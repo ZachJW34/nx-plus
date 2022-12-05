@@ -82,7 +82,7 @@ export async function addJest(tree: Tree, options: Options) {
   displayName: '${options.projectName}',
   preset: '${offsetFromRoot(options.projectRoot)}jest.preset.js',
   transform: {
-    '^.+\\.vue$': '${options.isVue3 ? 'vue3-jest' : '@vue/vue2-jest'}',
+    '^.+\\.vue$': '${options.isVue3 ? '@vue/vue3-jest' : '@vue/vue2-jest'}',
     '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':
       'jest-transform-stub',
     '^.+\\.tsx?$': 'ts-jest',
@@ -93,7 +93,7 @@ export async function addJest(tree: Tree, options: Options) {
   }',
   snapshotSerializers: ['jest-serializer-vue'],
   globals: {
-    'ts-jest': { 
+    'ts-jest': {
       tsconfig: '${options.projectRoot}/tsconfig.spec.json',
       ${
         options.babel
@@ -119,13 +119,13 @@ export async function addJest(tree: Tree, options: Options) {
     {},
     {
       ...(options.isVue3
-        ? { '@vue/test-utils': '^2.0.0-0' }
-        : { '@vue/test-utils': '^1.1.3' }),
-      'jest-serializer-vue': '^2.0.2',
+        ? { '@vue/test-utils': '^2.2.0' }
+        : { '@vue/test-utils': '^1.3.0' }),
+      'jest-serializer-vue': '^3.0.0',
       'jest-transform-stub': '^2.0.0',
       ...(options.isVue3
-        ? { 'vue3-jest': '^27.0.0-alpha.1' }
-        : { '@vue/vue2-jest': '^27.0.0-alpha.1' }),
+        ? { '@vue/vue3-jest': '^28.1.0' }
+        : { '@vue/vue2-jest': '^28.1.0' }),
     }
   );
   return [jestInitTask, jestTask, installTask];
@@ -178,10 +178,10 @@ export async function addEsLint(tree: Tree, options: Options) {
     tree,
     {},
     {
-      '@vue/eslint-config-prettier': '6.0.0',
-      '@vue/eslint-config-typescript': '^5.0.2',
-      'eslint-plugin-prettier': '^3.1.3',
-      'eslint-plugin-vue': '^7.0.0-0',
+      '@vue/eslint-config-prettier': '7.0.0',
+      '@vue/eslint-config-typescript': '^11.0.0',
+      'eslint-plugin-prettier': '^4.2.0',
+      'eslint-plugin-vue': '^9.8.0',
     }
   );
 
@@ -218,7 +218,7 @@ export async function addBabel(tree: Tree, options: Options) {
   const installTask = addDependenciesToPackageJson(
     tree,
     { 'core-js': '^3.6.5' },
-    { '@vue/cli-plugin-babel': '~4.5.0' }
+    { '@vue/cli-plugin-babel': '~5.0.8' }
   );
 
   return [installTask];

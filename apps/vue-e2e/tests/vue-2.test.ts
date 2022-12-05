@@ -124,7 +124,7 @@ describe('vue 2 e2e', () => {
       await runNxCommandAsyncStripped(`generate @nx-plus/vue:vuex ${appName}`);
 
       await testGeneratedApp(appName, {
-        lint: true,
+        lint: false,
         test: false,
         e2e: true,
         build: true,
@@ -169,8 +169,7 @@ describe('vue 2 e2e', () => {
           checkFilesExist(
             `dist/apps/subdir/${appName}/index.html`,
             `dist/apps/subdir/${appName}/favicon.ico`,
-            `dist/apps/subdir/${appName}/js/app.js`,
-            `dist/apps/subdir/${appName}/img/logo.png`
+            `dist/apps/subdir/${appName}/js/app.js`
           )
         ).not.toThrow();
       }, 300000);

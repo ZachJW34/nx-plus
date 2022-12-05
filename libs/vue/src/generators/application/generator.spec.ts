@@ -21,6 +21,11 @@ describe('application schematic', () => {
 
   beforeEach(() => {
     appTree = createTreeWithEmptyWorkspace();
+    // Why do I have to do this?!
+    appTree.write(
+      './workspace.json',
+      JSON.stringify({ version: 1, projects: {} })
+    );
   });
 
   it('should update workspace.json', async () => {
@@ -83,7 +88,7 @@ describe('application schematic', () => {
     const eslintConfig = JSON.parse(treeRead('apps/my-app/.eslintrc.json'));
     expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
-    expect(treeRead('apps/my-app-e2e/src/integration/app.spec.ts')).toContain(
+    expect(treeRead('apps/my-app-e2e/src/e2e/app.cy.ts')).toContain(
       "'Welcome to Your Vue.js + TypeScript App'"
     );
 
@@ -222,12 +227,13 @@ a
   });
 
   describe('--e2eTestRunner none', () => {
-    it('should not generate e2e configuration', async () => {
+    it.only('should not generate e2e configuration', async () => {
       await applicationGenerator(appTree, {
         ...options,
         e2eTestRunner: 'none',
       });
-      const workspaceJson = readJson(appTree, 'workspace.json');
+
+      const workspaceJson = readJson(appTree, './workspace.json');
 
       expect(workspaceJson.projects['my-app-e2e']).toBeUndefined();
 
@@ -359,9 +365,9 @@ new Vue({
       );
       expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../../'));
 
-      expect(
-        treeRead('apps/subdir/my-app-e2e/src/integration/app.spec.ts')
-      ).toContain("'Welcome to Your Vue.js + TypeScript App'");
+      expect(treeRead('apps/subdir/my-app-e2e/src/e2e/app.cy.ts')).toContain(
+        "'Welcome to Your Vue.js + TypeScript App'"
+      );
 
       const tsConfigJson = readJson(
         appTree,
@@ -437,7 +443,7 @@ new Vue({
       expect(eslintConfig).toEqual(getEslintConfigWithOffset('../../'));
 
       expect(
-        treeRead('custom-apps-dir/my-app-e2e/src/integration/app.spec.ts')
+        treeRead('custom-apps-dir/my-app-e2e/src/e2e/app.cy.ts')
       ).toContain("'Welcome to Your Vue.js + TypeScript App'");
 
       const tsConfigJson = readJson(

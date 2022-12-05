@@ -12,5 +12,6 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["vue"]
+  "implicitDependencies": ["vue"],
+  "name": "vue-e2e"
 }

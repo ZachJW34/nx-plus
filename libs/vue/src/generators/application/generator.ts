@@ -83,7 +83,7 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
     js: false,
   });
 
-  const appSpecPath = options.projectRoot + '-e2e/src/integration/app.spec.ts';
+  const appSpecPath = options.projectRoot + '-e2e/src/e2e/app.cy.ts';
   tree.write(
     appSpecPath,
     `describe('${options.projectName}', () => {
@@ -159,18 +159,17 @@ export async function applicationGenerator(
   const installTask = addDependenciesToPackageJson(
     tree,
     {
-      vue: options.isVue3 ? '^3.0.0' : '^2.6.11',
+      vue: options.isVue3 ? '^3.2.0' : '^2.7.0',
       ...(options.routing
-        ? { 'vue-router': options.isVue3 ? '^4.0.0-0' : '^3.2.0' }
+        ? { 'vue-router': options.isVue3 ? '^4.1.0' : '^3.6.0' }
         : {}),
     },
     {
-      '@vue/cli-plugin-typescript': '~4.5.0',
-      '@vue/cli-service': '~4.5.0',
+      '@vue/cli-plugin-typescript': '~5.0.8',
+      '@vue/cli-service': '~5.0.8',
       ...(options.isVue3 ? { '@vue/compiler-sfc': '^3.0.0' } : {}),
       '@vue/eslint-config-typescript': '^5.0.2',
       'eslint-plugin-vue': '^7.8.0',
-      ...(!options.isVue3 ? { 'vue-template-compiler': '^2.6.11' } : {}),
     }
   );
 

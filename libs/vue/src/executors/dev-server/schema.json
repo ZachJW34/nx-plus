@@ -1,4 +1,6 @@
 {
+  "version": 2,
+  "outputCapture": "direct-nodejs",
   "$schema": "http://json-schema.org/schema",
   "cli": "nx",
   "title": "DevServer executor",
@@ -63,10 +65,6 @@
     "css": {
       "type": "object",
       "properties": {
-        "requireModuleExtension": {
-          "type": "boolean",
-          "description": "By default, only files that ends in *.module.[ext] are treated as CSS modules. Setting this to false will allow you to drop .module in the filenames and treat all *.(css|scss|sass|less|styl(us)?) files as CSS modules."
-        },
         "extract": {
           "description": "Whether to extract CSS in your components into a standalone CSS files (instead of inlined in JavaScript and injected dynamically).",
           "oneOf": [

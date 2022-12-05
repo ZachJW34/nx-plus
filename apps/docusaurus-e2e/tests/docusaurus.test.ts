@@ -11,7 +11,7 @@ describe('docusaurus e2e', () => {
 
     const result = await runNxCommandAsyncStripped(`build ${appName}`);
     expect(result.stdout).toContain(
-      `Success! Generated static files in "dist/apps/${appName}".`
+      `[SUCCESS] Generated static files in "dist/apps/${appName}".`
     );
   }, 200000);
 });

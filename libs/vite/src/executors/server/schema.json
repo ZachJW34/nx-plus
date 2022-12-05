@@ -1,4 +1,6 @@
 {
+  "version": 2,
+  "outputCapture": "direct-nodejs",
   "$schema": "http://json-schema.org/schema",
   "cli": "nx",
   "title": "Server executor",
@@ -13,7 +15,10 @@
       "type": "string",
       "description": "use specified root directory"
     },
-    "base": { "type": "string", "description": "public base path" },
+    "base": {
+      "type": "string",
+      "description": "public base path"
+    },
     "logLevel": {
       "type": "string",
       "description": "silent | error | warn | all"
@@ -26,7 +31,10 @@
       "type": "boolean",
       "description": "show debug logs"
     },
-    "filter": { "type": "string", "description": "filter debug log" },
+    "filter": {
+      "type": "string",
+      "description": "filter debug log"
+    },
     "host": {
       "type": "string",
       "description": "specify hostname"

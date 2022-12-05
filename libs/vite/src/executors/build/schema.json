@@ -1,4 +1,6 @@
 {
+  "version": 2,
+  "outputCapture": "direct-nodejs",
   "$schema": "http://json-schema.org/schema",
   "cli": "nx",
   "title": "Build executor",
@@ -13,7 +15,10 @@
       "type": "string",
       "description": "use specified root directory"
     },
-    "base": { "type": "string", "description": "public base path" },
+    "base": {
+      "type": "string",
+      "description": "public base path"
+    },
     "logLevel": {
       "type": "string",
       "description": "silent | error | warn | all"
@@ -26,7 +31,10 @@
       "type": ["string", "boolean"],
       "description": "show debug logs"
     },
-    "filter": { "type": "string", "description": "filter debug log" },
+    "filter": {
+      "type": "string",
+      "description": "filter debug log"
+    },
     "target": {
       "type": "string",
       "description": "transpile target"
@@ -67,7 +75,10 @@
       "type": "boolean",
       "description": "force empty outDir when it's outside of root"
     },
-    "mode": { "type": "string", "description": "set env mode" },
+    "mode": {
+      "type": "string",
+      "description": "set env mode"
+    },
     "watch": {
       "type": "boolean",
       "description": "rebuilds when modules have changed on disk"

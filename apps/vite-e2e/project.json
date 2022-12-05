@@ -12,5 +12,6 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["vite"]
+  "implicitDependencies": ["vite"],
+  "name": "vite-e2e"
 }

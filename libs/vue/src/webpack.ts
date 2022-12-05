@@ -62,46 +62,6 @@ export function modifyTsConfigPaths(
   });
 }
 
-export function modifyCachePaths(config: ANY, context: ExecutorContext): void {
-  const vueLoaderCachePath = path.join(
-    context.root,
-    'node_modules/.cache/vue-loader'
-  );
-  const tsLoaderCachePath = path.join(
-    context.root,
-    'node_modules/.cache/ts-loader'
-  );
-
-  config.module
-    .rule('vue')
-    .use('cache-loader')
-    .tap((options: ANY) => {
-      options.cacheDirectory = vueLoaderCachePath;
-      return options;
-    });
-  config.module
-    .rule('vue')
-    .use('vue-loader')
-    .tap((options: ANY) => {
-      options.cacheDirectory = vueLoaderCachePath;
-      return options;
-    });
-  config.module
-    .rule('ts')
-    .use('cache-loader')
-    .tap((options: ANY) => {
-      options.cacheDirectory = tsLoaderCachePath;
-      return options;
-    });
-  config.module
-    .rule('tsx')
-    .use('cache-loader')
-    .tap((options: ANY) => {
-      options.cacheDirectory = tsLoaderCachePath;
-      return options;
-    });
-}
-
 export function modifyTypescriptAliases(
   config: ANY,
   options: BrowserExecutorSchema | LibraryExecutorSchema,
@@ -136,24 +96,18 @@ export function modifyCopyAssets(
   context: ExecutorContext,
   projectRoot: string
 ): void {
-  const transformedAssetPatterns = ['package.json', 'README.md'].map(
-    (file) => ({
-      from: path.join(projectRoot, file),
-      to: path.join(context.root, options.dest),
-    })
-  );
+  const patterns = ['package.json', 'README.md'].map((file) => ({
+    from: path.join(projectRoot, file),
+    to: path.join(context.root, options.dest),
+  }));
 
   config
     .plugin('copy')
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    .use(require('copy-webpack-plugin'), [transformedAssetPatterns]);
+    .use(require('copy-webpack-plugin'), [{ patterns }]);
 }
 
-export function modifyBabelLoader(
-  config: ANY,
-  babelConfig: string,
-  context: ExecutorContext
-) {
+export function modifyBabelLoader(config: ANY, babelConfig: string) {
   ['js', 'ts', 'tsx'].forEach((ext) =>
     config.module
       .rule(ext)
@@ -163,16 +117,4 @@ export function modifyBabelLoader(
         configFile: babelConfig,
       }))
   );
-
-  const babelLoaderCachePath = path.join(
-    context.root,
-    'node_modules/.cache/babel-loader'
-  );
-  config.module
-    .rule('js')
-    .use('cache-loader')
-    .tap((options: ANY) => {
-      options.cacheDirectory = babelLoaderCachePath;
-      return options;
-    });
 }

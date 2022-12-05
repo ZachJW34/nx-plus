@@ -7,12 +7,10 @@ import {
   checkUnsupportedConfig,
   getBabelConfig,
   getProjectRoot,
-  modifyChalkOutput,
   resolveConfigureWebpack,
 } from '../../utils';
 import {
   modifyBabelLoader,
-  modifyCachePaths,
   modifyEntryPoint,
   modifyIndexHtmlPath,
   modifyTsConfigPaths,
@@ -37,26 +35,10 @@ const devServerBuilderOverriddenKeys = [
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ANY = any;
 
-function modifyChalk(context: ExecutorContext) {
-  // The vue-cli build command is not suitable for an nx project.
-  // We spy on chalk to intercept the console output and replace
-  // it with a nx command.
-  // TODO: Find a better way to rewrite vue-cli console output
-  const buildRegex = /([p]?npm run|yarn) build/;
-  modifyChalkOutput('cyan', (arg) => {
-    if (buildRegex.test(arg)) {
-      return arg.replace(buildRegex, `nx build ${context.projectName} --prod`);
-    }
-    return arg;
-  });
-}
-
 export default async function* runExecutor(
   options: DevServerExecutorSchema,
   context: ExecutorContext
 ) {
-  modifyChalk(context);
-
   // The `css` option must be `undefined` in order for the
   // browser builder option to serve as the default. JSON
   // Schema does not support setting a default value of
@@ -64,7 +46,6 @@ export default async function* runExecutor(
   // TODO: Handle this less obtrusively.
   if (
     options.css &&
-    options.css.requireModuleExtension === undefined &&
     options.css.extract === undefined &&
     options.css.sourceMap === undefined &&
     !Object.keys(options.css.loaderOptions).length
@@ -91,10 +72,9 @@ export default async function* runExecutor(
       modifyIndexHtmlPath(config, browserOptions, context);
       modifyEntryPoint(config, browserOptions, context);
       modifyTsConfigPaths(config, browserOptions, context);
-      modifyCachePaths(config, context);
       modifyTypescriptAliases(config, browserOptions, context);
       if (babelConfig) {
-        modifyBabelLoader(config, babelConfig, context);
+        modifyBabelLoader(config, babelConfig);
       }
 
       if (!options.watch) {
