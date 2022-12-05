@@ -74,7 +74,7 @@ export default async function* runExecutor(
       modifyTsConfigPaths(config, browserOptions, context);
       modifyTypescriptAliases(config, browserOptions, context);
       if (babelConfig) {
-        modifyBabelLoader(config, babelConfig, context);
+        modifyBabelLoader(config, babelConfig);
       }
 
       if (!options.watch) {

@@ -37,7 +37,7 @@ export default async function* runExecutor(
         modifyTypescriptAliases(config, options, context);
         modifyCopyAssets(config, options, context, projectRoot);
         if (babelConfig) {
-          modifyBabelLoader(config, babelConfig, context);
+          modifyBabelLoader(config, babelConfig);
         }
       },
       css: options.css,

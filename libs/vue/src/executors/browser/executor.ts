@@ -35,7 +35,7 @@ export default async function* runExecutor(
         modifyTsConfigPaths(config, options, context);
         modifyTypescriptAliases(config, options, context);
         if (babelConfig) {
-          modifyBabelLoader(config, babelConfig, context);
+          modifyBabelLoader(config, babelConfig);
         }
       },
       publicPath: options.publicPath,

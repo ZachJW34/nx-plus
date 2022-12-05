@@ -39,8 +39,7 @@ export async function testGeneratedApp(
       checkFilesExist(
         `dist/apps/${appName}/index.html`,
         `dist/apps/${appName}/favicon.ico`,
-        `dist/apps/${appName}/js/app.js`,
-        `dist/apps/${appName}/img/logo.png`
+        `dist/apps/${appName}/js/app.js`
       )
     ).not.toThrow();
   }
@@ -58,7 +57,6 @@ export async function testGeneratedApp(
         `dist/apps/${appName}/js/app.js.map`,
         `dist/apps/${appName}/js/chunk-vendors.js`,
         `dist/apps/${appName}/js/chunk-vendors.js.map`,
-        `dist/apps/${appName}/img/logo.png`,
         `dist/apps/${appName}/css/app.css`
       )
     ).not.toThrow();

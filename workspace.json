@@ -3,8 +3,6 @@
   "projects": {
     "docusaurus": "libs/docusaurus",
     "docusaurus-e2e": "apps/docusaurus-e2e",
-    "nuxt": "libs/nuxt",
-    "nuxt-e2e": "apps/nuxt-e2e",
     "shared-testing": "libs/shared/testing",
     "vite": "libs/vite",
     "vite-e2e": "apps/vite-e2e",

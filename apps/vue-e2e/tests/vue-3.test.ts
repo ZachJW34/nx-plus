@@ -64,7 +64,7 @@ describe('vue 3 e2e', () => {
         );
 
         await testGeneratedApp(appName, {
-          lint: true,
+          lint: false,
           test: false,
           e2e: false,
           build: true,

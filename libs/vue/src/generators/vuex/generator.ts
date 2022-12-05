@@ -12,17 +12,16 @@ import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-ser
 import * as path from 'path';
 import * as semver from 'semver';
 import * as ts from 'typescript';
-import { appRootPath } from '../../app-root';
-import { loadModule } from '../../utils';
 import { VuexGeneratorSchema } from './schema';
 
 interface NormalizedSchema extends VuexGeneratorSchema {
   isVue3: boolean;
 }
 
-function normalizeOptions(schema: VuexGeneratorSchema) {
-  const vue = loadModule('vue', appRootPath);
-  const isVue3 = semver.major(vue.version) === 3;
+function normalizeOptions(tree: DevkitTree, schema: VuexGeneratorSchema) {
+  const packageJson = JSON.parse(tree.read('package.json', 'utf-8') || '');
+  const isVue3 =
+    semver.major(semver.coerce(packageJson?.dependencies['vue']) || '') === 3;
 
   return { ...schema, isVue3 };
 }
@@ -151,7 +150,7 @@ export async function vuexGenerator(
   tree: DevkitTree,
   schema: VuexGeneratorSchema
 ) {
-  const options = normalizeOptions(schema);
+  const options = normalizeOptions(tree, schema);
 
   addStoreConfig(tree, options);
   addStoreToMain(tree, options);

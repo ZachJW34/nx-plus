@@ -96,24 +96,18 @@ export function modifyCopyAssets(
   context: ExecutorContext,
   projectRoot: string
 ): void {
-  const transformedAssetPatterns = ['package.json', 'README.md'].map(
-    (file) => ({
-      from: path.join(projectRoot, file),
-      to: path.join(context.root, options.dest),
-    })
-  );
+  const patterns = ['package.json', 'README.md'].map((file) => ({
+    from: path.join(projectRoot, file),
+    to: path.join(context.root, options.dest),
+  }));
 
   config
     .plugin('copy')
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    .use(require('copy-webpack-plugin'), [transformedAssetPatterns]);
+    .use(require('copy-webpack-plugin'), [{ patterns }]);
 }
 
-export function modifyBabelLoader(
-  config: ANY,
-  babelConfig: string,
-  context: ExecutorContext
-) {
+export function modifyBabelLoader(config: ANY, babelConfig: string) {
   ['js', 'ts', 'tsx'].forEach((ext) =>
     config.module
       .rule(ext)
