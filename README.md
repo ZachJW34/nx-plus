@@ -20,4 +20,4 @@ See [CONTRIBUTING.md](https://github.com/ZachJW34/nx-plus/blob/master/CONTRIBUTI
 ## Maintainers
 
 - [Zachary Williams](https://github.com/ZachJW34)
-- [Bucky Maler](https://github.com/BuckyMaler)
+- [Bucky Maler](https://github.com/BuckyMaler) **(inactive)**
