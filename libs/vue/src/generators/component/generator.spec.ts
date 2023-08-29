@@ -18,7 +18,7 @@ describe('component schematic', () => {
 
   describe('for app', () => {
     beforeEach(async () => {
-      appTree = createTreeWithEmptyWorkspace();
+      appTree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
       await applicationGenerator(appTree, appOptions);
     });
 
@@ -74,7 +74,7 @@ describe('component schematic', () => {
 
   describe('for library', () => {
     beforeEach(async () => {
-      appTree = createTreeWithEmptyWorkspace();
+      appTree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
       await libraryGenerator(appTree, libOptions);
     });
 

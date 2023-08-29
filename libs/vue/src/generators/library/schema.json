@@ -19,10 +19,7 @@
     },
     "unitTestRunner": {
       "type": "string",
-      "enum": [
-        "jest",
-        "none"
-      ],
+      "enum": ["jest", "none"],
       "description": "Test runner to use for unit tests",
       "default": "jest"
     },
@@ -71,8 +68,6 @@
       "x-prompt": "Use Babel alongside TypeScript?"
     }
   },
-  "required": [
-    "name"
-  ],
+  "required": ["name"],
   "additionalProperties": false
 }

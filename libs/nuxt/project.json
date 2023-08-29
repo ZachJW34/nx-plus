@@ -14,7 +14,8 @@
           "libs/nuxt/**/*.spec.tsx",
           "libs/nuxt/**/*.spec.js",
           "libs/nuxt/**/*.spec.jsx",
-          "libs/nuxt/**/*.d.ts"
+          "libs/nuxt/**/*.d.ts",
+          "libs/nuxt/package.json"
         ]
       }
     },
@@ -56,8 +57,7 @@
             "output": "."
           }
         ],
-        "srcRootForCompilationRoot": "libs/nuxt",
-        "updateBuildableProjectDepsInPackageJson": true
+        "srcRootForCompilationRoot": "libs/nuxt"
       },
       "outputs": ["{options.outputPath}"]
     }

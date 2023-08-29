@@ -32,11 +32,12 @@
   "dependencies": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-is": "18.2.0"
+    "react-is": "18.2.0",
+    "tsconfig-paths-webpack-plugin": "^4.1.0"
   },
   "devDependencies": {
     "@angular-devkit/schematics": "^14.2.6",
-    "@docusaurus/core": "^2.1.0",
+    "@docusaurus/core": "^2.4.1",
     "@nx/cypress": "16.7.4",
     "@nx/devkit": "16.7.4",
     "@nx/eslint-plugin": "16.7.4",
@@ -49,6 +50,7 @@
     "@nx/workspace": "16.7.4",
     "@swc-node/register": "^1.4.2",
     "@swc/core": "^1.2.173",
+    "@swc/jest": "^0.2.29",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "29.4.4",
     "@types/node": "18.14.2",
@@ -79,5 +81,6 @@
     "tslint": "6.1.3",
     "typescript": "5.1.6",
     "vite": "^2.8.6"
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }

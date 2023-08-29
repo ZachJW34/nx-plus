@@ -11,7 +11,7 @@ import {
   Tree,
   updateJson,
 } from '@nx/devkit';
-import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
+import { runTasksInSerial } from '@nx/devkit';
 import { checkPeerDeps } from '../../utils';
 import { ApplicationGeneratorSchema } from './schema';
 import path = require('path');

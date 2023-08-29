@@ -20,7 +20,7 @@ describe('application schematic', () => {
   const treeRead = (path: string) => appTree.read(path, 'utf-8') || '';
 
   beforeEach(() => {
-    appTree = createTreeWithEmptyWorkspace();
+    appTree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     // Why do I have to do this?!
     appTree.write(
       './workspace.json',

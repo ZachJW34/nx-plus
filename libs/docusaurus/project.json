@@ -14,7 +14,8 @@
           "libs/docusaurus/**/*.spec.tsx",
           "libs/docusaurus/**/*.spec.js",
           "libs/docusaurus/**/*.spec.jsx",
-          "libs/docusaurus/**/*.d.ts"
+          "libs/docusaurus/**/*.d.ts",
+          "libs/docusaurus/package.json"
         ]
       }
     },
@@ -51,8 +52,7 @@
             "output": "."
           }
         ],
-        "srcRootForCompilationRoot": "libs/docusaurus",
-        "updateBuildableProjectDepsInPackageJson": true
+        "srcRootForCompilationRoot": "libs/docusaurus"
       },
       "outputs": ["{options.outputPath}"]
     }

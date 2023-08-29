@@ -3,12 +3,7 @@ module.exports = {
   preset: '../../jest.preset.js',
   globals: {},
   transform: {
-    '^.+\\.[tj]s$': [
-      'ts-jest',
-      {
-        tsconfig: '<rootDir>/tsconfig.spec.json',
-      },
-    ],
+    '^.+\\.(t|j)sx?$': '@swc/jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/vite-e2e',

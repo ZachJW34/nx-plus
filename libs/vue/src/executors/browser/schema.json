@@ -105,11 +105,6 @@
       "default": false
     }
   },
-  "required": [
-    "dest",
-    "index",
-    "main",
-    "tsConfig"
-  ],
+  "required": ["dest", "index", "main", "tsConfig"],
   "additionalProperties": false
 }

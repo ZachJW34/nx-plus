@@ -10,7 +10,7 @@ import {
   Tree,
   updateJson,
 } from '@nx/devkit';
-import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
+import { runTasksInSerial } from '@nx/devkit';
 import {
   addBabel,
   addEsLint,

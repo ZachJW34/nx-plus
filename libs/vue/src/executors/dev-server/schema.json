@@ -97,8 +97,6 @@
       "default": []
     }
   },
-  "required": [
-    "browserTarget"
-  ],
+  "required": ["browserTarget"],
   "additionalProperties": false
 }

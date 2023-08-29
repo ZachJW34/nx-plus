@@ -62,8 +62,5 @@
       }
     }
   },
-  "required": [
-    "name",
-    "project"
-  ]
+  "required": ["name", "project"]
 }

@@ -47,7 +47,9 @@ describe('docusaurus schematic', () => {
   };
 
   beforeEach(() => {
-    appTree = createTreeWithEmptyWorkspace();
+    appTree = createTreeWithEmptyWorkspace({
+      layout: 'apps-libs',
+    });
     appTree.write('.gitignore', '');
     appTree.write('.prettierignore', '');
   });

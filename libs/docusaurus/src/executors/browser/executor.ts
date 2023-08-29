@@ -10,7 +10,8 @@ export default async function* runExecutor(
 ) {
   const projectRoot = path.join(
     context.root,
-    context.workspace.projects[context.projectName ?? ''].root
+    context.projectsConfigurations?.projects?.[context?.projectName ?? '']
+      ?.root ?? ''
   );
 
   try {

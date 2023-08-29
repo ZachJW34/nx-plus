@@ -11,8 +11,6 @@
       "description": "Define the dist directory for your Nuxt.js application."
     }
   },
-  "required": [
-    "buildDir"
-  ],
+  "required": ["buildDir"],
   "additionalProperties": false
 }

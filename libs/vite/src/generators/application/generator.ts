@@ -11,7 +11,7 @@ import {
   convertNxGenerator,
   logger,
 } from '@nx/devkit';
-import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
+import { runTasksInSerial } from '@nx/devkit';
 import * as path from 'path';
 import { checkPeerDeps } from '../../utils';
 import { ApplicationGeneratorSchema } from './schema';

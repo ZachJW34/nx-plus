@@ -21,7 +21,5 @@
       "default": true
     }
   },
-  "required": [
-    "outputPath"
-  ]
+  "required": ["outputPath"]
 }

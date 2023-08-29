@@ -67,7 +67,5 @@
       "description": "force the optimizer to ignore the cache and re-bundle"
     }
   },
-  "required": [
-    "config"
-  ]
+  "required": ["config"]
 }

@@ -12,8 +12,6 @@
       "pattern": "^[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
     }
   },
-  "required": [
-    "browserTarget"
-  ],
+  "required": ["browserTarget"],
   "additionalProperties": false
 }

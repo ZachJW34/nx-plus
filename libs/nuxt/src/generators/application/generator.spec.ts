@@ -57,7 +57,7 @@ describe('nuxt schematic', () => {
   });
 
   beforeEach(() => {
-    appTree = createTreeWithEmptyWorkspace();
+    appTree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
   });
 
   it('should update workspace.json', async () => {

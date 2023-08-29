@@ -94,10 +94,6 @@
       "default": []
     }
   },
-  "required": [
-    "dest",
-    "entry",
-    "tsConfig"
-  ],
+  "required": ["dest", "entry", "tsConfig"],
   "additionalProperties": false
 }

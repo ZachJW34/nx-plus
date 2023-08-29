@@ -11,7 +11,7 @@ describe('vuex schematic', () => {
   const options: VuexGeneratorSchema = { project: 'my-app', skipFormat: false };
 
   beforeEach(() => {
-    appTree = createTreeWithEmptyWorkspace();
+    appTree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
   });
 
   it('should generate Vuex configuration for Vue 2', async () => {

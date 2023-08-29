@@ -8,7 +8,7 @@ import {
   offsetFromRoot,
   Tree,
 } from '@nx/devkit';
-import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
+import { runTasksInSerial } from '@nx/devkit';
 import * as path from 'path';
 import { checkPeerDeps } from '../../utils';
 import {

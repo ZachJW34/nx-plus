@@ -27,10 +27,7 @@
       "description": "allow/disable clear screen when logging"
     },
     "debug": {
-      "type": [
-        "string",
-        "boolean"
-      ],
+      "type": ["string", "boolean"],
       "description": "show debug logs"
     },
     "filter": {
@@ -62,10 +59,7 @@
       "description": "output source maps for build"
     },
     "minify": {
-      "type": [
-        "string",
-        "boolean"
-      ],
+      "type": ["string", "boolean"],
       "description": "enable/disable minification, or specify minifier to use"
     },
     "manifest": {
@@ -89,7 +83,5 @@
       "description": "rebuilds when modules have changed on disk"
     }
   },
-  "required": [
-    "config"
-  ]
+  "required": ["config"]
 }

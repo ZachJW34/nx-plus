@@ -29,7 +29,5 @@
       "default": false
     }
   },
-  "required": [
-    "name"
-  ]
+  "required": ["name"]
 }

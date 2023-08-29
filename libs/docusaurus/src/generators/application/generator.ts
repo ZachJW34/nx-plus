@@ -11,7 +11,7 @@ import {
   applyChangesToString,
   ChangeType,
 } from '@nx/devkit';
-import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
+import { runTasksInSerial } from '@nx/devkit';
 import * as path from 'path';
 import { ApplicationGeneratorSchema } from './schema';
 
@@ -94,7 +94,7 @@ function updatePrettierIgnore(host: Tree) {
   if (!host.exists(prettierIgnorePath)) return;
 
   const prettierIgnoreSource =
-    host.read(prettierIgnorePath, 'utf-8')?.trimRight() ?? '';
+    host.read(prettierIgnorePath, 'utf-8')?.trimEnd() ?? '';
 
   const ignorePattern = '.docusaurus/';
 
@@ -142,16 +142,16 @@ export async function applicationGenerator(
   const installTask = addDependenciesToPackageJson(
     host,
     {
-      '@docusaurus/core': '2.1.0',
-      '@docusaurus/preset-classic': '2.1.0',
+      '@docusaurus/core': '2.4.1',
+      '@docusaurus/preset-classic': '2.4.1',
       '@mdx-js/react': '^1.6.22',
       clsx: '^1.2.1',
       'prism-react-renderer': '^1.3.5',
-      react: '^17.0.2',
-      'react-dom': '^17.0.2',
+      react: '^18.2.0',
+      'react-dom': '^18.2.0',
     },
     {
-      '@docusaurus/module-type-aliases': '2.1.0',
+      '@docusaurus/module-type-aliases': '2.4.1',
       typescript: '^4.7.4',
     }
   );
