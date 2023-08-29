@@ -26,10 +26,12 @@
     "create-playground": "ts-node tools/scripts/create-playground.ts",
     "update-playground": "ts-node tools/scripts/update-playground.ts",
     "workspace-generator": "nx workspace-generator",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "node node_modules/@nx-plus/nuxt/patch-nx-dep-graph.js"
   },
   "private": true,
   "dependencies": {
+    "core-js": "^3.15.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-is": "18.2.0",
@@ -38,6 +40,9 @@
   "devDependencies": {
     "@angular-devkit/schematics": "^14.2.6",
     "@docusaurus/core": "^2.4.1",
+    "@nuxt/types": "^2.15.7",
+    "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/eslint-config-typescript": "^9.0.0",
     "@nx/cypress": "16.7.4",
     "@nx/devkit": "16.7.4",
     "@nx/eslint-plugin": "16.7.4",
@@ -60,9 +65,15 @@
     "@typescript-eslint/utils": "5.62.0",
     "@vue/cli-service": "^5.0.8",
     "@vue/cli-shared-utils": "^5.0.8",
+    "@vue/test-utils": "^1.0.3",
+    "@vue/vue2-jest": "^27.0.0-alpha.1",
+    "babel-core": "^7.0.0-bridge.0",
+    "cypress": "^12.16.0",
     "dotenv": "10.0.0",
     "eslint": "8.46.0",
     "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-cypress": "^2.13.4",
+    "eslint-plugin-nuxt": "^3.2.0",
     "fs-extra": "^10.0.0",
     "husky": "^8.0.0",
     "jest": "29.4.3",
@@ -76,11 +87,11 @@
     "semver": "^7.3.5",
     "strip-ansi": "^6.0.1",
     "ts-jest": "29.1.1",
+    "ts-loader": "^8.3.0",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
     "tslint": "6.1.3",
     "typescript": "5.1.6",
     "vite": "^2.8.6"
-  },
-  "packageManager": "yarn@1.22.19"
+  }
 }
