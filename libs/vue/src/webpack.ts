@@ -1,4 +1,4 @@
-import { ExecutorContext } from '@nrwl/devkit';
+import { ExecutorContext } from '@nx/devkit';
 import * as path from 'path';
 import * as semver from 'semver';
 import { BrowserExecutorSchema } from './executors/browser/schema';

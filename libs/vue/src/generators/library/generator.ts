@@ -9,8 +9,8 @@ import {
   readWorkspaceConfiguration,
   Tree,
   updateJson,
-} from '@nrwl/devkit';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+} from '@nx/devkit';
+import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import {
   addBabel,
   addEsLint,

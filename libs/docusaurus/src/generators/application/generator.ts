@@ -10,8 +10,8 @@ import {
   Tree,
   applyChangesToString,
   ChangeType,
-} from '@nrwl/devkit';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+} from '@nx/devkit';
+import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import * as path from 'path';
 import { ApplicationGeneratorSchema } from './schema';
 

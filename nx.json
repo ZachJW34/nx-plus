@@ -13,24 +13,6 @@
     "defaultBase": "master"
   },
   "generators": {
-    "@nrwl/workspace": {
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/cypress": {
-      "cypress-project": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/react": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      }
-    },
     "@nrwl/next": {
       "application": {
         "linter": "eslint"
@@ -41,7 +23,12 @@
         "linter": "eslint"
       }
     },
-    "@nrwl/node": {
+    "@nrwl/nest": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/express": {
       "application": {
         "linter": "eslint"
       },
@@ -49,17 +36,30 @@
         "linter": "eslint"
       }
     },
-    "@nrwl/nx-plugin": {
+    "@nx/workspace": {
+      "library": {
+        "linter": "eslint"
+      }
+    },
+    "@nx/cypress": {
+      "cypress-project": {
+        "linter": "eslint"
+      }
+    },
+    "@nx/node": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      }
+    },
+    "@nx/plugin": {
       "plugin": {
         "linter": "eslint"
       }
     },
-    "@nrwl/nest": {
-      "application": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/express": {
+    "@nx/react": {
       "application": {
         "linter": "eslint"
       },
@@ -95,7 +95,8 @@
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/.eslintrc.json"
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/src/test-setup.[jt]s"
     ]
   }
 }

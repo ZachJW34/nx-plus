@@ -1,5 +1,5 @@
 import { tags } from '@angular-devkit/core';
-import { checkFilesExist, tmpProjPath } from '@nrwl/nx-plugin/testing';
+import { checkFilesExist, tmpProjPath } from '@nx/plugin/testing';
 import * as cp from 'child_process';
 import { runNxCommandAsyncStripped } from '@nx-plus/shared/testing';
 

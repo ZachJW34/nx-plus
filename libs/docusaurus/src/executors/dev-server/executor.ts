@@ -1,6 +1,6 @@
 import { start } from '@docusaurus/core/lib';
 import { DevServerExecutorSchema } from './schema';
-import { ExecutorContext } from '@nrwl/devkit';
+import { ExecutorContext } from '@nx/devkit';
 import * as path from 'path';
 
 export default async function* runExecutor(

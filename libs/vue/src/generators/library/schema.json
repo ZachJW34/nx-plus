@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
   "$id": "Library",
-  "cli": "nx",
   "title": "Create a Vue Library",
   "type": "object",
   "properties": {
@@ -20,7 +19,10 @@
     },
     "unitTestRunner": {
       "type": "string",
-      "enum": ["jest", "none"],
+      "enum": [
+        "jest",
+        "none"
+      ],
       "description": "Test runner to use for unit tests",
       "default": "jest"
     },
@@ -69,6 +71,8 @@
       "x-prompt": "Use Babel alongside TypeScript?"
     }
   },
-  "required": ["name"],
+  "required": [
+    "name"
+  ],
   "additionalProperties": false
 }

@@ -12,7 +12,7 @@ import {
   modifyTsConfigPaths,
   modifyTypescriptAliases,
 } from '../../webpack';
-import { ExecutorContext } from '@nrwl/devkit';
+import { ExecutorContext } from '@nx/devkit';
 import * as path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

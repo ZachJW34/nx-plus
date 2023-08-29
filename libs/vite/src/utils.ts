@@ -1,4 +1,4 @@
-import { logger, Tree } from '@nrwl/devkit';
+import { logger, Tree } from '@nx/devkit';
 import * as path from 'path';
 import * as semver from 'semver';
 import { appRootPath } from './app-root';
@@ -53,10 +53,10 @@ function clearRequireCache(id: string, map = new Map()) {
 export function checkPeerDeps(options: ApplicationGeneratorSchema): void {
   const expectedVersion = '^15.0.0';
   const unmetPeerDeps = [
-    ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
-    ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),
-    '@nrwl/linter',
-    '@nrwl/workspace',
+    ...(options.e2eTestRunner === 'cypress' ? ['@nx/cypress'] : []),
+    ...(options.unitTestRunner === 'jest' ? ['@nx/jest'] : []),
+    '@nx/linter',
+    '@nx/workspace',
   ].filter((dep) => {
     try {
       const { version } = loadModule(`${dep}/package.json`, appRootPath, true);

@@ -1,5 +1,5 @@
-import { readProjectConfiguration, Tree } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { readProjectConfiguration, Tree } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { join } from 'path';
 import { applicationGenerator } from './generator';
 import { ApplicationGeneratorSchema } from './schema';
@@ -83,8 +83,8 @@ describe('nuxt schematic', () => {
     expect(config.targets?.static.options).toEqual({
       browserTarget: 'my-app:build:production',
     });
-    expect(config.targets?.lint.executor).toBe('@nrwl/linter:eslint');
-    expect(config.targets?.test.executor).toBe('@nrwl/jest:jest');
+    expect(config.targets?.lint.executor).toBe('@nx/linter:eslint');
+    expect(config.targets?.test.executor).toBe('@nx/jest:jest');
 
     expect(readProjectConfiguration(appTree, 'my-app-e2e')).toBeDefined();
   });
@@ -160,8 +160,8 @@ describe('nuxt schematic', () => {
       expect(config.targets?.static.options).toEqual({
         browserTarget: 'subdir-my-app:build:production',
       });
-      expect(config.targets?.lint.executor).toBe('@nrwl/linter:eslint');
-      expect(config.targets?.test.executor).toBe('@nrwl/jest:jest');
+      expect(config.targets?.lint.executor).toBe('@nx/linter:eslint');
+      expect(config.targets?.test.executor).toBe('@nx/jest:jest');
 
       expect(
         readProjectConfiguration(appTree, 'subdir-my-app-e2e')

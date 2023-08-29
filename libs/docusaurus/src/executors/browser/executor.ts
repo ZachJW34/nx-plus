@@ -1,5 +1,5 @@
 import { build } from '@docusaurus/core/lib';
-import { ExecutorContext } from '@nrwl/devkit';
+import { ExecutorContext } from '@nx/devkit';
 import * as path from 'path';
 import { join } from 'path';
 import { BrowserExecutorSchema } from './schema';

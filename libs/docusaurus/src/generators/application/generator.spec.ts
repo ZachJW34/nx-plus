@@ -1,5 +1,5 @@
-import { Tree, readProjectConfiguration, stripIndents } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { Tree, readProjectConfiguration, stripIndents } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { applicationGenerator } from './generator';
 import { ApplicationGeneratorSchema } from './schema';
 

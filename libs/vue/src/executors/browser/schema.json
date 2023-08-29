@@ -2,7 +2,6 @@
   "version": 2,
   "outputCapture": "direct-nodejs",
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "title": "Browser executor",
   "description": "",
   "type": "object",
@@ -106,6 +105,11 @@
       "default": false
     }
   },
-  "required": ["dest", "index", "main", "tsConfig"],
+  "required": [
+    "dest",
+    "index",
+    "main",
+    "tsConfig"
+  ],
   "additionalProperties": false
 }

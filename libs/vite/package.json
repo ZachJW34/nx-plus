@@ -25,13 +25,13 @@
   },
   "homepage": "https://github.com/ZachJW34/nx-plus/tree/master/libs/vite#readme",
   "peerDependencies": {
-    "@nrwl/cypress": "^15.0.0",
-    "@nrwl/jest": "^15.0.0",
-    "@nrwl/linter": "^15.0.0",
-    "@nrwl/workspace": "^15.0.0"
+    "@nx/jest": "^15.0.0",
+    "@nx/linter": "^15.0.0",
+    "@nx/workspace": "^15.0.0",
+    "@nx/cypress": "^15.0.0"
   },
   "dependencies": {
-    "@nrwl/devkit": "^15.0.0",
-    "semver": "^7.3.0"
+    "semver": "^7.3.0",
+    "@nx/devkit": "^15.0.0"
   }
 }

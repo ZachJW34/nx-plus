@@ -26,7 +26,7 @@ function patchNxDepGraph() {
 function getFilePath() {
   const possiblePaths = [
     'node_modules/nx/src/project-graph/build-dependencies/typescript-import-locator.js', // for Nx >= 13.10.3
-    'node_modules/@nrwl/workspace/src/core/project-graph/build-dependencies/typescript-import-locator.js', // for older versions of Nx
+    'node_modules/@nx/workspace/src/core/project-graph/build-dependencies/typescript-import-locator.js', // for older versions of Nx
   ];
 
   for (const p of possiblePaths) {

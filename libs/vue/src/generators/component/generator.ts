@@ -5,7 +5,7 @@ import {
   names,
   readProjectConfiguration,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { ComponentGeneratorSchema } from './schema';
 import path = require('path');
 

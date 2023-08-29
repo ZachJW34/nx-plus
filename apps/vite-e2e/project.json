@@ -1,17 +1,18 @@
 {
+  "name": "vite-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/vite-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/nx-plugin:e2e",
+      "executor": "@nx/jest:jest",
       "options": {
-        "target": "vite:build",
-        "jestConfig": "apps/vite-e2e/jest.config.ts"
-      }
+        "jestConfig": "apps/vite-e2e/jest.config.ts",
+        "runInBand": true
+      },
+      "dependsOn": ["vite:build"]
     }
   },
   "tags": [],
-  "implicitDependencies": ["vite"],
-  "name": "vite-e2e"
+  "implicitDependencies": ["vite"]
 }

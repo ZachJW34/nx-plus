@@ -2,7 +2,6 @@
   "version": 2,
   "outputCapture": "direct-nodejs",
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "title": "Library executor",
   "description": "",
   "type": "object",
@@ -95,6 +94,10 @@
       "default": []
     }
   },
-  "required": ["dest", "entry", "tsConfig"],
+  "required": [
+    "dest",
+    "entry",
+    "tsConfig"
+  ],
   "additionalProperties": false
 }

@@ -1,4 +1,4 @@
-import { ensureNxProject, uniq } from '@nrwl/nx-plugin/testing';
+import { ensureNxProject, uniq } from '@nx/plugin/testing';
 import { runNxCommandAsyncStripped } from '@nx-plus/shared/testing';
 
 describe('docusaurus e2e', () => {

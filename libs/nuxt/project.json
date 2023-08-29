@@ -1,11 +1,12 @@
 {
+  "name": "nuxt",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/nuxt/src",
   "projectType": "library",
   "generators": {},
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/nuxt/**/*.ts",
@@ -18,7 +19,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "options": {
         "jestConfig": "libs/nuxt/jest.config.ts",
         "passWithNoTests": true
@@ -26,7 +27,7 @@
       "outputs": ["{workspaceRoot}/coverage/libs/nuxt"]
     },
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nx/js:tsc",
       "options": {
         "outputPath": "dist/libs/nuxt",
         "tsConfig": "libs/nuxt/tsconfig.lib.json",
@@ -55,11 +56,11 @@
             "output": "."
           }
         ],
-        "srcRootForCompilationRoot": "libs/nuxt"
+        "srcRootForCompilationRoot": "libs/nuxt",
+        "updateBuildableProjectDepsInPackageJson": true
       },
       "outputs": ["{options.outputPath}"]
     }
   },
-  "tags": [],
-  "name": "nuxt"
+  "tags": []
 }

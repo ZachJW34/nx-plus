@@ -6,9 +6,9 @@ import {
   formatFiles,
   readProjectConfiguration,
   Tree as DevkitTree,
-} from '@nrwl/devkit';
-import { findNodes } from '@nrwl/workspace';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+} from '@nx/devkit';
+import { findNodes } from '@nx/workspace';
+import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import * as path from 'path';
 import * as semver from 'semver';
 import * as ts from 'typescript';

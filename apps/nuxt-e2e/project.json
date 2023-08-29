@@ -1,17 +1,18 @@
 {
+  "name": "nuxt-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/nuxt-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/nx-plugin:e2e",
+      "executor": "@nx/jest:jest",
       "options": {
-        "target": "nuxt:build",
-        "jestConfig": "apps/nuxt-e2e/jest.config.ts"
-      }
+        "jestConfig": "apps/nuxt-e2e/jest.config.ts",
+        "runInBand": true
+      },
+      "dependsOn": ["nuxt:build"]
     }
   },
   "tags": [],
-  "implicitDependencies": ["nuxt"],
-  "name": "nuxt-e2e"
+  "implicitDependencies": ["nuxt"]
 }

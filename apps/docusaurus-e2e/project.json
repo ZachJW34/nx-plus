@@ -1,17 +1,18 @@
 {
+  "name": "docusaurus-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/docusaurus-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/nx-plugin:e2e",
+      "executor": "@nx/jest:jest",
       "options": {
-        "target": "docusaurus:build",
-        "jestConfig": "apps/docusaurus-e2e/jest.config.ts"
-      }
+        "jestConfig": "apps/docusaurus-e2e/jest.config.ts",
+        "runInBand": true
+      },
+      "dependsOn": ["docusaurus:build"]
     }
   },
   "tags": [],
-  "implicitDependencies": ["docusaurus"],
-  "name": "docusaurus-e2e"
+  "implicitDependencies": ["docusaurus"]
 }

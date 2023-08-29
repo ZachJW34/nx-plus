@@ -1,11 +1,12 @@
 {
+  "name": "vue",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/vue/src",
   "projectType": "library",
   "generators": {},
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/vue/**/*.ts",
@@ -18,7 +19,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "options": {
         "jestConfig": "libs/vue/jest.config.ts",
         "passWithNoTests": true
@@ -26,7 +27,7 @@
       "outputs": ["{workspaceRoot}/coverage/libs/vue"]
     },
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nx/js:tsc",
       "options": {
         "outputPath": "dist/libs/vue",
         "tsConfig": "libs/vue/tsconfig.lib.json",
@@ -55,11 +56,11 @@
             "output": "."
           }
         ],
-        "srcRootForCompilationRoot": "libs/vue"
+        "srcRootForCompilationRoot": "libs/vue",
+        "updateBuildableProjectDepsInPackageJson": true
       },
       "outputs": ["{options.outputPath}"]
     }
   },
-  "tags": [],
-  "name": "vue"
+  "tags": []
 }
