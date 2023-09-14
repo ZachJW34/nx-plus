@@ -1,3 +1,9 @@
+**We're sorry to share that this project is no longer maintained.**
+
+**Thank you to all contributors for helping make Nx Plus great.**
+
+**We recommend [Nxext](https://github.com/nxext/nx-extensions) as an alternative.**
+
 # Nx Plus
 
 [![License](https://img.shields.io/github/license/ZachJW34/nx-plus)](https://github.com/ZachJW34/nx-plus/blob/master/LICENSE)
