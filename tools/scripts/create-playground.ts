@@ -1,5 +1,5 @@
-import { readWorkspaceConfig } from '@nrwl/workspace';
-import { workspaceRoot } from '@nrwl/devkit';
+import { readWorkspaceConfig } from '@nx/workspace';
+import { workspaceRoot } from '@nx/devkit';
 import { execSync } from 'child_process';
 
 import {
@@ -12,7 +12,7 @@ import { dirname } from 'path';
 import { getPublishableLibNames, tmpProjPath } from './utils';
 
 const nrwlVersion =
-  require('../../package.json').devDependencies['@nrwl/workspace'];
+  require('../../package.json').devDependencies['@nx/workspace'];
 
 console.log('\nCreating playground. This may take a few minutes.');
 
@@ -31,7 +31,7 @@ removeSync(tmpProjPath());
 execSync(
   `node ${require.resolve('@nrwl/tao')} new proj --nx-workspace-root=${dirname(
     tmpProjPath()
-  )} --no-interactive --skip-install --collection=@nrwl/workspace --npmScope=proj --preset=empty --package-manager=yarn`,
+  )} --no-interactive --skip-install --collection=@nx/workspace --npmScope=proj --preset=empty --package-manager=yarn`,
   { cwd: dirname(tmpProjPath()), stdio: 'inherit' }
 );
 
@@ -45,7 +45,7 @@ publishableLibNames.forEach((pubLibName) => {
   writeFileSync(tmpProjPath('package.json'), JSON.stringify(p, null, 2));
 });
 
-const peerDeps = ['@nrwl/cypress', '@nrwl/cypress', '@nrwl/linter'].map(
+const peerDeps = ['@nx/cypress', '@nx/cypress', '@nx/linter'].map(
   (dep) => `${dep}@${nrwlVersion}`
 );
 

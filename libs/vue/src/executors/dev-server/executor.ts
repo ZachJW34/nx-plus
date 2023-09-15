@@ -2,7 +2,7 @@ import {
   ExecutorContext,
   parseTargetString,
   readTargetOptions,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import {
   checkUnsupportedConfig,
   getBabelConfig,

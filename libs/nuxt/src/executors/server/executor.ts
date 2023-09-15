@@ -3,7 +3,7 @@ import {
   logger,
   parseTargetString,
   readTargetOptions,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { getProjectRoot } from '../../utils';
 import { modifyTypescriptAliases } from '../../webpack';
 import { ServerExecutorSchema } from './schema';

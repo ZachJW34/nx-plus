@@ -7,8 +7,8 @@ import {
   names,
   offsetFromRoot,
   Tree,
-} from '@nrwl/devkit';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+} from '@nx/devkit';
+import { runTasksInSerial } from '@nx/devkit';
 import * as path from 'path';
 import { checkPeerDeps } from '../../utils';
 import {
@@ -71,9 +71,9 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
 
 async function addCypress(tree: Tree, options: NormalizedSchema) {
   const { cypressInitGenerator, cypressProjectGenerator } = await import(
-    '@nrwl/cypress'
+    '@nx/cypress'
   );
-  const { Linter } = await import('@nrwl/linter');
+  const { Linter } = await import('@nx/linter');
   const cypressInitTask = await cypressInitGenerator(tree, {});
   const cypressTask = await cypressProjectGenerator(tree, {
     project: options.projectName,

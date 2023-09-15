@@ -1,4 +1,4 @@
-import { runNxCommandAsync } from '@nrwl/nx-plugin/testing';
+import { runNxCommandAsync } from '@nx/plugin/testing';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const stripAnsi = require('strip-ansi');

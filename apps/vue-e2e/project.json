@@ -1,17 +1,18 @@
 {
+  "name": "vue-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/vue-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/nx-plugin:e2e",
+      "executor": "@nx/jest:jest",
       "options": {
-        "target": "vue:build",
-        "jestConfig": "apps/vue-e2e/jest.config.ts"
-      }
+        "jestConfig": "apps/vue-e2e/jest.config.ts",
+        "runInBand": true
+      },
+      "dependsOn": ["vue:build"]
     }
   },
   "tags": [],
-  "implicitDependencies": ["vue"],
-  "name": "vue-e2e"
+  "implicitDependencies": ["vue"]
 }

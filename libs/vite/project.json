@@ -1,16 +1,17 @@
 {
+  "name": "vite",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/vite/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/vite/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/vite"],
       "options": {
         "jestConfig": "libs/vite/jest.config.ts",
@@ -18,7 +19,7 @@
       }
     },
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/vite",
@@ -52,9 +53,9 @@
             "glob": "patch-nx-dep-graph.js",
             "output": "."
           }
-        ]
+        ],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     }
-  },
-  "name": "vite"
+  }
 }

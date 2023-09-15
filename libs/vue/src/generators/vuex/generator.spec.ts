@@ -1,5 +1,5 @@
-import { readJson, Tree } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { readJson, Tree } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import * as utils from '../../utils';
 import { applicationGenerator } from '../application/generator';
 import { options as appOptions } from '../application/generator.spec';
@@ -11,7 +11,7 @@ describe('vuex schematic', () => {
   const options: VuexGeneratorSchema = { project: 'my-app', skipFormat: false };
 
   beforeEach(() => {
-    appTree = createTreeWithEmptyWorkspace();
+    appTree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
   });
 
   it('should generate Vuex configuration for Vue 2', async () => {

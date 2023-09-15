@@ -10,8 +10,8 @@ import {
   updateJson,
   convertNxGenerator,
   logger,
-} from '@nrwl/devkit';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+} from '@nx/devkit';
+import { runTasksInSerial } from '@nx/devkit';
 import * as path from 'path';
 import { checkPeerDeps } from '../../utils';
 import { ApplicationGeneratorSchema } from './schema';
@@ -101,7 +101,7 @@ function getEslintConfig(options: NormalizedSchema) {
 }
 
 async function addEsLint(tree: Tree, options: NormalizedSchema) {
-  const { lintProjectGenerator, Linter } = await import('@nrwl/linter');
+  const { lintProjectGenerator, Linter } = await import('@nx/linter');
   const lintTask = await lintProjectGenerator(tree, {
     linter: Linter.EsLint,
     project: options.projectName,
@@ -136,9 +136,9 @@ async function addEsLint(tree: Tree, options: NormalizedSchema) {
 
 async function addCypress(tree: Tree, options: NormalizedSchema) {
   const { cypressInitGenerator, cypressProjectGenerator } = await import(
-    '@nrwl/cypress'
+    '@nx/cypress'
   );
-  const { Linter } = await import('@nrwl/linter');
+  const { Linter } = await import('@nx/linter');
   const cypressInitTask = await cypressInitGenerator(tree, {});
   const cypressTask = await cypressProjectGenerator(tree, {
     project: options.projectName,
@@ -164,9 +164,7 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
 }
 
 async function addJest(tree: Tree, options: NormalizedSchema) {
-  const { jestProjectGenerator, jestInitGenerator } = await import(
-    '@nrwl/jest'
-  );
+  const { jestProjectGenerator, jestInitGenerator } = await import('@nx/jest');
   const jestInitTask = await jestInitGenerator(tree, { babelJest: false });
   const jestTask = await jestProjectGenerator(tree, {
     project: options.projectName,

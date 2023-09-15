@@ -1,11 +1,12 @@
 {
+  "name": "docusaurus",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/docusaurus/src",
   "projectType": "library",
   "generators": {},
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/docusaurus/**/*.ts",
@@ -13,12 +14,13 @@
           "libs/docusaurus/**/*.spec.tsx",
           "libs/docusaurus/**/*.spec.js",
           "libs/docusaurus/**/*.spec.jsx",
-          "libs/docusaurus/**/*.d.ts"
+          "libs/docusaurus/**/*.d.ts",
+          "libs/docusaurus/package.json"
         ]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "options": {
         "jestConfig": "libs/docusaurus/jest.config.ts",
         "passWithNoTests": true
@@ -26,7 +28,7 @@
       "outputs": ["{workspaceRoot}/coverage/libs/docusaurus"]
     },
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nx/js:tsc",
       "options": {
         "outputPath": "dist/libs/docusaurus",
         "tsConfig": "libs/docusaurus/tsconfig.lib.json",
@@ -55,6 +57,5 @@
       "outputs": ["{options.outputPath}"]
     }
   },
-  "tags": [],
-  "name": "docusaurus"
+  "tags": []
 }

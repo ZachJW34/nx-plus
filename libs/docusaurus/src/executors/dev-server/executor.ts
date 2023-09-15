@@ -1,6 +1,6 @@
 import { start } from '@docusaurus/core/lib';
 import { DevServerExecutorSchema } from './schema';
-import { ExecutorContext } from '@nrwl/devkit';
+import { ExecutorContext } from '@nx/devkit';
 import * as path from 'path';
 
 export default async function* runExecutor(
@@ -9,7 +9,8 @@ export default async function* runExecutor(
 ) {
   const projectRoot = path.join(
     context.root,
-    context.workspace.projects[context.projectName ?? ''].root
+    context.projectsConfigurations?.projects?.[context?.projectName ?? '']
+      ?.root ?? ''
   );
   const port = options.port.toString();
 

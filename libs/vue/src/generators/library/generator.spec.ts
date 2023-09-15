@@ -1,5 +1,5 @@
-import { readJson, readProjectConfiguration, Tree } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { readJson, readProjectConfiguration, Tree } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { libraryGenerator } from './generator';
 import { LibraryGeneratorSchema } from './schema';
 import { getEslintConfigWithOffset } from '../application/generator.spec';
@@ -20,7 +20,7 @@ describe('library schematic', () => {
   const treeRead = (path: string) => appTree.read(path, 'utf-8') || '';
 
   beforeEach(() => {
-    appTree = createTreeWithEmptyWorkspace();
+    appTree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
   });
 
   it('should update workspace.json and tsconfig.base.json', async () => {
@@ -30,8 +30,8 @@ describe('library schematic', () => {
 
     expect(config.root).toBe('libs/my-lib');
     expect(config.sourceRoot).toBe('libs/my-lib/src');
-    expect(config.targets?.lint.executor).toBe('@nrwl/linter:eslint');
-    expect(config.targets?.test.executor).toBe('@nrwl/jest:jest');
+    expect(config.targets?.lint.executor).toBe('@nx/linter:eslint');
+    expect(config.targets?.test.executor).toBe('@nx/jest:jest');
 
     const tsConfigBaseJson = readJson(appTree, 'tsconfig.base.json');
     expect(tsConfigBaseJson.compilerOptions.paths['@proj/my-lib']).toEqual([

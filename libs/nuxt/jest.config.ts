@@ -1,11 +1,11 @@
 /* eslint-disable */
 export default {
   transform: {
-    '^.+\\.[tj]sx?$': 'ts-jest',
+    '^.+\\.(t|j)sx?$': '@swc/jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
   coverageDirectory: '../../coverage/libs/nuxt',
-  globals: { 'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' } },
+  globals: {},
   displayName: 'nuxt',
   testEnvironment: 'node',
   preset: '../../jest.preset.js',

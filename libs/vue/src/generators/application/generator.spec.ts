@@ -1,5 +1,5 @@
-import { readJson, readProjectConfiguration, Tree } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { readJson, readProjectConfiguration, Tree } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { applicationGenerator } from './generator';
 import { ApplicationGeneratorSchema } from './schema';
 
@@ -20,7 +20,7 @@ describe('application schematic', () => {
   const treeRead = (path: string) => appTree.read(path, 'utf-8') || '';
 
   beforeEach(() => {
-    appTree = createTreeWithEmptyWorkspace();
+    appTree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     // Why do I have to do this?!
     appTree.write(
       './workspace.json',
@@ -58,8 +58,8 @@ describe('application schematic', () => {
     expect(config.targets?.serve.configurations?.production).toEqual({
       browserTarget: 'my-app:build:production',
     });
-    expect(config.targets?.lint.executor).toBe('@nrwl/linter:eslint');
-    expect(config.targets?.test.executor).toBe('@nrwl/jest:jest');
+    expect(config.targets?.lint.executor).toBe('@nx/linter:eslint');
+    expect(config.targets?.test.executor).toBe('@nx/jest:jest');
 
     expect(readProjectConfiguration(appTree, 'my-app-e2e')).toBeDefined();
   });

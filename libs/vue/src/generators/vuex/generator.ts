@@ -6,13 +6,13 @@ import {
   formatFiles,
   readProjectConfiguration,
   Tree as DevkitTree,
-} from '@nrwl/devkit';
-import { findNodes } from '@nrwl/workspace';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+} from '@nx/devkit';
+import { runTasksInSerial } from '@nx/devkit';
 import * as path from 'path';
 import * as semver from 'semver';
 import * as ts from 'typescript';
 import { VuexGeneratorSchema } from './schema';
+import { findNodes } from '@nx/workspace/src/utilities/ts-config';
 
 interface NormalizedSchema extends VuexGeneratorSchema {
   isVue3: boolean;

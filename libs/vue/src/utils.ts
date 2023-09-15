@@ -1,4 +1,4 @@
-import { ExecutorContext, logger } from '@nrwl/devkit';
+import { ExecutorContext, logger } from '@nx/devkit';
 import { constants as FS_CONSTANTS } from 'fs';
 import { access, readFile } from 'fs/promises';
 import * as path from 'path';
@@ -20,7 +20,8 @@ const Module = require('module');
 export function getProjectRoot(context: ExecutorContext) {
   return path.join(
     context.root,
-    context.workspace.projects[context.projectName || ''].root
+    context.projectsConfigurations?.projects?.[context?.projectName ?? '']
+      ?.root ?? ''
   );
 }
 
@@ -102,10 +103,10 @@ function clearRequireCache(id: string, map = new Map()) {
 export function checkPeerDeps(options: ApplicationGeneratorSchema): void {
   const expectedVersion = '^15.0.0';
   const unmetPeerDeps = [
-    ...(options.e2eTestRunner === 'cypress' ? ['@nrwl/cypress'] : []),
-    ...(options.unitTestRunner === 'jest' ? ['@nrwl/jest'] : []),
-    '@nrwl/linter',
-    '@nrwl/workspace',
+    ...(options.e2eTestRunner === 'cypress' ? ['@nx/cypress'] : []),
+    ...(options.unitTestRunner === 'jest' ? ['@nx/jest'] : []),
+    '@nx/linter',
+    '@nx/workspace',
   ].filter((dep) => {
     try {
       const { version } = loadModule(`${dep}/package.json`, appRootPath, true);

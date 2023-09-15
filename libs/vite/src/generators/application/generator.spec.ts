@@ -1,5 +1,5 @@
-import { Tree, readProjectConfiguration, readJson } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { Tree, readProjectConfiguration, readJson } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { applicationGenerator } from './generator';
 import { ApplicationGeneratorSchema } from './schema';
 
@@ -15,7 +15,7 @@ describe('application generator', () => {
   const treeRead = (path: string) => appTree.read(path, 'utf-8') ?? '';
 
   beforeEach(() => {
-    appTree = createTreeWithEmptyWorkspace();
+    appTree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
   });
 
   it('should update workspace.json', async () => {
@@ -34,8 +34,8 @@ describe('application generator', () => {
       config: 'apps/my-app/vite.config.ts',
     });
 
-    expect(config.targets?.lint.executor).toBe('@nrwl/linter:eslint');
-    expect(config.targets?.test.executor).toBe('@nrwl/jest:jest');
+    expect(config.targets?.lint.executor).toBe('@nx/linter:eslint');
+    expect(config.targets?.test.executor).toBe('@nx/jest:jest');
 
     const e2eConfig = readProjectConfiguration(appTree, 'my-app-e2e');
     expect(e2eConfig).toBeDefined();
