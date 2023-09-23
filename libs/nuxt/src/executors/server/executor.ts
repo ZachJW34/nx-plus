@@ -57,7 +57,7 @@ export default async function* runExecutor(
     await build(nuxt);
   }
 
-  const result = await nuxt.listen(nuxt.options.server.port);
+  const result = await nuxt.listen(options.port || nuxt.options.server.port);
   const baseUrl = options.dev ? nuxt.server.listeners[0].url : result.url;
 
   logger.info(`\nListening on: ${baseUrl}\n`);
