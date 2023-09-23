@@ -134,6 +134,8 @@ nx serve my-app
 
 A `vite.config.js` can be found at the root of your project. See the [Vite documentation](https://vitejs.dev/config/) for more details.
 
+When using environment variables in Nx and Vite, you can use the [vite-plugin-nx-dotenv](https://github.com/chf007/vite-plugin-nx-dotenv) plugin, for specific reasons, please refer to [here](https://github.com/ZachJW34/nx-plus/issues/239).
+
 ### Linting
 
 `nx lint <name> [options]`
