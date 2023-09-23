@@ -61,6 +61,14 @@ nx g @nx-plus/vite:app my-app
 nx serve my-app
 ```
 
+## Nx Dependency Graph Support
+
+**Nx's dep-graph does not support `.vue` files.** To patch support for `.vue` files, add the following npm script to your `package.json`:
+
+```
+"postinstall": "patch-nx-dep-graph"
+```
+
 ## Schematics (i.e. code generation)
 
 ### Application

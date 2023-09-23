@@ -1,4 +1,4 @@
-import { readProjectConfiguration, Tree } from '@nrwl/devkit';
+import { readJson, readProjectConfiguration, Tree } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import { join } from 'path';
 import { applicationGenerator } from './generator';
@@ -101,6 +101,14 @@ describe('nuxt schematic', () => {
 
     expect(treeRead('apps/my-app-e2e/src/integration/app.spec.ts')).toContain(
       "'my-app'"
+    );
+  });
+
+  it('should add postinstall script', async () => {
+    await applicationGenerator(appTree, options);
+
+    expect(readJson(appTree, 'package.json').scripts.postinstall).toBe(
+      'patch-nx-dep-graph'
     );
   });
 

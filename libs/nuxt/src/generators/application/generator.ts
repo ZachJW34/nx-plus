@@ -200,8 +200,7 @@ async function addCypress(tree: Tree, options: NormalizedSchema) {
 
 function addPostInstall(tree: Tree) {
   return updateJson(tree, 'package.json', (json) => {
-    const vuePostInstall =
-      'node node_modules/@nx-plus/nuxt/patch-nx-dep-graph.js';
+    const vuePostInstall = 'patch-nx-dep-graph';
     const { postinstall } = json.scripts || {};
     if (postinstall) {
       if (postinstall !== vuePostInstall) {

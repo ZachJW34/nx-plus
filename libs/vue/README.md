@@ -67,10 +67,8 @@ nx serve my-app
 **Nx's dep-graph does not support `.vue` files.** To patch support for `.vue` files, add the following npm script to your `package.json`:
 
 ```
-"postinstall": "node node_modules/@nx-plus/vue/patch-nx-dep-graph.js"
+"postinstall": "patch-nx-dep-graph"
 ```
-
-**Help us!** We dislike this hack just as much as you do. Please give this Nx [issue](https://github.com/nrwl/nx/issues/2960) a 👍 so that we can remove this hack in the future.
 
 ## Schematics (i.e. code generation)
 

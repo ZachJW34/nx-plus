@@ -63,7 +63,7 @@ describe('application generator', () => {
     await applicationGenerator(appTree, options);
 
     expect(readJson(appTree, 'package.json').scripts.postinstall).toBe(
-      'node node_modules/@nx-plus/vite/patch-nx-dep-graph.js'
+      'patch-nx-dep-graph'
     );
   });
 
