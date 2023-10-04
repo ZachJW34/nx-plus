@@ -22,8 +22,7 @@
     },
     "buildDir": {
       "type": "string",
-      "description": "Define the dist directory for your Nuxt application",
-      "default": ".nuxt"
+      "description": "Define the dist directory for your Nuxt application"
     }
   },
   "required": ["browserTarget"],
