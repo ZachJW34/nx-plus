@@ -21,6 +21,10 @@
       "type": "boolean",
       "description": "Define the development or production mode of Nuxt.js.",
       "default": true
+    },
+    "buildDir": {
+      "type": "string",
+      "description": "Define the dist directory for your Nuxt application"
     }
   },
   "required": ["browserTarget"],
